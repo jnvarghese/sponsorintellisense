@@ -20,72 +20,173 @@ public class Parish implements Serializable {
 	private String code;
 	
 	@NotBlank
+	private Long centerId;
+	
+	@NotBlank
 	private String name;
+	
+	@NotBlank
+	private String city;
 	
 	@NotBlank
 	private String status;
 	
+	private String regionName;
+	
+	private String centerName;
+	
 	private Set<Sponsor> sponsors  = new HashSet<>();
+	
+	private Set<ParishProject> parishProjects = new HashSet<>();
 	
 	private Date created_date;
 
 	private Date updated_date;
+	
 
 	public Long getId() {
 		return id;
 	}
 
+
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+
 
 	public String getCode() {
 		return code;
 	}
 
+
+
 	public void setCode(String code) {
 		this.code = code;
 	}
+
+
+
+	public Long getCenterId() {
+		return centerId;
+	}
+
+
+
+	public void setCenterId(Long centerId) {
+		this.centerId = centerId;
+	}
+
+
 
 	public String getName() {
 		return name;
 	}
 
+
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public String isStatus() {
+
+
+	public String getCity() {
+		return city;
+	}
+
+
+
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+
+
+	public String getStatus() {
 		return status;
 	}
+
+
 
 	public void setStatus(String status) {
 		this.status = status;
 	}
 
+
+
+	public String getRegionName() {
+		return regionName;
+	}
+
+
+
+	public void setRegionName(String regionName) {
+		this.regionName = regionName;
+	}
+
+
+
+	public String getCenterName() {
+		return centerName;
+	}
+
+
+
+	public void setCenterName(String centerName) {
+		this.centerName = centerName;
+	}
+
+
+
+	public Set<Sponsor> getSponsors() {
+		return sponsors;
+	}
+
+
+
+	public void setSponsors(Set<Sponsor> sponsors) {
+		this.sponsors = sponsors;
+	}
+
+
+
+	public Set<ParishProject> getParishProjects() {
+		return parishProjects;
+	}
+
+
+
+	public void setParishProjects(Set<ParishProject> parishProjects) {
+		this.parishProjects = parishProjects;
+	}
+
+
+
 	public Date getCreated_date() {
 		return created_date;
 	}
+
+
 
 	public void setCreated_date(Date created_date) {
 		this.created_date = created_date;
 	}
 
+
+
 	public Date getUpdated_date() {
 		return updated_date;
 	}
 
+
+
 	public void setUpdated_date(Date updated_date) {
 		this.updated_date = updated_date;
 	}
-	
-	public Set<Sponsor> getSponsors() {
-		return sponsors;
-	}
 
-	public void setSponsors(Set<Sponsor> sponsors) {
-		this.sponsors = sponsors;
-	}
+
 
 	@Override
 	public String toString() {

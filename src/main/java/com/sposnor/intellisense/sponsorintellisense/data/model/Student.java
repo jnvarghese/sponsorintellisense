@@ -10,15 +10,10 @@ public class Student implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private Long id;	
-	
-	private Long projectId;
-	
-	private String projectName;
-	
-	private Long agencyId;
-	
+	private Long projectId;	
+	private String projectName;	
+	private Long agencyId;	
 	private String agencyName;
-
 	@NotBlank
 	private String firstName;
 	private String middleName;	
@@ -28,7 +23,6 @@ public class Student implements Serializable {
 	private String gender;
 	@NotBlank
 	private String dateOfBirth;
-	@NotBlank
 	private String address;
 	@NotBlank
 	private String status;	
@@ -38,8 +32,12 @@ public class Student implements Serializable {
 	private String recentAchivements;
 	private String profilePicture;
 	private boolean softlocked;	
+	private Date validUntil;
 	private Date createdDate;
 	private Date updatedDate;
+	private int expirationMonth;
+	private int expirationYear;
+	
 	public Long getId() {
 		return id;
 	}
@@ -160,7 +158,37 @@ public class Student implements Serializable {
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
-
+	public int getExpirationMonth() {
+		return expirationMonth;
+	}
+	public void setExpirationMonth(int expirationMonth) {
+		this.expirationMonth = expirationMonth;
+	}
+	public int getExpirationYear() {
+		return expirationYear;
+	}
+	public void setExpirationYear(int expirationYear) {
+		this.expirationYear = expirationYear;
+	}
+	
+	public Date getValidUntil() {
+		return validUntil;
+	}
+	public void setValidUntil(Date validUntil) {
+		this.validUntil = validUntil;
+	}
+	@Override
+	public String toString() {
+		return "Student [id=" + id + ", projectId=" + projectId + ", projectName=" + projectName + ", agencyId="
+				+ agencyId + ", agencyName=" + agencyName + ", firstName=" + firstName + ", middleName=" + middleName
+				+ ", lastName=" + lastName + ", gender=" + gender + ", dateOfBirth=" + dateOfBirth + ", address="
+				+ address + ", status=" + status + ", hobbies=" + hobbies + ", contributions=" + contributions
+				+ ", talent=" + talent + ", recentAchivements=" + recentAchivements + ", profilePicture="
+				+ profilePicture + ", softlocked=" + softlocked + ", validUntil=" + validUntil + ", createdDate="
+				+ createdDate + ", updatedDate=" + updatedDate + ", expirationMonth=" + expirationMonth
+				+ ", expirationYear=" + expirationYear + "]";
+	}
+	
 	
 
 }

@@ -19,9 +19,9 @@ public class Enrollment  implements Serializable {
 	private Set<Sponsee> sponsees  = new HashSet<>();
 	
 	@NotBlank
-	private Date paymentDate;
+	private String paymentDate;
 	@NotBlank
-	private Date effectiveDate;
+	private String effectiveDate;
 	@NotBlank
 	private double contributionAmount;
 	
@@ -49,19 +49,19 @@ public class Enrollment  implements Serializable {
 		this.sponsees = sponsees;
 	}
 
-	public Date getPaymentDate() {
+	public String getPaymentDate() {
 		return paymentDate;
 	}
 
-	public void setPaymentDate(Date paymentDate) {
+	public void setPaymentDate(String paymentDate) {
 		this.paymentDate = paymentDate;
 	}
 
-	public Date getEffectiveDate() {
+	public String getEffectiveDate() {
 		return effectiveDate;
 	}
 
-	public void setEffectiveDate(Date effectiveDate) {
+	public void setEffectiveDate(String effectiveDate) {
 		this.effectiveDate = effectiveDate;
 	}
 
@@ -109,12 +109,7 @@ public class Enrollment  implements Serializable {
 	public String toString() {
 		return "Enrollment [id=" + id + ", sponsees=" + sponsees + ", paymentDate=" + paymentDate + ", effectiveDate="
 				+ effectiveDate + ", contributionAmount=" + contributionAmount + ", miscAmount=" + miscAmount
-				+ ", sponsorId=" + sponsorId + ", getId()=" + getId() + ", getSponsees()=" + getSponsees()
-				+ ", getPaymentDate()=" + getPaymentDate() + ", getEffectiveDate()=" + getEffectiveDate()
-				+ ", getContributionAmount()=" + getContributionAmount() + ", getMiscAmount()=" + getMiscAmount()
-				+ ", getSponsorId()=" + getSponsorId() + ", getCreatedDate()=" + getCreatedDate()
-				+ ", getUpdatedDate()=" + getUpdatedDate() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
-				+ ", toString()=" + super.toString() + "]";
+				+ ", sponsorId=" + sponsorId + "]";
 	}
 
 }

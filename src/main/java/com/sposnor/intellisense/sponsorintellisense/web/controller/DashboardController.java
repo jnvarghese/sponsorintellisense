@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sposnor.intellisense.sponsorintellisense.data.model.Agency;
-import com.sposnor.intellisense.sponsorintellisense.data.model.Parish;
-import com.sposnor.intellisense.sponsorintellisense.data.model.Project;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Center;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Region;
 import com.sposnor.intellisense.sponsorintellisense.mapper.DashboardMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.InitMapper;
 
@@ -28,19 +27,19 @@ public class DashboardController {
 	public String getDashboard() {
 		Long sponsorCount = dashboardMapper.getCountOfActiveSponsor();
 		Long studentCount = dashboardMapper.getCountOfActiveStudent();
-		return "{sponsorCount :"+sponsorCount+", studentCount: "+studentCount+"}";
+		return "{ 'sponsorCount' :"+sponsorCount+", 'studentCount' : "+studentCount+"}";
 	}
 	
-	@GetMapping("/init")
-	public List getInit() {
+	@GetMapping("/init/region")
+	public List getRegions() {
 		List consolidatedList = new ArrayList();
-		List<Project> projectList = initMapper.getProjectList(0);
-		List<Parish> parishList =initMapper.getParishList(0);
-		List<Agency> agencyList =initMapper.getAgencyList(0);
-		consolidatedList.add(projectList);
-		consolidatedList.add(parishList);
-		consolidatedList.add(agencyList);
+		List<Region> regions = initMapper.getRegions();
 		return consolidatedList;
+	}
+	
+	@GetMapping("/init/center")
+	public List<Center> getCenters() {
+		return initMapper.getCenters();
 	}
 	
 }

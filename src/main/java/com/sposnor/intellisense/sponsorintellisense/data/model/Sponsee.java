@@ -14,17 +14,27 @@ public class Sponsee implements Serializable {
 
 	private Long id;
 	
-	@NotBlank
-	private String expirationMonth;
+	private Long enrollmentId;
 	
 	@NotBlank
-	private String expirationYear;
+	private int expirationMonth;
+	
+	@NotBlank
+	private int expirationYear;
 	
 	private Long studentId;
 	
 	private Date createdDate;
 
 	private Date updatedDate;
+
+	public Long getEnrollmentId() {
+		return enrollmentId;
+	}
+
+	public void setEnrollmentId(Long enrollmentId) {
+		this.enrollmentId = enrollmentId;
+	}
 
 	public Long getId() {
 		return id;
@@ -34,19 +44,19 @@ public class Sponsee implements Serializable {
 		this.id = id;
 	}
 
-	public String getExpirationMonth() {
+	public int getExpirationMonth() {
 		return expirationMonth;
 	}
 
-	public void setExpirationMonth(String expirationMonth) {
+	public void setExpirationMonth(int expirationMonth) {
 		this.expirationMonth = expirationMonth;
 	}
 
-	public String getExpirationYear() {
+	public int getExpirationYear() {
 		return expirationYear;
 	}
 
-	public void setExpirationYear(String expirationYear) {
+	public void setExpirationYear(int expirationYear) {
 		this.expirationYear = expirationYear;
 	}
 
@@ -72,6 +82,12 @@ public class Sponsee implements Serializable {
 
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+
+	@Override
+	public String toString() {
+		return "Sponsee [id=" + id + ", enrollmentId=" + enrollmentId + ", expirationMonth=" + expirationMonth
+				+ ", expirationYear=" + expirationYear + ", studentId=" + studentId  + "]";
 	}
 	
 	

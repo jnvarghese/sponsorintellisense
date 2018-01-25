@@ -15,7 +15,7 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsor;
 //@CacheNamespace(implementation=org.mybatis.caches.ehcache.EhcacheCache.class)
 public interface SponsorMapper {
 
-	public static final String SELECT_SPONSOR_BY_ID ="select *,p.name parishName from sponsor s, parish p where s.id =#{id}";
+	public static final String SELECT_SPONSOR_BY_ID ="SELECT *,P.NAME PARISHNAME FROM SPONSOR S, PARISH P WHERE S.PARISHID = P.ID AND S.ID = #{id}";
 	
 	public static final String SELECT_ALL_ACTIVE_SPONSORS = "SELECT S.ID, FIRSTNAME, LASTNAME, MIDDLEINITIAL, STATE, P.NAME "
 			+ "parishName FROM SPONSOR S LEFT JOIN PARISH P ON S.PARISHID = P.ID WHERE S.SPONSORSTATUS = 0";

@@ -9,7 +9,7 @@ public interface DashboardMapper {
 	@Select("SELECT COUNT(*) FROM STUDENT WHERE STATUS=0")
 	Long getCountOfActiveStudent();
 	
-	@Select("SELECT COUNT(*) FROM SPONSOR WHERE ISACTIVE=0;")
+	@Select("SELECT COUNT(*) FROM SPONSOR WHERE sponsorStatus=0;")
 	Long getCountOfActiveSponsor();
 	
 }

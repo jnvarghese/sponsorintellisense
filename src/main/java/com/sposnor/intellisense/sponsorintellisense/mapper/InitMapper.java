@@ -6,19 +6,20 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
-import com.sposnor.intellisense.sponsorintellisense.data.model.Agency;
-import com.sposnor.intellisense.sponsorintellisense.data.model.Parish;
-import com.sposnor.intellisense.sponsorintellisense.data.model.Project;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Center;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Region;
 
 @Mapper
 public interface InitMapper {
 
-	@Select("SELECT * FROM AGENCY WHERE STATUS= #{status}")
-	List<Agency> getAgencyList(@Param("status") int status);
+	@Select("SELECT * FROM REGION WHERE STATUS= 1")
+	List<Region> getRegions();
 	
-	@Select("SELECT * FROM PROJECT WHERE STATUS= #{status}")
-	List<Project> getProjectList(@Param("status")  int status);
+	@Select("SELECT C.ID id, R.NAME regionName, C.NAME name, C.REGIONID regionId FROM CENTER C, REGION R "
+			+ "WHERE C.STATUS = 1 AND C.REGIONID = R.ID AND R.ID")
+	List<Center> getCenters();
 	
-	@Select("SELECT * FROM PARISH WHERE STATUS= #{status}")
-	List<Parish> getParishList(@Param("status")  int status);
+	@Select("SELECT C.ID, C.CODE, C.NAME, C.REGIONID FROM CENTER C, REGION R WHERE C.STATUS = 1 AND C.REGIONID = R.ID AND R.ID = #{regionId}")
+	List<Center> getCenterByRegionId(@Param("regionId")  Long regionId);
+	
 }

@@ -1,5 +1,7 @@
 package com.sposnor.intellisense.sponsorintellisense.web.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -20,6 +22,8 @@ import com.sposnor.intellisense.sponsorintellisense.mapper.StudentMapper;
 @RestController
 @RequestMapping("/api/student")
 public class StudentController {
+	
+    SimpleDateFormat MYSQL_DT_FORMAT = new SimpleDateFormat("yyyyy-MM-dd"); 
 
 	@Autowired
 	private StudentMapper studentMapper;
@@ -52,9 +56,17 @@ public class StudentController {
 	    return ResponseEntity.ok("Success");
 	}
 	
-	@GetMapping("/search/{name}")
-	public ResponseEntity<List<Student>> getStudentByName(@PathVariable(value = "name") String name) {
-		List<Student> sponsors = studentMapper.searchByName(name+"%");
+	@GetMapping("/search/{name}/{month}/{date}/{year}")
+	public ResponseEntity<List<Student>> getStudentByName(
+			@PathVariable(value = "name") String name,
+			@PathVariable(value = "month") int month,
+			@PathVariable(value = "date") int date,
+			@PathVariable(value = "year") int year
+			) {
+		Calendar c = Calendar.getInstance();
+		c.set(year, month, 1, 0, 0);  
+		System.out.println(" Effective Date in search "+ c.getTime());
+		List<Student> sponsors = studentMapper.findStudentsBySponsorshipStatus(name+"%", MYSQL_DT_FORMAT.format(c.getTime()));
 	    if(sponsors == null) {
 	        return ResponseEntity.notFound().build();
 	    }

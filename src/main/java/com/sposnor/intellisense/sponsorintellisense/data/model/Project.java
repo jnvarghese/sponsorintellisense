@@ -17,6 +17,8 @@ public class Project implements Serializable {
 
 	private Long agencyId;
 	
+	private String agencyCode;
+	
 	private String agencyName;
 
 	@NotBlank
@@ -124,6 +126,14 @@ public class Project implements Serializable {
 
 	public void setContactEmail(String contactEmail) {
 		this.contactEmail = contactEmail;
+	}
+
+	public String getAgencyCode() {
+		return agencyCode;
+	}
+
+	public void setAgencyCode(String agencyCode) {
+		this.agencyCode = agencyCode;
 	}
 
 	

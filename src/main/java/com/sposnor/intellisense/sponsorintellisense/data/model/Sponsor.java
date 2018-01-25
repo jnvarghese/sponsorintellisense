@@ -23,17 +23,13 @@ public class Sponsor implements Serializable {
 	private String monthOfBirth;
 
 	private int sponsorStatus;
-	@NotBlank
+
 	private String emailAddress;
 
 	private String appartmentNumber;
-	@NotBlank
 	private String street;
-	@NotBlank
 	private String city;
-	@NotBlank
 	private String state;
-	@NotBlank
 	private String postalCode;
 
 	private boolean hasAnyCoSponser;
