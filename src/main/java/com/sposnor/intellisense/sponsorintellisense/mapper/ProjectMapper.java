@@ -18,7 +18,7 @@ public interface ProjectMapper {
 	Project findById(@Param("id") Long id);
 	
 	@Select("SELECT P.ID, P.CODE, P.AGENCYID, P.NAME, P.ADDRESS, P.CONTACTNUMBER, P.CONTACTEMAIL,P.STATUS, "
-			+ "A.CODE agencyCode, A.NAME agencyName FROM PROJECT P , "
+			+ "A.CODE agencyCode, A.NAME agencyName, false as selected FROM PROJECT P , "
 			+ "AGENCY A WHERE  P.AGENCYID = A.ID AND P.STATUS = 1")
 	List<Project> list();
 	

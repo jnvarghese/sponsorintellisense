@@ -32,6 +32,8 @@ public class Project implements Serializable {
 	private String contactNumber;
 	
 	private String contactEmail;
+	
+	private boolean selected;
 
 	@NotBlank
 	private String status;
@@ -136,6 +138,12 @@ public class Project implements Serializable {
 		this.agencyCode = agencyCode;
 	}
 
-	
+	public boolean isSelected() {
+		return selected;
+	}
+
+	public void setSelected(boolean selected) {
+		this.selected = selected;
+	}
 
 }

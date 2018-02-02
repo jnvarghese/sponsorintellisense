@@ -1,5 +1,6 @@
 package com.sposnor.intellisense.sponsorintellisense.web.controller;
 
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.Agency;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Parish;
+import com.sposnor.intellisense.sponsorintellisense.data.model.ParishProject;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Project;
 import com.sposnor.intellisense.sponsorintellisense.mapper.AgencyMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ParishMapper;
+import com.sposnor.intellisense.sponsorintellisense.mapper.ParishProjectMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ProjectMapper;
 
 @RestController
@@ -33,10 +36,18 @@ public class AdminController {
 
 	@Autowired
 	private ProjectMapper projectMapper;
+	
+	@Autowired
+	private ParishProjectMapper parishProjectMapper;
 
 	@GetMapping("/projects/list")
 	public List<Project> getProjects() {
 		return projectMapper.list();
+	}
+	
+	@GetMapping("/projects/parish/list/{id}")
+	public List<ParishProject> getProjectsWithSelection(@PathVariable(value = "id") Long parishId) {
+		return parishProjectMapper.findByParishId(parishId);
 	}
 
 	@PostMapping("/projects/add")
@@ -72,17 +83,33 @@ public class AdminController {
 	}
 
 	@PostMapping("/parishes/add")
-	public ResponseEntity<String> createParish(@Valid @RequestBody Parish parish) {
-		parishMapper.insert(parish);
+	public ResponseEntity<String> createParish(@RequestBody Parish parish) {	
+		try {
+			parishMapper.insert(parish);
+			for(ParishProject pp: parish.getProjects()) {
+				pp.setParishId(parish.getId());
+				System.out.println("  -- pp --"+pp);
+				parishProjectMapper.insertBatch(pp);
+			}			
+		} catch (SQLIntegrityConstraintViolationException e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
 		return ResponseEntity.ok().body("Success");
 	}
 
 	@GetMapping("/parishes/find/{id}")
 	public ResponseEntity<Parish> getParishById(@PathVariable(value = "id") Long parishId) {
-		Parish parish = parishMapper.findById(parishId);
+		List<ParishProject> sets = parishProjectMapper.findByParishId(parishId);
+		Parish parish = parishMapper.findById(parishId);		
 		if (parish == null) {
 			return ResponseEntity.notFound().build();
 		}
+		parish.setProjects(sets);
 		return ResponseEntity.ok().body(parish);
 	}
 
@@ -100,7 +127,13 @@ public class AdminController {
 
 	@PostMapping("/agencies/add")
 	public ResponseEntity<String> createSponsor(@Valid @RequestBody Agency agency) {
-		agencyMapper.insert(agency);
+		try {
+			agencyMapper.insert(agency);			
+		} catch (SQLIntegrityConstraintViolationException ex) {
+			ex.printStackTrace();
+			return ResponseEntity.badRequest().body("Duplicate Code "+agency.getCode()+".Please try a different code.");
+		}
+		
 		return ResponseEntity.ok().body("Success");
 	}
 

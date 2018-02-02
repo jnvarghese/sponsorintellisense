@@ -42,7 +42,7 @@ public class Agency implements Serializable {
 	}
 
 	public void setCode(String code) {
-		this.code = code;
+		this.code = code.toUpperCase();
 	}
 
 	public String getName() {

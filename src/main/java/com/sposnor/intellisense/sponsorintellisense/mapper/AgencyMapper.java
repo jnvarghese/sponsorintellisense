@@ -23,7 +23,7 @@ public interface AgencyMapper {
 	@Insert("insert into agency (code, name, status) values (#{code}, #{name}, #{status})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id",
 			before = false, resultType= Long.class)
-	void insert(Agency agency);
+	void insert(Agency agency) throws java.sql.SQLIntegrityConstraintViolationException;
 	
 	@Update("update agency set code= #{code}, name= #{name}, status= #{status} where id = #{id}")	
 	void update(Agency sponsor);

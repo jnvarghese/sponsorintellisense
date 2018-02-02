@@ -13,7 +13,26 @@ public class ParishProject implements Serializable {
 	
 	private Long projectId;
 	
+	private String code;
+	
+	private String name;
+	
+	private boolean selected;
+	
 	private String status;
+
+	
+	public boolean isselected() {
+		return selected;
+	}
+
+	public void setselected(int selected) {
+		if(selected == 1) {
+			this.selected = true;
+		}else {
+			this.selected = false;
+		}
+	}
 
 	public Long getParishId() {
 		return parishId;
@@ -38,5 +57,27 @@ public class ParishProject implements Serializable {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public String toString() {
+		return "ParishProject [parishId=" + parishId + ", projectId=" + projectId + ", code=" + code + ", name=" + name
+				+ ", selected=" + selected + ", status=" + status + "]";
+	}
+
 }
