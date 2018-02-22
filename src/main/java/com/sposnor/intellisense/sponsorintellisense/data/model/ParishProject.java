@@ -9,6 +9,8 @@ public class ParishProject implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	private Long ppId;
+	
 	private Long parishId;
 	
 	private Long projectId;
@@ -73,11 +75,18 @@ public class ParishProject implements Serializable {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public Long getPpId() {
+		return ppId;
+	}
+
+	public void setPpId(Long ppId) {
+		this.ppId = ppId;
+	}
 
 	@Override
 	public String toString() {
-		return "ParishProject [parishId=" + parishId + ", projectId=" + projectId + ", code=" + code + ", name=" + name
-				+ ", selected=" + selected + ", status=" + status + "]";
-	}
-
+		return "ParishProject [ppId=" + ppId + ", parishId=" + parishId + ", projectId=" + projectId + ", code=" + code
+				+ ", name=" + name + ", selected=" + selected + ", status=" + status + "]";
+	}	
 }

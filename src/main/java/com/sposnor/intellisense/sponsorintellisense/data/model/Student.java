@@ -32,7 +32,8 @@ public class Student implements Serializable {
 	private String recentAchivements;
 	private String profilePicture;
 	private boolean softlocked;	
-	private Date validUntil;
+	private Date maxOut;
+	
 	private Date createdDate;
 	private Date updatedDate;
 	private int expirationMonth;
@@ -171,11 +172,11 @@ public class Student implements Serializable {
 		this.expirationYear = expirationYear;
 	}
 	
-	public Date getValidUntil() {
-		return validUntil;
+	public Date getMaxOut() {
+		return maxOut;
 	}
-	public void setValidUntil(Date validUntil) {
-		this.validUntil = validUntil;
+	public void setMaxOut(Date maxOut) {
+		this.maxOut = maxOut;
 	}
 	@Override
 	public String toString() {
@@ -184,11 +185,8 @@ public class Student implements Serializable {
 				+ ", lastName=" + lastName + ", gender=" + gender + ", dateOfBirth=" + dateOfBirth + ", address="
 				+ address + ", status=" + status + ", hobbies=" + hobbies + ", contributions=" + contributions
 				+ ", talent=" + talent + ", recentAchivements=" + recentAchivements + ", profilePicture="
-				+ profilePicture + ", softlocked=" + softlocked + ", validUntil=" + validUntil + ", createdDate="
-				+ createdDate + ", updatedDate=" + updatedDate + ", expirationMonth=" + expirationMonth
-				+ ", expirationYear=" + expirationYear + "]";
+				+ profilePicture + ", softlocked=" + softlocked + ", maxOut=" + maxOut + ", createdDate=" + createdDate
+				+ ", updatedDate=" + updatedDate + ", expirationMonth=" + expirationMonth + ", expirationYear="
+				+ expirationYear + "]";
 	}
-	
-	
-
 }

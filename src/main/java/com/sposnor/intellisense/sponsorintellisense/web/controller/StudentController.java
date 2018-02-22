@@ -56,9 +56,10 @@ public class StudentController {
 	    return ResponseEntity.ok("Success");
 	}
 	
-	@GetMapping("/search/{name}/{month}/{date}/{year}")
+	@GetMapping("/search/{name}/{projectId}/{month}/{date}/{year}")
 	public ResponseEntity<List<Student>> getStudentByName(
 			@PathVariable(value = "name") String name,
+			@PathVariable(value = "projectId") Long projectId,
 			@PathVariable(value = "month") int month,
 			@PathVariable(value = "date") int date,
 			@PathVariable(value = "year") int year
@@ -66,7 +67,7 @@ public class StudentController {
 		Calendar c = Calendar.getInstance();
 		c.set(year, month, 1, 0, 0);  
 		System.out.println(" Effective Date in search "+ c.getTime());
-		List<Student> sponsors = studentMapper.findStudentsBySponsorshipStatus(name+"%", MYSQL_DT_FORMAT.format(c.getTime()));
+		List<Student> sponsors = studentMapper.findStudentsBySponsorshipStatus(name+"%", projectId, MYSQL_DT_FORMAT.format(c.getTime()));
 	    if(sponsors == null) {
 	        return ResponseEntity.notFound().build();
 	    }

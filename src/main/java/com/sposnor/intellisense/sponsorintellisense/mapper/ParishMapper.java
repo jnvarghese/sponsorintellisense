@@ -33,6 +33,6 @@ public interface ParishMapper {
 			before = false, resultType= Long.class)
 	void insert(Parish parish) throws java.sql.SQLIntegrityConstraintViolationException;
 	
-	@Update("update agency set code= #{code}, name= #{name}, status= #{status}, city = #{city}, centerId = #{centerId} where id = #{id}")	
+	@Update("update parish set code= #{code}, name= #{name}, status= #{status}, city = #{city}, centerId = #{centerId} where id = #{id}")	
 	void update(Parish parish);
 }

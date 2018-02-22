@@ -29,6 +29,8 @@ public class Enrollment  implements Serializable {
 	
 	private Long sponsorId;
 	
+	
+	
 	private Date createdDate;
 
 	private Date updatedDate;
@@ -104,12 +106,14 @@ public class Enrollment  implements Serializable {
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
 	}
-
+	
+	
 	@Override
 	public String toString() {
 		return "Enrollment [id=" + id + ", sponsees=" + sponsees + ", paymentDate=" + paymentDate + ", effectiveDate="
 				+ effectiveDate + ", contributionAmount=" + contributionAmount + ", miscAmount=" + miscAmount
-				+ ", sponsorId=" + sponsorId + "]";
+				+ ", sponsorId=" + sponsorId + ",  createdDate="
+				+ createdDate + ", updatedDate=" + updatedDate + "]";
 	}
-
+	
 }

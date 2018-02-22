@@ -19,29 +19,22 @@ public class Sponsor implements Serializable {
 	private String middleInitial;
 	@NotBlank
 	private String lastName;
+	private String nickName;
 	private String dayOfBirth;
 	private String monthOfBirth;
-
 	private int sponsorStatus;
-
 	private String emailAddress;
-
 	private String appartmentNumber;
 	private String street;
 	private String city;
 	private String state;
 	private String postalCode;
-
 	private boolean hasAnyCoSponser;
-
 	private String coSponserName;
-
 	private Long parishId;
-
 	private String parishName;
-
+	private String parishCity;
 	private Date createdDate;
-
 	private Date updatedDate;
 
 	public Long getId() {
@@ -197,5 +190,20 @@ public class Sponsor implements Serializable {
 		this.updatedDate = updatedDate;
 	}
 
+	public String getParishCity() {
+		return parishCity;
+	}
+
+	public void setParishCity(String parishCity) {
+		this.parishCity = parishCity;
+	}
+
+	public String getNickName() {
+		return nickName;
+	}
+
+	public void setNickName(String nickName) {
+		this.nickName = nickName;
+	}
 	
 }

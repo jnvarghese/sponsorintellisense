@@ -29,6 +29,11 @@ public class SponsorController {
 		return sponsorMapper.list();
 	}
 	
+	@GetMapping("/listbyparish/{id}")
+	public List<Sponsor> getAllSponsorsByParishId(@PathVariable(value = "id") Long parishId) {
+		return sponsorMapper.listSponsorsByParishId(parishId);
+	}
+	
 	@PostMapping("/add")
 	public ResponseEntity<String> createSponsor(@Valid @RequestBody Sponsor sponsor) {		
 		sponsorMapper.insert(sponsor);	    

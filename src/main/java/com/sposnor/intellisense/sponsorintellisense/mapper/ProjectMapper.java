@@ -28,7 +28,7 @@ public interface ProjectMapper {
 			before = false, resultType= Long.class)
 	void insert(Project p);
 	
-	@Update("update project set code= #{code}, agencyId= #{agencyId} name= #{name}, address=#{address}, contactNumber=#{contactNumber},"
+	@Update("update project set code= #{code}, agencyId= #{agencyId}, name= #{name}, address=#{address}, contactNumber=#{contactNumber},"
 			+ " contactEmail= #{contactEmail}, status= #{status} where id = #{id}")	
 	void update(Project p);
 }

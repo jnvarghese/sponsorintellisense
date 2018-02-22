@@ -88,8 +88,9 @@ public class AdminController {
 			parishMapper.insert(parish);
 			for(ParishProject pp: parish.getProjects()) {
 				pp.setParishId(parish.getId());
-				System.out.println("  -- pp --"+pp);
-				parishProjectMapper.insertBatch(pp);
+				if(pp.isselected()) {
+					parishProjectMapper.insertBatch(pp);
+				}
 			}			
 		} catch (SQLIntegrityConstraintViolationException e) {
 			e.printStackTrace();
@@ -115,8 +116,19 @@ public class AdminController {
 
 	@PutMapping("/parishes/modify/{id}")
 	public ResponseEntity<String> updateParish(@PathVariable(value = "id") Long parishId,
-			@Valid @RequestBody Parish parish) {
+			 @RequestBody Parish parish) {
+		System.out.println( " -- parish "+ parish);
 		parishMapper.update(parish);
+		for(ParishProject pp: parish.getProjects()) {
+			pp.setParishId(parish.getId());
+			if(null != pp.getPpId()) {
+				parishProjectMapper.updateBatch(pp);
+			}else {
+				if(pp.isselected()) {
+					parishProjectMapper.insertBatch(pp);
+				}
+			}
+		}	
 		return ResponseEntity.ok().body("Success");
 	}
 
