@@ -1,5 +1,6 @@
 package com.sposnor.intellisense.sponsorintellisense.web.controller;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.Student;
 import com.sposnor.intellisense.sponsorintellisense.mapper.StudentMapper;
@@ -36,6 +38,17 @@ public class StudentController {
 	@PostMapping("/add")
 	public ResponseEntity<String> createStudent(@RequestBody Student note) {
 		studentMapper.insert(note);	    
+	    return ResponseEntity.ok().body("Success");
+	}
+	
+	@PostMapping("/image")
+	public ResponseEntity<String> uploadImage(@RequestBody MultipartFile multipartFile) throws IOException {
+		  String name = multipartFile.getOriginalFilename();
+	      System.out.println("File name: "+name);
+	      //todo save to a file via multipartFile.getInputStream()
+	      byte[] bytes = multipartFile.getBytes();
+	      System.out.println("File uploaded content:\n" + new String(bytes));
+	     	
 	    return ResponseEntity.ok().body("Success");
 	}
 	
