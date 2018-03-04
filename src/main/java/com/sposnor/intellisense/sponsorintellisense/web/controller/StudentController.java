@@ -87,4 +87,11 @@ public class StudentController {
 	    return ResponseEntity.ok().body(sponsors);
 	}
 	
+	@GetMapping("/search/{name}")
+	public List<Student> getStudentsByName(
+			@PathVariable(value = "name") String name){
+		return studentMapper.listMatchingStudentsByName(name+"%");
+	}
+	
+	
 }

@@ -37,7 +37,7 @@ public class DashboardController {
 		return consolidatedList;
 	}
 	
-	@GetMapping("/init/center")
+	@GetMapping("/dashboard/center")
 	public List<Center> getCenters() {
 		return initMapper.getCenters();
 	}

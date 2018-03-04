@@ -9,7 +9,6 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
-import com.sposnor.intellisense.sponsorintellisense.data.model.Enrollment;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsor;
 
 @Mapper

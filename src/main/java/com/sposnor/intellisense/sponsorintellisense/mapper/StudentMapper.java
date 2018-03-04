@@ -63,4 +63,9 @@ public interface StudentMapper {
 			@Param("projectId") Long projectId,
 			@Param("effectiveDate") String effectiveDate
 			);
+	
+	@Select("SELECT S.ID, FIRSTNAME, LASTNAME, MIDDLENAME FROM STUDENT S "
+			+ "LEFT JOIN SPONSEE SE ON S.ID = SE.STUDENTID "
+			+ "WHERE S.STATUS = 0 AND FIRSTNAME LIKE #{name}  GROUP BY S.ID, FIRSTNAME, LASTNAME, MIDDLENAME")
+	List<Student> listMatchingStudentsByName(@Param("name") String name);
 }

@@ -25,7 +25,7 @@ public interface ParishMapper {
 	List<Parish> listAllParishByCenterId(@Param("centerId") Long centerId);
 	
 	@Select("SELECT P.ID, P.CODE, P.NAME, P.CITY, P.CENTERID, P.STATUS, R.NAME REGIONNAME, C.NAME CENTERNAME FROM PARISH P, "
-			+ "REGION R, CENTER C WHERE P.CENTERID = C.ID AND C.REGIONID = R.ID AND P.STATUS= 1;")
+			+ "REGION R, CENTER C WHERE P.CENTERID = C.ID AND C.REGIONID = R.ID AND P.STATUS= 1 ORDER BY P.NAME, P.CITY;")
 	List<Parish> list();
 	
 	@Insert("insert into parish (code, name, status, city, centerId) values (#{code}, #{name}, #{status}, #{city}, #{centerId})")
