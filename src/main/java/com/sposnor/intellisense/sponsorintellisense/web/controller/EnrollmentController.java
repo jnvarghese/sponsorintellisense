@@ -1,9 +1,6 @@
 package com.sposnor.intellisense.sponsorintellisense.web.controller;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Enrollment;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsee;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorMaxOut;
-import com.sposnor.intellisense.sponsorintellisense.data.model.Student;
 import com.sposnor.intellisense.sponsorintellisense.data.model.StudentMaxOut;
 import com.sposnor.intellisense.sponsorintellisense.mapper.EnrollmentMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.MaxOutMapper;
-import com.sposnor.intellisense.sponsorintellisense.mapper.StudentMapper;
 
 @RestController
 @RequestMapping("/api/enroll")
@@ -27,9 +22,6 @@ public class EnrollmentController {
 
 	@Autowired
 	private EnrollmentMapper enrollmentMapper;
-	
-	@Autowired
-	private StudentMapper studentMapper;
 	
 	@Autowired
 	private MaxOutMapper maxOutMapper;

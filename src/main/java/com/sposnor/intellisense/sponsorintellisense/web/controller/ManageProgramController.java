@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sposnor.intellisense.sponsorintellisense.data.model.Contribution;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorshipInfo;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ManageProgramMapper;
 
@@ -21,6 +22,12 @@ public class ManageProgramController {
 	@GetMapping("/view/{id}")
 	public List<SponsorshipInfo> listSponsorShipInfo(@PathVariable(value = "id") Long studentId) {
 		return manageProgramMapper.getSponsorshipInfoByStudentId(studentId);
+	}
+	
+	@GetMapping("/viewcontribution/{sponsorid}/{studentid}")
+	public List<Contribution> getSponsorshipContribution
+		(@PathVariable(value = "studentid") Long studentId, @PathVariable(value = "sponsorid") Long sponsorId) {
+		return manageProgramMapper.getSponsorshipContribution(studentId, sponsorId);
 	}
 	
 }
