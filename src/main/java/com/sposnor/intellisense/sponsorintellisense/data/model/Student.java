@@ -30,7 +30,7 @@ public class Student implements Serializable {
 	private String contributions;
 	private String talent;
 	private String recentAchivements;
-	private String profilePicture;
+	private byte[] profilePicture;
 	private boolean softlocked;	
 	private Date maxOut;
 	
@@ -135,10 +135,11 @@ public class Student implements Serializable {
 	public void setRecentAchivements(String recentAchivements) {
 		this.recentAchivements = recentAchivements;
 	}
-	public String getProfilePicture() {
+	
+	public byte[] getProfilePicture() {
 		return profilePicture;
 	}
-	public void setProfilePicture(String profilePicture) {
+	public void setProfilePicture(byte[] profilePicture) {
 		this.profilePicture = profilePicture;
 	}
 	public boolean isSoftlocked() {

@@ -35,9 +35,9 @@ public class SponsorController {
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<String> createSponsor(@Valid @RequestBody Sponsor sponsor) {		
+	public Sponsor createSponsor(@Valid @RequestBody Sponsor sponsor) {		
 		sponsorMapper.insert(sponsor);	    
-	    return ResponseEntity.ok().body("Success");
+	    return sponsor;
 	}
 	
 	@GetMapping("/find/{id}")
@@ -50,10 +50,10 @@ public class SponsorController {
 	}
 	
 	@PutMapping("/modify/{id}")
-	public ResponseEntity<String> updateSponsor(@PathVariable(value = "id") Long sponsorId, 
+	public Sponsor updateSponsor(@PathVariable(value = "id") Long sponsorId, 
 	                                       @Valid @RequestBody Sponsor sponsorToModify) {
 		sponsorMapper.update(sponsorToModify);	    
-	    return ResponseEntity.ok().body("Success");
+	    return sponsorToModify;
 	}
 
 	@GetMapping("/search/{name}")

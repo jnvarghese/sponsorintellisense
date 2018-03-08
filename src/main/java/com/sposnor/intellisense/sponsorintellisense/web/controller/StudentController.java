@@ -8,6 +8,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,20 +38,30 @@ public class StudentController {
 	}
 	
 	@PostMapping("/add")
-	public ResponseEntity<String> createStudent(@RequestBody Student note) {
+	public Student createStudent(@RequestBody Student note) {
 		studentMapper.insert(note);	    
-	    return ResponseEntity.ok().body("Success");
+	    return note;
 	}
 	
-	@PostMapping("/image")
-	public ResponseEntity<String> uploadImage(@RequestBody MultipartFile multipartFile) throws IOException {
-		  String name = multipartFile.getOriginalFilename();
-	      System.out.println("File name: "+name);
-	      //todo save to a file via multipartFile.getInputStream()
-	      byte[] bytes = multipartFile.getBytes();
-	      System.out.println("File uploaded content:\n" + new String(bytes));
-	     	
-	    return ResponseEntity.ok().body("Success");
+	@PostMapping("/image/{id}")
+	public ResponseEntity<String> uploadImage(
+			@RequestParam("file") MultipartFile multipartFile,
+			@PathVariable(value = "id") Long studentId) throws IOException {
+			String message = "";
+			String name = null ;
+			Student student = new Student();
+			try {
+				name = multipartFile.getOriginalFilename();
+				System.out.println("File name: "+multipartFile);
+				student.setProfilePicture(multipartFile.getBytes());
+				student.setId(studentId);
+				studentMapper.uploadImage(student);
+				message = "You successfully uploaded " + name + "!";
+				return ResponseEntity.status(HttpStatus.OK).body(message);
+			} catch (Exception e) {
+				message = "FAIL to upload " + name + "!";
+				return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
+			}
 	}
 	
 	@GetMapping("/find/{id}")
@@ -60,13 +72,12 @@ public class StudentController {
 	    }
 	    return ResponseEntity.ok().body(note);
 	}
+	
 	@PutMapping("/modify/{id}")
-	public ResponseEntity<String> updateStudent(@PathVariable(value = "id") Long studentId, 
-			@Valid @RequestBody Student studentToModify) {
-		
-		studentMapper.update(studentToModify);
-	    
-	    return ResponseEntity.ok("Success");
+	public Student updateStudent(@PathVariable(value = "id") Long studentId, 
+			@Valid @RequestBody Student studentToModify) {		
+		studentMapper.update(studentToModify);	    
+	    return studentToModify;
 	}
 	
 	@GetMapping("/search/{name}/{projectId}/{month}/{date}/{year}")

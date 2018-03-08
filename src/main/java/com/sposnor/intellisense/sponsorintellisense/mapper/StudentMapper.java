@@ -39,6 +39,9 @@ public interface StudentMapper {
 			+ " softlocked= #{softlocked} WHERE id=#{id}")	
 	void update(Student student);
 	
+	@Insert("UPDATE STUDENT SET profilePicture = #{profilePicture} WHERE id=#{id}")
+	void uploadImage(Student student);
+	
 	@Select("SELECT ID, FIRSTNAME, LASTNAME, MIDDLENAME FROM STUDENT WHERE STATUS = 0 AND FIRSTNAME LIKE #{name} ")
 	List<Student> searchByName(@Param("name") String name);
 	
@@ -71,10 +74,10 @@ public interface StudentMapper {
 	List<Student> listMatchingStudentsByName(@Param("name") String name);
 	
 	@Select("SELECT EN.ID, CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',SP.ID) UNIQUEID, "
-			+ "CONCAT(FIRSTNAME,' ',MIDDLEINITIAL,' ',LASTNAME ) FULLNAME, NICKNAME,  P.NAME parishName,P.CITY parishCity,C.NAME centerName, R.NAME regionName, "
-			+ "APPARTMENTNUMBER,STREET, SP.CITY sponsorCity, STATE sponsorState,POSTALCODE, SP.EMAILADDRESS,  DATE_FORMAT(PAYMENTDATE, \"%M %D %Y\") PAYMENTDATE,  "
+			+ "CONCAT(FIRSTNAME,' ',MIDDLEINITIAL,' ',LASTNAME ) sponsorName, NICKNAME,  P.NAME parishName,P.CITY parishCity,C.NAME centerName, R.NAME regionName, "
+			+ "APPARTMENTNUMBER,STREET, SP.CITY sponsorCity, STATE sponsorState,POSTALCODE, SP.EMAILADDRESS sponsorEmail,  DATE_FORMAT(effectiveDate, \"%M %D %Y\") effectiveDate,  "
 			+ "(CONTRIBUTIONAMOUNT + MISCAMOUNT) CONTRIBUTION, EN.CREATEDDATE FROM SPONSOR SP, PARISH P, ENROLLMENT EN , CENTER C, "
 			+ "REGION R WHERE P.ID = SP.PARISHID  AND SPONSORID = SP.ID  AND P.CENTERID = C.ID AND C.REGIONID = R.ID "
-			+ "AND EN.ID = = #{id}")
+			+ "AND EN.ID = #{id}")
 	SponsorReport findSponsorByEnrolmentId(@Param("id") Long id);
 }

@@ -28,7 +28,7 @@ public class SponsorReport {
 	
 	private String emailAddress;
 	
-	private String paymentDate;
+	private String effectiveDate;
 	
 	private String contribution;
 
@@ -136,12 +136,13 @@ public class SponsorReport {
 		this.emailAddress = emailAddress;
 	}
 
-	public String getPaymentDate() {
-		return paymentDate;
+	
+	public String getEffectiveDate() {
+		return effectiveDate;
 	}
 
-	public void setPaymentDate(String paymentDate) {
-		this.paymentDate = paymentDate;
+	public void setEffectiveDate(String effectiveDate) {
+		this.effectiveDate = effectiveDate;
 	}
 
 	public String getContribution() {

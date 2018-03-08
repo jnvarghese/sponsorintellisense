@@ -3,7 +3,9 @@ package com.sposnor.intellisense.sponsorintellisense.web.controller;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -47,13 +49,28 @@ public class ManageProgramController {
 		return manageProgramMapper.selectEnrollments();
 	}
 	
-	@RequestMapping(value = "/enrollment/generatereport", method = RequestMethod.GET, produces = "application/pdf")
+	private Map<String,Object> getDataMap(SponsorReport sponser, List<SponseeReport> sponseeList){
+		Map<String, Object> map = new HashMap<String,Object>();
+		map.put("sponsorId", sponser.getUniqueId());
+		map.put("sponsorName", sponser.getSponsorName());
+		map.put("sponsorParish", sponser.getParishName() +" "+sponser.getParishCity());
+		map.put("sponsorParishRegion", sponser.getRegionName()+" "+sponser.getCenterName());
+		map.put("sponsorAddress", sponser.getAppartmentNumber()+" "+sponser.getStreet()+ " "+sponser.getSponsorCity()+" "+sponser.getSponsorState()+" "+sponser.getPostalCode());
+		map.put("sponsorPhone", "N/A");
+		map.put("sponsorEmail", sponser.getEmailAddress() == null  ? "N/A" : sponser.getEmailAddress());
+		map.put("sponseeList", sponseeList);
+		map.put("totalChildrenSposored", sponseeList.size());
+		map.put("totalPaymentReceived", sponser.getContribution());
+		map.put("spnStartDate", sponser.getEffectiveDate());
+		return map;
+	}
+	@RequestMapping(value = "/enrollment/generatereport/{enrollmentId}", method = RequestMethod.GET, produces = "application/pdf")
 	ResponseEntity<byte[]> generatePdf(@PathVariable(value = "enrollmentId") Long enrollmentId) throws Exception{
 		
 		List<SponseeReport> sponseeList= sponsorMapper.listSponseesByEnrolmentId(enrollmentId);
 		SponsorReport sponsorReport = studentMapper.findSponsorByEnrolmentId(enrollmentId);
 		
-		String htmlstring = VelocityTemplateParser.generateHTML();
+		String htmlstring = VelocityTemplateParser.generateHTML(getDataMap(sponsorReport,sponseeList));
 		
         ByteArrayOutputStream byteArrayPutStream = new ByteArrayOutputStream();
         byte[] pdfBytes = byteArrayPutStream.toByteArray();

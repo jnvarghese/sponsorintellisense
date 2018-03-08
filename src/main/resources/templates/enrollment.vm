@@ -159,6 +159,7 @@
   </div>
   <br/>
   <br/>
+  #foreach ($sponsee in $sponseeList)
 <div id="container">
       <table style="width:97.7%">
         <tr>
@@ -171,7 +172,7 @@
             <span id="colum-span">ID</span>
           </td>
           <td colspan="6">
-            <span id="colum-span">$childId</span>
+            <span id="colum-span">$sponsee.uniqueId</span>
           </td>
         </tr>
         <tr>
@@ -179,16 +180,17 @@
             <span id="colum-span">NAME OF CHILD</span>
           </td>
           <td colspan="5">
-            <span id="colum-span">$childName</span>
+            <span id="colum-span">$sponsee.studentName</span>
           </td>
-           <td width="100px" rowspan="6">sdfsdfsdf</td>
+           <td width="100px" rowspan="6"><img src="data:image/jpg;base64,$sponsee.profilePicture" alt="imagename"/></td>
         </tr>
+        <img src="data:image/jpg;base64,$sponsee.profilePicture" alt="imagename"/>
         <tr>
           <td id="colum-highlight" >
             <span id="colum-span">DATE OF BIRTH</span>
           </td>
           <td colspan="2">
-            <span id="colum-span">$childDOB</span>
+            <span id="colum-span">$sponsee.dateOfBirth</span>
           </td>
           <td id="colum-highlight" colspan="2">
             <span id="colum-span">CLASS – GRADE LEVEL</span>
@@ -202,7 +204,7 @@
             <span id="colum-span">GENDER</span>
           </td>
           <td>
-            <span id="colum-span">$childGender</span>
+            <span id="colum-span">$sponsee.gender</span>
           </td>
           <td id="colum-highlight" >
             <span id="colum-span">MEDIUM OF STUDY</span>
@@ -222,7 +224,7 @@
             <span id="colum-span">HOBBY</span>
           </td>
           <td>
-            <span id="colum-span">$childHobby</span>
+            <span id="colum-span">$sponsee.hobby</span>
           </td>
           <td id="colum-highlight" >
             <span id="colum-span">FAVORITE COLOR</span>
@@ -242,7 +244,7 @@
             <span id="colum-span">PARTNER ORGANIZATION</span>
           </td>
           <td colspan="5">
-            <span id="colum-span">$programPartner</span>
+            <span id="colum-span">$sponsee.agencyName</span>
           </td>
         </tr>
         <tr>
@@ -250,11 +252,14 @@
             <span id="colum-span">PROJECT LOCATION</span>
           </td>
           <td colspan="5">
-            <span id="colum-span">$programLocation</span>
+            <span id="colum-span">$sponsee.projectName</span>
           </td>
         </tr>
       </table>    
   </div>
+    <br/>
+#end
+
 <div id="container">
       <table style="width:97.7%">
         <tr>

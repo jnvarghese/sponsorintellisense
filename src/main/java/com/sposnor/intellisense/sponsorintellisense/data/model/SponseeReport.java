@@ -15,6 +15,16 @@ public class SponseeReport {
 	private String projectName;
 	
 	private String agencyName;
+	
+	private byte[] profilePicture;
+	
+	public byte[] getProfilePicture() {
+		return profilePicture;
+	}
+
+	public void setProfilePicture(byte[] profilePicture) {
+		this.profilePicture = profilePicture;
+	}
 
 	public String getUniqueId() {
 		return uniqueId;
@@ -70,6 +80,13 @@ public class SponseeReport {
 
 	public void setAgencyName(String agencyName) {
 		this.agencyName = agencyName;
+	}
+
+	@Override
+	public String toString() {
+		return "SponseeReport [uniqueId=" + uniqueId + ", studentName=" + studentName + ", dateOfBirth=" + dateOfBirth
+				+ ", gender=" + gender + ", hobby=" + hobby + ", projectName=" + projectName + ", agencyName="
+				+ agencyName + "]";
 	}
 	
 	
