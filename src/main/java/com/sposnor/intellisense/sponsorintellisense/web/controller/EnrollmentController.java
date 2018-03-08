@@ -17,7 +17,7 @@ import com.sposnor.intellisense.sponsorintellisense.mapper.EnrollmentMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.MaxOutMapper;
 
 @RestController
-@RequestMapping("/api/enroll")
+@RequestMapping("/api")
 public class EnrollmentController {
 
 	@Autowired

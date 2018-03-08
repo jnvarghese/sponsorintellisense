@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.Contribution;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorshipInfo;
+import com.sposnor.intellisense.sponsorintellisense.data.model.ViewEnroll;
 
 @Mapper
 public interface ManageProgramMapper {
@@ -25,4 +26,10 @@ public interface ManageProgramMapper {
 			+ "AND STM.STUDENTID = SP.STUDENTID AND SP.STUDENTID= #{studentId} AND EN.SPONSORID= #{sponsorId}")
 	List<Contribution> getSponsorshipContribution(@Param("studentId") Long studentId, @Param("sponsorId") Long sponsorId);	
 	
+	
+	@Select("SELECT EN.ID enrollmentId, CONCAT(FIRSTNAME,' ',LASTNAME ) sponsorName, NICKNAME sponsorNickName,  "
+			+ "P.NAME parishName, DATE_FORMAT(PAYMENTDATE, \"%M %D %Y\") PAYMENTDATE,(CONTRIBUTIONAMOUNT + MISCAMOUNT) CONTRIBUTION, "
+			+ "EN.CREATEDDATE FROM SPONSOR SP, PARISH P, ENROLLMENT EN WHERE P.ID = SP.PARISHID "
+			+ "AND SPONSORID = SP.ID ORDER BY EN.CREATEDDATE DESC")
+	List<ViewEnroll> selectEnrollments();
 }

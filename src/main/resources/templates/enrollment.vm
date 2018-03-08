@@ -1,45 +1,101 @@
+<!DOCTYPE html>
 <html>
-<body>
-  <div style="border-style: ridge; margin: 15px;">
 
-    <div style="border-style: ridge; margin: 15px;">
-      <div style="width:400px; margin:0 auto;">
-        <span style="font-weight: bold; font-size : 25">MAR THOMA MISSION BOARD</span>
+<head>
+  <style type="text/css">
+    table,
+    th,
+    td {
+      border: 1px solid black;
+      border-collapse: collapse;
+    }
+
+    #container {
+      width: 100%;
+      font-size: 0;
+      margin: 15px;
+      padding-left: 20px;
+    }
+
+    #left,
+    #right {
+      display: inline-block;
+      *display: inline;
+      zoom: 1;
+      vertical-align: top;
+      font-size: 12px;
+    }
+
+    #left {
+      width: 80%;
+    }
+
+    #right {
+      width: 20%;
+    }
+
+    #colum-span {
+      padding-left: 5px
+    }
+    
+    #colum-highlight {
+     background-color: #e6e6e6;
+     color: #800000;
+    }    
+    
+    #colum-span {
+      padding: 50px;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body style="font-family:tahoma">
+  <div>
+    <div style="border:1px solid black; padding-bottom: 15px;">
+      <div style="padding-left:150px">
+        <h2 style="padding: 0px;margin: 0px;">MAR THOMA MISSION BOARD</h2>
       </div>
-      <div style="width:600px; margin:0 auto;">
-        <span style="font-weight: bold; font-size : 25">DIOCESE OF NORTH AMERICA & EUROPE</span>
+      <div style="padding-left:80px">
+        <h2 style="padding: 0px;margin: 0px;">DIOCESE OF NORTH AMERICA & EUROPE</h2>
       </div>
-      <div style="width:360px; margin:0 auto; padding-top: 5px;">
-        2320 Merrick Ave, Merrick, New York - 11566
+      <div style="padding-left:200px">
+        <p style="padding: 0px;margin: 0px; font-size: 13px;">2320 Merrick Ave, Merrick, New York - 11566</p>
       </div>
-      <div style="width:650px; margin:0 auto;padding-top: 5px;padding-bottom: 8px;">
-        <span style="font-size : 13">
-          <strong>P</strong>hone: (516) 377-3311
-          <strong>E</strong>mail: marthomamissionboard@gmail.com
-          <strong>W</strong>ebsite: www.marthomamissionnae.org</span>
+      <div style="padding-left:40px">
+        <span style="font-size: 12px;">
+          Phone: (516) 377-3311 Email: marthomamissionboard@gmail.com Website: www.marthomamissionnae.org</span>
       </div>
     </div>
-    <div>
-      <div style="width:420px; margin:0 auto; ;padding-bottom: 10px;">
-        <span style="font-weight: bold; font-size : 16">LIGHT TO LIFE - SPONSORSHIP INFORMATION</span>
+    <div style="background:rgb(230,230,230); padding-left:300px; padding-bottom:5px; padding-top:5px;">
+      <b style="color:rgb(128,0,0); font-size: 12px;">LIGHT TO LIFE </b>
+    </div>
+    <div style="padding-left:270px;">
+      <b style="color: #a31010; font-size: 10px;">SPONSORSHIP INFORMATION</b>
+    </div>
+
+  </div>
+  <div>
+    <div style="padding-bottom: 2px;">
+      <div style="padding-left:20px">
+        <span style="font-size: 13px;">$date</span>
+        <br/>
+        <br/>
+        <span style="font-size: 13px;">Dear $sponsorName,</span>
+        <br/>
+        <br/>
+        <span style="font-size: 13px;">The Mar Thoma Mission Board � Diocese of North America &amp; Europe would like to thank you for supporting the Light
+          to Life project and actively participating by pledging to sponsor a child.</span>
+        <br/>
+        <br/>
+        <span style="font-size: 13px;">The following are your sponsorship details:</span>
+        <br/>
+        <br/>
       </div>
     </div>
-    <div style="margin: 15px;">
-      <div style="margin:0 auto; ;padding-bottom: 20px;">
-        January 15, 2018
-      </div>
-      <div style="margin:0 auto; ;padding-bottom: 20px;">
-        Dear Jacob Varughese,
-      </div>
-      <div style="margin:0 auto; ;padding-bottom: 10px;">
-        The Mar Thoma Mission Board - Diocese of North America &amp; Europe would like to thank you for supporting the Light to Life
-        project and actively participating by pledging to sponsor a child.
-      </div>
-      <div style="margin:0 auto; ;padding-bottom: 10px;">
-        The following are your sponsorship details:
-      </div>
-    </div>
-    <div id="container">
+  </div>
+
+<div id="container">
       <table style="width:97.7%">
         <tr>
           <td colspan="4">
@@ -47,160 +103,159 @@
           </td>
         </tr>
         <tr>
-          <td width="250px">
-            <span id="colum-span">IDENTIFICATION NUMBER</span>
+          <td id="colum-highlight" width="150px">
+            <span id="colum-span">ID</span>
           </td>
           <td colspan="3">
-            <span id="colum-span">NE-02-EBN-1001</span>
+            <span id="colum-span">$sponsorId</span>
           </td>
         </tr>
         <tr>
-          <td width="250px">
+          <td id="colum-highlight" width="120px">
             <span id="colum-span">NAME OF SPONSOR</span>
           </td>
           <td colspan="3">
-            <span id="colum-span">Jacob Varughese</span>
+            <span id="colum-span">$sponsorName</span>
           </td>
         </tr>
         <tr>
-          <td>
+          <td id="colum-highlight" >
             <span id="colum-span">PARISH</span>
           </td>
           <td>
-            <span id="colum-span">Ebenezer Mar Thoma Church - New York</span>
+            <span id="colum-span">$sponsorParish</span>
           </td>
-          <td width="150px">
+          <td id="colum-highlight"  width="110px">
             <span id="colum-span">REGION - CENTER</span>
           </td>
           <td>
-            <span id="colum-span">Northeast - B</span>
+            <span id="colum-span">$sponsorParishRegion</span>
           </td>
         </tr>
         <tr>
-          <td width="250px">
+          <td id="colum-highlight" width="120px">
             <span id="colum-span">ADDRESS</span>
           </td>
           <td colspan="3">
-            <span id="colum-span">52 Frederick Place, Mount Vernon, New York - 10552</span>
+            <span id="colum-span">$sponsorAddress</span>
           </td>
         </tr>
         <tr>
-          <td>
+          <td id="colum-highlight" >
             <span id="colum-span">PHONE</span>
           </td>
           <td>
-            <span id="colum-span">(914) 610-6360</span>
+            <span id="colum-span">$sponsorPhone</span>
           </td>
-          <td width="150px">
+          <td id="colum-highlight" >
             <span id="colum-span">E-MAIL</span>
           </td>
-          <td>
-            <span id="colum-span">sajielzy@aol.com</span>
+          <td width="150px">
+            <span id="colum-span">$sponsorEmail</span>
           </td>
         </tr>
       </table>
-    </div>
-
-    <div id="container">
-      <div id="left">
-        <table style="width:100%">
-          <tr>
-            <td colspan="6">
-              <span id="colum-span">CHILD INFORMATION</span>
-            </td>
-          </tr>
-          <tr>
-            <td width="250px">
-              <span id="colum-span">IDENTIFICATION NUMBER</span>
-            </td>
-            <td colspan="5">
-              <span id="colum-span">CARD-SNKMP-5191</span>
-            </td>
-          </tr>
-          <tr>
-            <td width="250px">
-              <span id="colum-span">NAME OF CHILD</span>
-            </td>
-            <td colspan="5">
-              <span id="colum-span">Neha Chappa</span>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span id="colum-span">DATE OF BIRTH</span>
-            </td>
-            <td colspan="2">
-              <span id="colum-span">June 13, 2011</span>
-            </td>
-            <td colspan="2">
-              <span id="colum-span">CLASS – GRADE LEVEL</span>
-            </td>
-            <td>
-              <span id="colum-span">2nd Grade</span>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span id="colum-span">GENDER</span>
-            </td>
-            <td>
-              <span id="colum-span">Female</span>
-            </td>
-            <td>
-              <span id="colum-span">MEDIUM OF STUDY</span>
-            </td>
-            <td>
-              <span id="colum-span">Hindi</span>
-            </td>
-            <td>
-              <span id="colum-span">CLUSTER</span>
-            </td>
-            <td>
-              <span id="colum-span">Sarvodaya</span>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span id="colum-span">HOBBY</span>
-            </td>
-            <td>
-              <span id="colum-span">Drawing</span>
-            </td>
-            <td>
-              <span id="colum-span">FAVORITE COLOR</span>
-            </td>
-            <td>
-              <span id="colum-span">Blue</span>
-            </td>
-            <td>
-              <span id="colum-span">FAVORITE GAME</span>
-            </td>
-            <td>
-              <span id="colum-span">Hide - Seek</span>
-            </td>
-          </tr>
-          <tr>
-            <td width="250px">
-              <span id="colum-span">PARTNER ORGANIZATION</span>
-            </td>
-            <td colspan="5">
-              <span id="colum-span">Christian Agency for Rural Development [CARD]</span>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <span id="colum-span">PROJECT LOCATION</span>
-            </td>
-            <td colspan="5">
-              <span id="colum-span">Shanthi Nagar – Kshipra Village – Madhya Pradesh</span>
-            </td>
-          </tr>
-        </table>
-      </div>
-      <div id="right">dsfsdf</div>
-    </div>
-
-    <div id="container">
+   
+  </div>
+  <br/>
+  <br/>
+<div id="container">
+      <table style="width:97.7%">
+        <tr>
+          <td colspan="7">
+            <span id="colum-span">CHILD INFORMATION</span>
+          </td>
+        </tr>
+        <tr>
+          <td id="colum-highlight">
+            <span id="colum-span">ID</span>
+          </td>
+          <td colspan="6">
+            <span id="colum-span">$childId</span>
+          </td>
+        </tr>
+        <tr>
+          <td id="colum-highlight" >
+            <span id="colum-span">NAME OF CHILD</span>
+          </td>
+          <td colspan="5">
+            <span id="colum-span">$childName</span>
+          </td>
+           <td width="100px" rowspan="6">sdfsdfsdf</td>
+        </tr>
+        <tr>
+          <td id="colum-highlight" >
+            <span id="colum-span">DATE OF BIRTH</span>
+          </td>
+          <td colspan="2">
+            <span id="colum-span">$childDOB</span>
+          </td>
+          <td id="colum-highlight" colspan="2">
+            <span id="colum-span">CLASS – GRADE LEVEL</span>
+          </td>
+          <td>
+            <span id="colum-span">$childGrade</span>
+          </td>
+        </tr>
+        <tr>
+          <td id="colum-highlight" >
+            <span id="colum-span">GENDER</span>
+          </td>
+          <td>
+            <span id="colum-span">$childGender</span>
+          </td>
+          <td id="colum-highlight" >
+            <span id="colum-span">MEDIUM OF STUDY</span>
+          </td>
+          <td>
+            <span id="colum-span">$childMediumOfStudy</span>
+          </td>
+          <td id="colum-highlight" >
+            <span id="colum-span">CLUSTER</span>
+          </td>
+          <td>
+            <span id="colum-span">$childCluster</span>
+          </td>
+        </tr>
+         <tr>
+          <td id="colum-highlight" >
+            <span id="colum-span">HOBBY</span>
+          </td>
+          <td>
+            <span id="colum-span">$childHobby</span>
+          </td>
+          <td id="colum-highlight" >
+            <span id="colum-span">FAVORITE COLOR</span>
+          </td>
+          <td>
+            <span id="colum-span">$childFavColor</span>
+          </td>
+          <td id="colum-highlight" >
+            <span id="colum-span">FAVORITE GAME</span>
+          </td>
+          <td>
+            <span id="colum-span">$childFavGame</span>
+          </td>
+        </tr>
+        <tr>
+          <td id="colum-highlight" >
+            <span id="colum-span">PARTNER ORGANIZATION</span>
+          </td>
+          <td colspan="5">
+            <span id="colum-span">$programPartner</span>
+          </td>
+        </tr>
+        <tr>
+          <td id="colum-highlight" >
+            <span id="colum-span">PROJECT LOCATION</span>
+          </td>
+          <td colspan="5">
+            <span id="colum-span">$programLocation</span>
+          </td>
+        </tr>
+      </table>    
+  </div>
+<div id="container">
       <table style="width:97.7%">
         <tr>
           <td colspan="4">
@@ -208,49 +263,59 @@
           </td>
         </tr>
         <tr>
-          <td width="250px">
+          <td id="colum-highlight">
             <span id="colum-span">NUMBER OF CHILDREN SPONSORED</span>
           </td>
           <td>
-            <span id="colum-span">1</span>
+            <span id="colum-span">$totalChildrenSposored</span>
           </td>
-          <td>
+          <td id="colum-highlight">
             <span id="colum-span">SPONSORSHIP START DATE</span>
           </td>
           <td>
-            <span id="colum-span">December 1, 2017</span>
+            <span id="colum-span">$spnStartDate</span>
           </td>
         </tr>
         <tr>
-          <td width="250px">
+          <td id="colum-highlight">
             <span id="colum-span">TOTAL PAYMENT RECEIVED</span>
           </td>
-          <td>
-            <span id="colum-span">$240</span>
+          <td >
+            <span id="colum-span">$totalPaymentReceived</span>
           </td>
-          <td>
+          <td id="colum-highlight">
             <span id="colum-span">PAYMENT METHOD</span>
           </td>
           <td>
-            <span id="colum-span">[Yearly] [Check] [$20/Child/Month]</span>
+            <span id="colum-span">$paymentMethod</span>
           </td>
         </tr>
       </table>
     </div>
-
-    <div style="margin: 15px;">
-      <div style="margin:0 auto; ;padding-bottom: 10px;">
-        Once again, we really appreciate your prayers and support. Please contact the office of the Mar Thoma Mission Board if you
-        have any questions or concerns. Please find contact information above.
-      </div>
-      <div style="margin:0 auto;padding-bottom: 50px;">
-        Regards,
-      </div>
-      <div style="margin:0 auto;padding-bottom: 10px;">
-        Akash Daniel Mathew &lt;/br&gt; Mar Thoma Mission Board &lt;/br&gt; Diocese of North America &amp; Europe
-      </div>
+    <br/>
+    <div>
+	    <div style="padding-bottom: 2px;">
+	      	<div style="padding-left:20px">
+	       		<span style="font-size: 13px;">Once again, we really appreciate your prayers and support. Please contact the office
+	       		 of the Mar Thoma Mission Board if you have any questions or concerns. Please find contact information above.</span>
+	        </div>
+	        <div style="padding-left:20px">
+	       		<span style="font-size: 13px;">Regards,</span>
+	        </div>
+	        <br/>
+	        <br/>
+	        <div style="padding-left:20px">
+	       		<span style="font-size: 13px;">Akash Daniel Mathew</span>
+	        </div>
+	         <div style="padding-left:20px">
+	       		<span style="font-size: 13px;">Mar Thoma Mission Board</span>
+	        </div>
+	         <div style="padding-left:20px">
+	       		<span style="font-size: 13px;">Diocese of North America &amp; Europe</span>
+	        </div>
+        </div>
     </div>
-  </div>
+  
 </body>
 
 </html>
