@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
+import com.sposnor.intellisense.sponsorintellisense.data.model.SponseeReport;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsor;
 
 @Mapper
@@ -59,6 +60,12 @@ public interface SponsorMapper {
 	
 	@Select(SEARCH_BY_NAME)
 	List<Sponsor> searchByName(@Param("name") String name);
+	
+	@Select("SELECT CONCAT(A.CODE,'-',P.CODE,'-',ST.ID) UNIQUEID, CONCAT(ST.FIRSTNAME,' ',ST.LASTNAME) STUDENTNAME, "
+			+ "DATEOFBIRTH, GENDER, HOBBIES, A.NAME AGENCYNAME, P.NAME PROJECTNAME FROM ENROLLMENT EN, SPONSEE SPE, "
+			+ "STUDENT ST, PROJECT P, AGENCY A WHERE EN.ID = SPE.ENROLLMENTID AND SPE.STUDENTID = ST.ID "
+			+ "AND ST.PROJECTID = P.ID AND P.AGENCYID = A.ID AND EN.ID = #{id} ")
+	List<SponseeReport> listSponseesByEnrolmentId(@Param("id") Long id);
 }
 //@Options(flushCache=true)
 //@Options(useGeneratedKeys = true, keyProperty = "id", flushCache=true)

@@ -2,14 +2,10 @@ package com.sposnor.intellisense.sponsorintellisense.web.controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,9 +20,13 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Contribution;
+import com.sposnor.intellisense.sponsorintellisense.data.model.SponseeReport;
+import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReport;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorshipInfo;
 import com.sposnor.intellisense.sponsorintellisense.data.model.ViewEnroll;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ManageProgramMapper;
+import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
+import com.sposnor.intellisense.sponsorintellisense.mapper.StudentMapper;
 import com.sposnor.intellisense.sponsorintellisense.util.VelocityTemplateParser;
 
 @RestController
@@ -36,13 +36,22 @@ public class ManageProgramController {
 	@Autowired
 	private ManageProgramMapper manageProgramMapper;
 	
+	@Autowired
+	private SponsorMapper sponsorMapper;
+	
+	@Autowired
+	private StudentMapper studentMapper;
+	
 	@GetMapping("/view/enrollment")
 	public List<ViewEnroll> listEnrollments() {
 		return manageProgramMapper.selectEnrollments();
 	}
 	
 	@RequestMapping(value = "/enrollment/generatereport", method = RequestMethod.GET, produces = "application/pdf")
-	ResponseEntity<byte[]> generatePdf() throws Exception{
+	ResponseEntity<byte[]> generatePdf(@PathVariable(value = "enrollmentId") Long enrollmentId) throws Exception{
+		
+		List<SponseeReport> sponseeList= sponsorMapper.listSponseesByEnrolmentId(enrollmentId);
+		SponsorReport sponsorReport = studentMapper.findSponsorByEnrolmentId(enrollmentId);
 		
 		String htmlstring = VelocityTemplateParser.generateHTML();
 		
