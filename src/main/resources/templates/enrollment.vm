@@ -15,6 +15,7 @@
       font-size: 0;
       margin: 15px;
       padding-left: 20px;
+      padding-bottom: 40px;
     }
 
     #left,
@@ -76,9 +77,10 @@
 
   </div>
   <div>
+  
     <div style="padding-bottom: 2px;">
       <div style="padding-left:20px">
-        <span style="font-size: 13px;">$date</span>
+        <span style="font-size: 13px;">$timeNow</span>
         <br/>
         <br/>
         <span style="font-size: 13px;">Dear $sponsorName,</span>
@@ -159,6 +161,8 @@
   </div>
   <br/>
   <br/>
+
+  
   #foreach ($sponsee in $sponseeList)
 <div id="container">
       <table style="width:97.7%">
@@ -182,9 +186,8 @@
           <td colspan="5">
             <span id="colum-span">$sponsee.studentName</span>
           </td>
-           <td width="100px" rowspan="6"><img src="data:image/jpg;base64,$sponsee.profilePicture" alt="imagename"/></td>
+           <td width="100px" rowspan="6"><img width="100px" src="data:image/png;base64,${sponsee.profilePicture}" alt="imagename"/></td>
         </tr>
-        <img src="data:image/jpg;base64,$sponsee.profilePicture" alt="imagename"/>
         <tr>
           <td id="colum-highlight" >
             <span id="colum-span">DATE OF BIRTH</span>

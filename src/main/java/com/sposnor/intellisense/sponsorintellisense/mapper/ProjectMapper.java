@@ -22,6 +22,13 @@ public interface ProjectMapper {
 			+ "AGENCY A WHERE  P.AGENCYID = A.ID AND P.STATUS = 1")
 	List<Project> list();
 	
+	@Select("SELECT P.ID ID ,PPID, P.CODE, CONCAT(P.NAME, '- Agency: ', A.NAME) NAME "
+			+ "FROM PROJECT P, AGENCY A, PARISH_PROJECT PRJ "
+			+ "WHERE P.ID = PRJ.PROJECTID "
+			+ "AND P.AGENCYID= A.ID AND PRJ.PARISHID = #{parishId} AND P.STATUS= 1 ORDER BY P.NAME")
+	List<Project> findProjectsByParishId(@Param("parishId") Long parishId);
+	
+	
 	@Insert("insert into project (code, agencyId, name, address, contactNumber, contactEmail, status) "
 			+ "values (#{code}, #{agencyId}, #{name}, #{address}, #{contactNumber}, #{contactEmail}, #{status})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id",

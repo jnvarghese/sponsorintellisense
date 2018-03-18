@@ -23,7 +23,7 @@ public class VelocityTemplateParser {
 		/* next, get the Template */
 		Template t = engine.getTemplate("templates/enrollment.vm");
 		/* create a context and add data */
-System.err.println(" dataMap " +dataMap);
+		context.put("timeNow", dataMap.get("timeNow"));
 		context.put("sponsorId", dataMap.get("sponsorId"));
 		context.put("sponsorName", dataMap.get("sponsorName"));
 		context.put("sponsorParish", dataMap.get("sponsorParish"));

@@ -5,7 +5,6 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.Enrollment;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsee;

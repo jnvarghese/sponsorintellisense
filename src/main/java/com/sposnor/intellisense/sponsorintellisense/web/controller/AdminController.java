@@ -47,13 +47,14 @@ public class AdminController {
 	
 	@GetMapping("/projects/parish/list/{id}")
 	public List<ParishProject> getProjectsWithSelection(@PathVariable(value = "id") Long parishId) {
-		return parishProjectMapper.findByParishId(parishId);
+		return parishProjectMapper.findMappedProjectsByParishId(parishId);
+		//return parishProjectMapper.findProjectsByParishId(parishId);
 	}
 
 	@PostMapping("/projects/add")
-	public ResponseEntity<String> createProject(@Valid @RequestBody Project project) {
+	public Project createProject(@Valid @RequestBody Project project) {
 		projectMapper.insert(project);
-		return ResponseEntity.ok().body("Success");
+		return project;
 	}
 
 	@GetMapping("/projects/find/{id}")
@@ -66,12 +67,17 @@ public class AdminController {
 	}
 
 	@PutMapping("/projects/modify/{id}")
-	public ResponseEntity<String> updateProject(@PathVariable(value = "id") Long projectId,
+	public Project updateProject(@PathVariable(value = "id") Long projectId,
 			@Valid @RequestBody Project project) {
 		projectMapper.update(project);
-		return ResponseEntity.ok().body("Success");
+		return project;
 	}
-
+	
+	@GetMapping("/parishprojects/list/{id}")
+	public List<Project> getParishProjectsByParishId(@PathVariable(value = "id") Long parishId) {
+		return projectMapper.findProjectsByParishId(parishId);
+	}
+	
 	@GetMapping("/parishes/list/{id}")
 	public List<Parish> getParishesByCenterId(@PathVariable(value = "id") Long centerId) {
 		return parishMapper.listAllParishByCenterId(centerId);
@@ -83,7 +89,7 @@ public class AdminController {
 	}
 
 	@PostMapping("/parishes/add")
-	public ResponseEntity<String> createParish(@RequestBody Parish parish) {	
+	public Parish createParish(@RequestBody Parish parish) {	
 		try {
 			parishMapper.insert(parish);
 			for(ParishProject pp: parish.getProjects()) {
@@ -94,18 +100,19 @@ public class AdminController {
 			}			
 		} catch (SQLIntegrityConstraintViolationException e) {
 			e.printStackTrace();
-			return ResponseEntity.badRequest().body(e.getMessage());
+			return parish;
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			return ResponseEntity.badRequest().body(e.getMessage());
+			return parish;
 		}
-		return ResponseEntity.ok().body("Success");
+		return parish;
 	}
 
+	// Select Parish from the Admin -> Parish List - Modify
 	@GetMapping("/parishes/find/{id}")
 	public ResponseEntity<Parish> getParishById(@PathVariable(value = "id") Long parishId) {
-		List<ParishProject> sets = parishProjectMapper.findByParishId(parishId);
+		List<ParishProject> sets = parishProjectMapper.findMappedProjectsByParishId(parishId);
 		Parish parish = parishMapper.findById(parishId);		
 		if (parish == null) {
 			return ResponseEntity.notFound().build();
@@ -115,7 +122,7 @@ public class AdminController {
 	}
 
 	@PutMapping("/parishes/modify/{id}")
-	public ResponseEntity<String> updateParish(@PathVariable(value = "id") Long parishId,
+	public Parish updateParish(@PathVariable(value = "id") Long parishId,
 			 @RequestBody Parish parish) {
 		System.out.println( " -- parish "+ parish);
 		parishMapper.update(parish);
@@ -129,7 +136,7 @@ public class AdminController {
 				}
 			}
 		}	
-		return ResponseEntity.ok().body("Success");
+		return parish;
 	}
 
 	@GetMapping("/agencies/list")
@@ -138,15 +145,16 @@ public class AdminController {
 	}
 
 	@PostMapping("/agencies/add")
-	public ResponseEntity<String> createSponsor(@Valid @RequestBody Agency agency) {
+	public Agency createSponsor(@Valid @RequestBody Agency agency) {
 		try {
 			agencyMapper.insert(agency);			
 		} catch (SQLIntegrityConstraintViolationException ex) {
 			ex.printStackTrace();
-			return ResponseEntity.badRequest().body("Duplicate Code "+agency.getCode()+".Please try a different code.");
+			return agency;
+			//return ResponseEntity.badRequest().body("Duplicate Code "+agency.getCode()+".Please try a different code.");
 		}
 		
-		return ResponseEntity.ok().body("Success");
+		return agency;
 	}
 
 	@GetMapping("/agencies/find/{id}")
@@ -159,9 +167,9 @@ public class AdminController {
 	}
 
 	@PutMapping("/agencies/modify/{id}")
-	public ResponseEntity<String> updateAgency(@PathVariable(value = "id") Long agencyId,
+	public Agency updateAgency(@PathVariable(value = "id") Long agencyId,
 			@Valid @RequestBody Agency agency) {
 		agencyMapper.update(agency);
-		return ResponseEntity.ok().body("Success");
+		return agency;
 	}
 }

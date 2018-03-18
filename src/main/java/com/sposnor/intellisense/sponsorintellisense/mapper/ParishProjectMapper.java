@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.ParishProject;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Project;
 
 @Mapper
 public interface ParishProjectMapper {
@@ -17,7 +18,7 @@ public interface ParishProjectMapper {
 			+ "CASE WHEN PARISHID IS NULL OR PARISHID = '' THEN FALSE ELSE TRUE END AS selected "
 			+ "FROM PROJECT  P LEFT JOIN (SELECT * FROM  PARISH_PROJECT PRJ WHERE PRJ.PARISHID = #{parishId} AND STATUS= 1) "
 			+ "PRJ ON P.ID = PRJ.PROJECTID AND P.STATUS= 1 ORDER BY NAME")
-	List<ParishProject> findByParishId(@Param("parishId") Long parishId);
+	List<ParishProject> findMappedProjectsByParishId(@Param("parishId") Long parishId);
 	
 	@Insert("insert into parish_project (parishId, projectId, status) values (#{parishId}, #{projectId}, #{selected})")
 	void insertBatch(ParishProject parishProject);

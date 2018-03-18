@@ -1,5 +1,9 @@
 package com.sposnor.intellisense.sponsorintellisense.data.model;
 
+import java.io.IOException;
+
+import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+
 public class SponseeReport {
 
 	private String uniqueId;
@@ -18,13 +22,15 @@ public class SponseeReport {
 	
 	private byte[] profilePicture;
 	
-	public byte[] getProfilePicture() {
-		return profilePicture;
+	
+	public String getProfilePicture() throws IOException {
+		String encodedImage = Base64.encode(this.profilePicture);
+		return encodedImage;
 	}
 
 	public void setProfilePicture(byte[] profilePicture) {
 		this.profilePicture = profilePicture;
-	}
+	}	
 
 	public String getUniqueId() {
 		return uniqueId;
@@ -81,13 +87,5 @@ public class SponseeReport {
 	public void setAgencyName(String agencyName) {
 		this.agencyName = agencyName;
 	}
-
-	@Override
-	public String toString() {
-		return "SponseeReport [uniqueId=" + uniqueId + ", studentName=" + studentName + ", dateOfBirth=" + dateOfBirth
-				+ ", gender=" + gender + ", hobby=" + hobby + ", projectName=" + projectName + ", agencyName="
-				+ agencyName + "]";
-	}
-	
 	
 }
