@@ -27,7 +27,8 @@ public class DashboardController {
 	public String getDashboard() {
 		Long sponsorCount = dashboardMapper.getCountOfActiveSponsor();
 		Long studentCount = dashboardMapper.getCountOfActiveStudent();
-		return "{ 'sponsorCount' :"+sponsorCount+", 'studentCount' : "+studentCount+"}";
+		Long enrollmentCount = dashboardMapper.getCountOfActiveEnrollments();
+		return "{\"sponsorCount\":"+sponsorCount+",\"studentCount\":"+studentCount+",\"enrollmentCount\":"+enrollmentCount+"}";
 	}
 	
 	@GetMapping("/init/region")

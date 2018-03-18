@@ -91,7 +91,7 @@ public class ManageProgramController {
 		
 		String htmlstring = VelocityTemplateParser.generateHTML(getDataMap(sponsorReport,sponseeList));
 		
-		System.out.println("htmlstring - : "+htmlstring);
+		//System.out.println("htmlstring - : "+htmlstring);
 		ByteArrayOutputStream byteArrayPutStream = new ByteArrayOutputStream();
 		 byte[] pdfBytes = byteArrayPutStream.toByteArray();
 		/*

@@ -186,7 +186,7 @@
           <td colspan="5">
             <span id="colum-span">$sponsee.studentName</span>
           </td>
-           <td width="100px" rowspan="6"><img width="100px" src="data:image/png;base64,${sponsee.profilePicture}" alt="imagename"/></td>
+           <td width="45px" rowspan="6"><img width="100px" src="data:image/png;base64,${sponsee.profilePicture}" alt="imagename"/></td>
         </tr>
         <tr>
           <td id="colum-highlight" >
