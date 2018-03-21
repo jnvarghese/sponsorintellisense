@@ -45,6 +45,11 @@ public class AdminController {
 		return projectMapper.list();
 	}
 	
+	@GetMapping("/projects/list/{id}")
+	public List<Project> getProjectsByAgency(@PathVariable(value = "id") Long agencyId) {
+		return projectMapper.listByAgency(agencyId);
+	}
+	
 	@GetMapping("/projects/parish/list/{id}")
 	public List<ParishProject> getProjectsWithSelection(@PathVariable(value = "id") Long parishId) {
 		return parishProjectMapper.findMappedProjectsByParishId(parishId);

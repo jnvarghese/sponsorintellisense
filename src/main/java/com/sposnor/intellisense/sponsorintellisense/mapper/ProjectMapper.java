@@ -22,6 +22,9 @@ public interface ProjectMapper {
 			+ "AGENCY A WHERE  P.AGENCYID = A.ID AND P.STATUS = 1")
 	List<Project> list();
 	
+	@Select("SELECT P.ID, P.CODE, P.AGENCYID, P.NAME FROM PROJECT P WHERE P.STATUS = 1 and AGENCYID = #{agencyId}")
+	List<Project> listByAgency(@Param("agencyId") Long agencyId);
+	
 	@Select("SELECT P.ID ID ,PPID, P.CODE, CONCAT(P.NAME, '- Agency: ', A.NAME) NAME "
 			+ "FROM PROJECT P, AGENCY A, PARISH_PROJECT PRJ "
 			+ "WHERE P.ID = PRJ.PROJECTID "

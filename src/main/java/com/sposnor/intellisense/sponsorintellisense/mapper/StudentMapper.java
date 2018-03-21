@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
+import org.apache.ibatis.annotations.Update;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReport;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Student;
@@ -14,18 +15,18 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.Student;
 @Mapper
 public interface StudentMapper {
 
-	@Select("SELECT S.ID, S.PROJECTID, LASTNAME, FIRSTNAME, MIDDLENAME, GENDER, DATEOFBIRTH, S.ADDRESS, HOBBIES, S.STATUS,TALENT, "
+	@Select("SELECT S.ID, S.PROJECTID, STUDENTNAME, GENDER, DATEOFBIRTH, S.ADDRESS, HOBBIES, S.STATUS,TALENT, "
 			+ "RECENTACHIVEMENTS, PROFILEPICTURE, SOFTLOCKED, P.NAME PROJECTNAME, A.NAME AGENCYNAME FROM STUDENT S "
 			+ "LEFT JOIN PROJECT P ON S.PROJECTID = P.ID "
 			+ "LEFT JOIN AGENCY A ON P.AGENCYID = A.ID "
 			+ "WHERE S.ID = #{id}")
 	Student findById(@Param("id") Long id);
 	
-	@Select("SELECT S.ID, LASTNAME, FIRSTNAME, MIDDLENAME, GENDER, P.NAME projectName, A.NAME agencyName FROM STUDENT S "
+	@Select("SELECT S.ID, STUDENTNAME, GENDER, P.NAME projectName, A.NAME agencyName FROM STUDENT S "
 			+ "LEFT JOIN PROJECT P ON S.PROJECTID = P.ID LEFT JOIN AGENCY A ON P.AGENCYID = A.ID WHERE S.STATUS = 0 ")
 	List<Student> list();
 	
-	@Insert("INSERT INTO STUDENT (PROJECTID, FIRSTNAME, LASTNAME, MIDDLENAME, GENDER, DATEOFBIRTH, ADDRESS, HOBBIES, TALENT, "
+	@Insert("INSERT INTO STUDENT (PROJECTID, STUDENTNAME, GENDER, DATEOFBIRTH, ADDRESS, HOBBIES, TALENT, "
 			+ "RECENTACHIVEMENTS, PROFILEPICTURE, SOFTLOCKED) "
 			+ "VALUES (#{projectId}, #{firstName}, #{lastName}, #{middleName}, #{gender}, #{dateOfBirth}, #{address},"
 			+ "#{hobbies}, #{talent}, #{recentAchivements}, #{profilePicture}, #{softlocked})")
@@ -33,19 +34,19 @@ public interface StudentMapper {
 			before = false, resultType= Long.class)
 	void insert(Student student);
 	
-	@Insert("UPDATE STUDENT SET projectId= #{projectId} , firstName= #{firstName}, lastName= #{lastName}, middleName= #{middleName}, "
+	@Update("UPDATE STUDENT SET projectId= #{projectId} , studentName = #{studentName}, "
 			+ "gender= #{gender}, dateOfBirth= #{dateOfBirth}, address= #{address},"
 			+ " status= #{status}, hobbies= #{hobbies}, talent= #{talent}, recentAchivements= #{recentAchivements}, profilePicture= #{profilePicture},"
 			+ " softlocked= #{softlocked} WHERE id=#{id}")	
 	void update(Student student);
 	
-	@Insert("UPDATE STUDENT SET profilePicture = #{profilePicture} WHERE id=#{id}")
+	@Update("UPDATE STUDENT SET profilePicture = #{profilePicture} WHERE id=#{id}")
 	void uploadImage(Student student);
 	
-	@Select("SELECT ID, FIRSTNAME, LASTNAME, MIDDLENAME FROM STUDENT WHERE STATUS = 0 AND FIRSTNAME LIKE #{name} ")
+	@Select("SELECT ID, STUDENTNAME FROM STUDENT WHERE STATUS = 0 AND FIRSTNAME LIKE #{name} ")
 	List<Student> searchByName(@Param("name") String name);
 	
-	/*@Select("SELECT S.ID, SOFTLOCKED, FIRSTNAME, LASTNAME, MIDDLENAME, SE.EXPIRATIONMONTH, SE.EXPIRATIONYEAR FROM STUDENT S "
+	/*@Select("SELECT S.ID, SOFTLOCKED, STUDENTNAME, SE.EXPIRATIONMONTH, SE.EXPIRATIONYEAR FROM STUDENT S "
 			+ "LEFT JOIN SPONSEE SE ON S.ID = SE.STUDENTID "
 			+ "WHERE S.STATUS = 0 AND FIRSTNAME LIKE #{name}")*/
 	
@@ -64,20 +65,20 @@ public interface StudentMapper {
 			+ "GROUP BY S.ID, S.FIRSTNAME, S.LASTNAME, S.MIDDLENAME, MX.STUDENTID")
 			
 	 */
-	@Select("SELECT S.ID, S.FIRSTNAME, S.LASTNAME, S.MIDDLENAME, MAX(MAXOUT) MAXOUT "
+	@Select("SELECT S.ID, S.STUDENTNAME, MAX(MAXOUT) MAXOUT "
 			+ "FROM STUDENT S LEFT JOIN STUDENT_MAXOUT MX ON S.ID = MX.STUDENTID, PARISH_PROJECT PP "
 			+ "WHERE S.PROJECTID = PP.PROJECTID AND PP.PROJECTID = #{projectId} "
 			+ "AND (MAXOUT IS NULL OR DATE(MAXOUT) < #{effectiveDate}) "
-			+ "AND S.STATUS = 0 GROUP BY S.ID, S.FIRSTNAME, S.LASTNAME, S.MIDDLENAME")
+			+ "AND S.STATUS = 0 GROUP BY S.ID, S.STUDENTNAME")
 	List<Student> findStudentsBySponsorshipStatus(
 			@Param("name") String name,
 			@Param("projectId") Long projectId,
 			@Param("effectiveDate") String effectiveDate
 			);
 	
-	@Select("SELECT S.ID, FIRSTNAME, LASTNAME, MIDDLENAME FROM STUDENT S "
+	@Select("SELECT S.ID, STUDENTNAME FROM STUDENT S "
 			+ "LEFT JOIN SPONSEE SE ON S.ID = SE.STUDENTID "
-			+ "WHERE S.STATUS = 0 AND FIRSTNAME LIKE #{name}  GROUP BY S.ID, FIRSTNAME, LASTNAME, MIDDLENAME")
+			+ "WHERE S.STATUS = 0 AND FIRSTNAME LIKE #{name}  GROUP BY S.ID, STUDENTNAME")
 	List<Student> listMatchingStudentsByName(@Param("name") String name);
 	
 	@Select("SELECT EN.ID, CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',SP.ID) UNIQUEID, "

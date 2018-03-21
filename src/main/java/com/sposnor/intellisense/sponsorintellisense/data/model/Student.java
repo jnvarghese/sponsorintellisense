@@ -15,10 +15,8 @@ public class Student implements Serializable {
 	private Long agencyId;	
 	private String agencyName;
 	@NotBlank
-	private String firstName;
-	private String middleName;	
-	@NotBlank
-	private String lastName;
+	private String studentName;
+	
 	@NotBlank
 	private String gender;
 	@NotBlank
@@ -33,6 +31,13 @@ public class Student implements Serializable {
 	private byte[] profilePicture;
 	private boolean softlocked;	
 	private Date maxOut;
+	
+	private String grade;
+	private String favColor;
+	private String favGame;
+	private String nameOfGuardian;
+	private String occupationOfGuardian;
+	private String baseLanguage;
 	
 	private Date createdDate;
 	private Date updatedDate;
@@ -69,23 +74,12 @@ public class Student implements Serializable {
 	public void setAgencyName(String agencyName) {
 		this.agencyName = agencyName;
 	}
-	public String getFirstName() {
-		return firstName;
+	
+	public String getStudentName() {
+		return studentName;
 	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	public String getMiddleName() {
-		return middleName;
-	}
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
 	}
 	public String getGender() {
 		return gender;
@@ -179,11 +173,49 @@ public class Student implements Serializable {
 	public void setMaxOut(Date maxOut) {
 		this.maxOut = maxOut;
 	}
+	
+	
+	public String getGrade() {
+		return grade;
+	}
+	public void setGrade(String grade) {
+		this.grade = grade;
+	}
+	public String getFavColor() {
+		return favColor;
+	}
+	public void setFavColor(String favColor) {
+		this.favColor = favColor;
+	}
+	public String getFavGame() {
+		return favGame;
+	}
+	public void setFavGame(String favGame) {
+		this.favGame = favGame;
+	}
+	public String getNameOfGuardian() {
+		return nameOfGuardian;
+	}
+	public void setNameOfGuardian(String nameOfGuardian) {
+		this.nameOfGuardian = nameOfGuardian;
+	}
+	public String getOccupationOfGuardian() {
+		return occupationOfGuardian;
+	}
+	public void setOccupationOfGuardian(String occupationOfGuardian) {
+		this.occupationOfGuardian = occupationOfGuardian;
+	}
+	public String getBaseLanguage() {
+		return baseLanguage;
+	}
+	public void setBaseLanguage(String baseLanguage) {
+		this.baseLanguage = baseLanguage;
+	}
 	@Override
 	public String toString() {
 		return "Student [id=" + id + ", projectId=" + projectId + ", projectName=" + projectName + ", agencyId="
-				+ agencyId + ", agencyName=" + agencyName + ", firstName=" + firstName + ", middleName=" + middleName
-				+ ", lastName=" + lastName + ", gender=" + gender + ", dateOfBirth=" + dateOfBirth + ", address="
+				+ agencyId + ", agencyName=" + agencyName 
+				+ ", studentName=" + studentName + ", gender=" + gender + ", dateOfBirth=" + dateOfBirth + ", address="
 				+ address + ", status=" + status + ", hobbies=" + hobbies + ", contributions=" + contributions
 				+ ", talent=" + talent + ", recentAchivements=" + recentAchivements + ", profilePicture="
 				+ profilePicture + ", softlocked=" + softlocked + ", maxOut=" + maxOut + ", createdDate=" + createdDate
