@@ -26,9 +26,14 @@ public interface StudentMapper {
 			+ "LEFT JOIN PROJECT P ON S.PROJECTID = P.ID LEFT JOIN AGENCY A ON P.AGENCYID = A.ID WHERE S.STATUS = 0 ")
 	List<Student> list();
 	
+	@Select("SELECT S.ID, STUDENTNAME, GENDER, P.NAME projectName, A.NAME agencyName FROM STUDENT S "
+			+ "LEFT JOIN PROJECT P ON S.PROJECTID = P.ID LEFT JOIN AGENCY A ON P.AGENCYID = A.ID WHERE "
+			+ " projectid IN ( #{id} ) AND S.STATUS = 0 ")
+	List<Student> listByProjectId(@Param("id") Long id);
+	
 	@Insert("INSERT INTO STUDENT (PROJECTID, STUDENTNAME, GENDER, DATEOFBIRTH, ADDRESS, HOBBIES, TALENT, "
 			+ "RECENTACHIVEMENTS, PROFILEPICTURE, SOFTLOCKED) "
-			+ "VALUES (#{projectId}, #{firstName}, #{lastName}, #{middleName}, #{gender}, #{dateOfBirth}, #{address},"
+			+ "VALUES (#{projectId}, #{studentName},  #{gender}, #{dateOfBirth}, #{address},"
 			+ "#{hobbies}, #{talent}, #{recentAchivements}, #{profilePicture}, #{softlocked})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id",
 			before = false, resultType= Long.class)

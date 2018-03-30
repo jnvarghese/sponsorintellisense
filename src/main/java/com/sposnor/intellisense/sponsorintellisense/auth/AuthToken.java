@@ -19,9 +19,12 @@ public class AuthToken implements Authentication {
 	private final String middlename;
 	    
 	private final String lastName;
+	
+	private Long userId;
 
-    public AuthToken(String token, String firstname, String middlename, String lastname) {
+    public AuthToken(String token,Long userId, String firstname, String middlename, String lastname) {
         this.token = token;
+        this.userId = userId;
         this.firstname = firstname;
         this.lastName = lastname;
         this.middlename= middlename;
@@ -55,9 +58,12 @@ public class AuthToken implements Authentication {
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
 
-    }
+    }    
+    public Long getUserId() {
+		return userId;
+	}
 
-    @Override
+	@Override
     public String getName() {
         return this.firstname +" "+ this.lastName;
     }

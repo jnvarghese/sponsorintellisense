@@ -37,6 +37,11 @@ public class StudentController {
 		return studentMapper.list();
 	}
 	
+	@GetMapping("/list/byproject/{id}")
+	public List<Student> getAllStudentsByProjectId(@PathVariable(value = "id") Long projectId) {
+		return studentMapper.listByProjectId(projectId);
+	}
+	
 	@PostMapping("/add")
 	public Student createStudent(@RequestBody Student note) {
 		studentMapper.insert(note);	    

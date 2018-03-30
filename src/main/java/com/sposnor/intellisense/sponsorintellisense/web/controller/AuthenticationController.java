@@ -32,7 +32,7 @@ public class AuthenticationController {
     private UserMapper userService;
 
     @RequestMapping(value = "/generate-token", method = RequestMethod.POST)
-    public ResponseEntity register(@RequestBody LoginUser loginUser) throws AuthenticationException {
+    public ResponseEntity<AuthToken> register(@RequestBody LoginUser loginUser) throws AuthenticationException {
 
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
@@ -43,7 +43,7 @@ public class AuthenticationController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final User user = userService.findOne(loginUser.getUsername());
         final String token = jwtTokenUtil.generateToken(user);
-        return ResponseEntity.ok(new AuthToken(token,user.getFirstname(), user.getMiddlename(), user.getLastName()));
+        return ResponseEntity.ok(new AuthToken(token, user.getId(),user.getFirstname(), user.getMiddlename(), user.getLastName()));
     }
 
 }

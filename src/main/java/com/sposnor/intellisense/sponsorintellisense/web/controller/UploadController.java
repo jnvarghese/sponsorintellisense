@@ -22,10 +22,13 @@ public class UploadController {
 	@Autowired
 	private UploadMapper uploadMapper;
 
-	@PostMapping("/upload/{agencyId}/{projectId}")
+	@PostMapping("/upload/{agencyId}/{projectId}/{userId}")
 	public ResponseEntity<String> uploadImage(
 			@RequestParam("file") MultipartFile multipartFile,
-			@PathVariable(value = "agencyId") Long agencyId, @PathVariable(value = "projectId") Long projectId) throws IOException {
+			@PathVariable(value = "agencyId") Long agencyId, 
+			@PathVariable(value = "projectId") Long projectId,
+			@PathVariable(value = "userId") Long userId
+			) throws IOException {
 			String message = "";
 			String name = null ;
 			FileUpload fileUpload = new FileUpload();
@@ -36,6 +39,7 @@ public class UploadController {
 				fileUpload.setFileData(multipartFile.getBytes());
 				fileUpload.setProjectId(projectId);
 				fileUpload.setAgencyId(agencyId);
+				fileUpload.setUserId(userId);
 				uploadMapper.uploadFile(fileUpload);
 				message = "You successfully uploaded " + name + "!";
 				return ResponseEntity.status(HttpStatus.OK).body(message);

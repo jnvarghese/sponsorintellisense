@@ -176,7 +176,7 @@
             <span id="colum-span">ID</span>
           </td>
           <td colspan="6">
-            <span id="colum-span">$sponsee.uniqueId</span>
+            <span id="colum-span">$!sponsee.uniqueId</span>
           </td>
         </tr>
         <tr>
@@ -184,7 +184,7 @@
             <span id="colum-span">NAME OF CHILD</span>
           </td>
           <td colspan="5">
-            <span id="colum-span">$sponsee.studentName</span>
+            <span id="colum-span">$!sponsee.studentName</span>
           </td>
            <td width="45px" rowspan="6"><img width="100px" src="data:image/png;base64,${sponsee.profilePicture}" alt="imagename"/></td>
         </tr>
@@ -193,13 +193,13 @@
             <span id="colum-span">DATE OF BIRTH</span>
           </td>
           <td colspan="2">
-            <span id="colum-span">$sponsee.dateOfBirth</span>
+            <span id="colum-span">$!sponsee.dateOfBirth</span>
           </td>
           <td id="colum-highlight" colspan="2">
             <span id="colum-span">CLASS – GRADE LEVEL</span>
           </td>
           <td>
-            <span id="colum-span">$childGrade</span>
+            <span id="colum-span">$!sponsee.grade</span>
           </td>
         </tr>
         <tr>
@@ -207,19 +207,19 @@
             <span id="colum-span">GENDER</span>
           </td>
           <td>
-            <span id="colum-span">$sponsee.gender</span>
+            <span id="colum-span">$!sponsee.gender</span>
           </td>
           <td id="colum-highlight" >
             <span id="colum-span">MEDIUM OF STUDY</span>
           </td>
           <td>
-            <span id="colum-span">$childMediumOfStudy</span>
+            <span id="colum-span">$!sponsee.baseLanguage</span>
           </td>
           <td id="colum-highlight" >
             <span id="colum-span">CLUSTER</span>
           </td>
           <td>
-            <span id="colum-span">$childCluster</span>
+            <span id="colum-span">$!sponsee.cluster</span>
           </td>
         </tr>
          <tr>
@@ -227,19 +227,19 @@
             <span id="colum-span">HOBBY</span>
           </td>
           <td>
-            <span id="colum-span">$sponsee.hobby</span>
+            <span id="colum-span">$!sponsee.hobby</span>
           </td>
           <td id="colum-highlight" >
             <span id="colum-span">FAVORITE COLOR</span>
           </td>
           <td>
-            <span id="colum-span">$childFavColor</span>
+            <span id="colum-span">$!sponsee.favColor</span>
           </td>
           <td id="colum-highlight" >
             <span id="colum-span">FAVORITE GAME</span>
           </td>
           <td>
-            <span id="colum-span">$childFavGame</span>
+            <span id="colum-span">$!sponsee.favGame</span>
           </td>
         </tr>
         <tr>
@@ -247,7 +247,7 @@
             <span id="colum-span">PARTNER ORGANIZATION</span>
           </td>
           <td colspan="5">
-            <span id="colum-span">$sponsee.agencyName</span>
+            <span id="colum-span">$!sponsee.agencyName</span>
           </td>
         </tr>
         <tr>
@@ -255,7 +255,7 @@
             <span id="colum-span">PROJECT LOCATION</span>
           </td>
           <td colspan="5">
-            <span id="colum-span">$sponsee.projectName</span>
+            <span id="colum-span">$!sponsee.projectName</span>
           </td>
         </tr>
       </table>    
@@ -275,13 +275,13 @@
             <span id="colum-span">NUMBER OF CHILDREN SPONSORED</span>
           </td>
           <td>
-            <span id="colum-span">$totalChildrenSposored</span>
+            <span id="colum-span">$!totalChildrenSposored</span>
           </td>
           <td id="colum-highlight">
             <span id="colum-span">SPONSORSHIP START DATE</span>
           </td>
           <td>
-            <span id="colum-span">$spnStartDate</span>
+            <span id="colum-span">$!spnStartDate</span>
           </td>
         </tr>
         <tr>
@@ -289,13 +289,13 @@
             <span id="colum-span">TOTAL PAYMENT RECEIVED</span>
           </td>
           <td >
-            <span id="colum-span">$totalPaymentReceived</span>
+            <span id="colum-span">$!totalPaymentReceived</span>
           </td>
           <td id="colum-highlight">
             <span id="colum-span">PAYMENT METHOD</span>
           </td>
           <td>
-            <span id="colum-span">$paymentMethod</span>
+            <span id="colum-span">$!paymentMethod</span>
           </td>
         </tr>
       </table>
