@@ -18,7 +18,9 @@ public class Sponsor implements Serializable {
 	private String firstName;
 	private String middleInitial;
 	@NotBlank
-	private String lastName;
+	private String lastName;	
+	@NotBlank
+	private String sponsorCode;
 	private String nickName;
 	private String dayOfBirth;
 	private String monthOfBirth;
@@ -34,8 +36,27 @@ public class Sponsor implements Serializable {
 	private Long parishId;
 	private String parishName;
 	private String parishCity;
+	private Long centerId;
 	private Date createdDate;
 	private Date updatedDate;
+
+	
+	
+	public Long getCenterId() {
+		return centerId;
+	}
+
+	public void setCenterId(Long centerId) {
+		this.centerId = centerId;
+	}
+
+	public String getSponsorCode() {
+		return sponsorCode;
+	}
+
+	public void setSponsorCode(String sponsorCode) {
+		this.sponsorCode = sponsorCode;
+	}
 
 	public Long getId() {
 		return id;

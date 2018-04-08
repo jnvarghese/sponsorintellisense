@@ -16,18 +16,18 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsor;
 //@CacheNamespace(implementation=org.mybatis.caches.ehcache.EhcacheCache.class)
 public interface SponsorMapper {
 
-	public static final String SELECT_SPONSOR_BY_ID ="SELECT *,P.NAME PARISHNAME FROM SPONSOR S, PARISH P WHERE S.PARISHID = P.ID AND S.ID = #{id}";
+	public static final String SELECT_SPONSOR_BY_ID ="SELECT *,P.NAME PARISHNAME,P.CENTERID FROM SPONSOR S, PARISH P WHERE S.PARISHID = P.ID AND S.ID = #{id}";
 	
-	public static final String SELECT_ALL_ACTIVE_SPONSORS = "SELECT S.ID, FIRSTNAME, LASTNAME, MIDDLEINITIAL, NICKNAME, STATE, P.NAME "
-			+ "parishName FROM SPONSOR S LEFT JOIN PARISH P ON S.PARISHID = P.ID WHERE S.SPONSORSTATUS = 0";
+	public static final String SELECT_ALL_ACTIVE_SPONSORS = "SELECT S.ID, FIRSTNAME, LASTNAME, MIDDLEINITIAL, NICKNAME, STATE,"
+			+ "sponsorCode, P.NAME parishName, P.CITY PARISHCITY FROM SPONSOR S LEFT JOIN PARISH P ON S.PARISHID = P.ID WHERE S.SPONSORSTATUS = 0";
 	
 	public static final String SELECT_ALL_ACTIVE_SPONSORS_BY_PARISHID = "SELECT S.ID, FIRSTNAME, LASTNAME, MIDDLEINITIAL, NICKNAME, STATE, parishId "
 			+ "FROM SPONSOR S, PARISH P WHERE S.PARISHID = P.ID AND S.PARISHID = #{id} AND S.SPONSORSTATUS = 0";
 	
 	public static final String INSERT_SPONSOR = "INSERT INTO SPONSOR	(parishId, firstName, lastName, middleInitial, nickName, dayOfBirth, "
-			+ "monthOfBirth, sponsorStatus, emailAddress, appartmentNumber, street, city, state, postalCode, hasAnyCoSponser, coSponserName)"
+			+ "monthOfBirth, sponsorStatus, emailAddress, appartmentNumber, street, city, state, postalCode, hasAnyCoSponser, coSponserName, sponsorCode)"
 			+ " values  (#{parishId},#{firstName},#{lastName},#{middleInitial},#{nickName}, #{dayOfBirth},#{monthOfBirth},#{sponsorStatus},#{emailAddress},"
-			+ "#{appartmentNumber},#{street},#{city},#{state},#{postalCode},#{hasAnyCoSponser},#{coSponserName})";
+			+ "#{appartmentNumber},#{street},#{city},#{state},#{postalCode},#{hasAnyCoSponser},#{coSponserName}, #{sponsorCode})";
 	
 	public static final String UPDATE_SPONSOR = "UPDATE SPONSOR SET parishId= #{parishId} , firstName= #{firstName}, lastName= #{lastName}, "
 			+ "middleInitial= #{middleInitial}, nickName=#{nickName}, dayOfBirth= #{dayOfBirth}, monthOfBirth= #{monthOfBirth}, sponsorStatus= #{sponsorStatus},"

@@ -18,6 +18,9 @@ public class Student implements Serializable {
 	private String studentName;
 	
 	@NotBlank
+	private String studentCode;
+	
+	@NotBlank
 	private String gender;
 	@NotBlank
 	private String dateOfBirth;
@@ -44,6 +47,13 @@ public class Student implements Serializable {
 	private int expirationMonth;
 	private int expirationYear;
 	
+
+	public String getStudentCode() {
+		return studentCode;
+	}
+	public void setStudentCode(String studentCode) {
+		this.studentCode = studentCode;
+	}
 	public Long getId() {
 		return id;
 	}
