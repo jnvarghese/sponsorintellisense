@@ -47,7 +47,22 @@ public class Student implements Serializable {
 	private int expirationMonth;
 	private int expirationYear;
 	
+	private Long createdBy;
+	
+	private Long updatedBy;	
 
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+	public Long getUpdatedBy() {
+		return updatedBy;
+	}
+	public void setUpdatedBy(Long updatedBy) {
+		this.updatedBy = updatedBy;
+	}
 	public String getStudentCode() {
 		return studentCode;
 	}

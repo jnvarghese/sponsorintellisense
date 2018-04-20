@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,9 +28,10 @@ public class EnrollmentController {
 	private MaxOutMapper maxOutMapper;
 	
 	@PostMapping("/enroll")
-	public ResponseEntity<String> createStudent(@RequestBody Enrollment enrollment) {
+	public ResponseEntity<String> createStudent(@RequestHeader(value="userId") Long userId, @RequestBody Enrollment enrollment) {
 		//Set<Date> dateSet = new HashSet<Date>();
-		System.out.println( " Sponsee " + enrollment.getPaymentDate());
+		System.out.println( " Sponsee " + userId);
+		enrollment.setCreatedBy(userId);
 		enrollmentMapper.insert(enrollment);
 		Calendar c = Calendar.getInstance();
 		Enrollment e = enrollmentMapper.selectEnrollmentForId(enrollment.getSponsorId(), enrollment.getPaymentDate(), enrollment.getEffectiveDate());

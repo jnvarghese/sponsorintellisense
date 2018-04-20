@@ -29,8 +29,17 @@ public class Enrollment  implements Serializable {
 	
 	private Long sponsorId;
 	
+	private Long createdBy;
 	
-	
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+
 	private Date createdDate;
 
 	private Date updatedDate;

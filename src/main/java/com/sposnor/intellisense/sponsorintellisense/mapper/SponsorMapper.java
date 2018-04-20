@@ -24,15 +24,16 @@ public interface SponsorMapper {
 	public static final String SELECT_ALL_ACTIVE_SPONSORS_BY_PARISHID = "SELECT S.ID, FIRSTNAME, LASTNAME, MIDDLEINITIAL, NICKNAME, STATE, parishId "
 			+ "FROM SPONSOR S, PARISH P WHERE S.PARISHID = P.ID AND S.PARISHID = #{id} AND S.SPONSORSTATUS = 0";
 	
-	public static final String INSERT_SPONSOR = "INSERT INTO SPONSOR	(parishId, firstName, lastName, middleInitial, nickName, dayOfBirth, "
-			+ "monthOfBirth, sponsorStatus, emailAddress, appartmentNumber, street, city, state, postalCode, hasAnyCoSponser, coSponserName, sponsorCode)"
+	public static final String INSERT_SPONSOR = "INSERT INTO SPONSOR(parishId, firstName, lastName, middleInitial, nickName, dayOfBirth, "
+			+ "monthOfBirth, sponsorStatus, emailAddress, appartmentNumber, street, city, state, postalCode, hasAnyCoSponser, "
+			+ "coSponserName, sponsorCode, createdBy)"
 			+ " values  (#{parishId},#{firstName},#{lastName},#{middleInitial},#{nickName}, #{dayOfBirth},#{monthOfBirth},#{sponsorStatus},#{emailAddress},"
-			+ "#{appartmentNumber},#{street},#{city},#{state},#{postalCode},#{hasAnyCoSponser},#{coSponserName}, #{sponsorCode})";
+			+ "#{appartmentNumber},#{street},#{city},#{state},#{postalCode},#{hasAnyCoSponser},#{coSponserName}, #{sponsorCode}, #{createdBy})";
 	
 	public static final String UPDATE_SPONSOR = "UPDATE SPONSOR SET parishId= #{parishId} , firstName= #{firstName}, lastName= #{lastName}, "
 			+ "middleInitial= #{middleInitial}, nickName=#{nickName}, dayOfBirth= #{dayOfBirth}, monthOfBirth= #{monthOfBirth}, sponsorStatus= #{sponsorStatus},"
 			+ " emailAddress= #{emailAddress}, appartmentNumber= #{appartmentNumber}, street= #{street}, city= #{city}, state= #{state},"
-			+ " postalCode= #{postalCode}, hasAnyCoSponser= #{hasAnyCoSponser}, coSponserName= #{coSponserName} WHERE id=#{id}";
+			+ " postalCode= #{postalCode}, hasAnyCoSponser= #{hasAnyCoSponser}, coSponserName= #{coSponserName}, updatedBy= #{updatedBy} WHERE id=#{id}";
 	
 	public static final String SEARCH_BY_NAME ="SELECT S.ID, FIRSTNAME, LASTNAME, MIDDLEINITIAL, NICKNAME, PARISHID, NAME parishName, P.CITY parishCity "
 			+ "FROM SPONSOR S, PARISH P WHERE S.PARISHID = P.ID AND SPONSORSTATUS = 0 AND FIRSTNAME LIKE #{name} ";

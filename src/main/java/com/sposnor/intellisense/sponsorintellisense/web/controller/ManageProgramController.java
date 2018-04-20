@@ -94,23 +94,7 @@ public class ManageProgramController {
 		//System.out.println("htmlstring - : "+htmlstring);
 		ByteArrayOutputStream byteArrayPutStream = new ByteArrayOutputStream();
 		 byte[] pdfBytes = byteArrayPutStream.toByteArray();
-		/*
-        ByteArrayOutputStream byteArrayPutStream = new ByteArrayOutputStream();
-        byte[] pdfBytes = byteArrayPutStream.toByteArray();
-        
-		InputStream is = new ByteArrayInputStream(htmlstring.getBytes());
 		
-		 // step 1
-        Document document = new Document();
-        // step 2
-        PdfWriter writer = PdfWriter.getInstance(document, byteArrayPutStream);
-        writer.setInitialLeading(12);
-        // step 3
-        document.open();
-        // step 4
-        XMLWorkerHelper.getInstance().parseXHtml(writer, document, is);
-        // step 5
-        document.close();*/
 	     // step 1
         Document document = new Document();
         // step 2

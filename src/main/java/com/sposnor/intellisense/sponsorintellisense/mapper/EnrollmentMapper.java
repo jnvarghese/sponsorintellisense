@@ -12,8 +12,8 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsee;
 @Mapper
 public interface EnrollmentMapper {
 
-	@Insert("INSERT INTO ENROLLMENT (SPONSORID, PAYMENTDATE, EFFECTIVEDATE, CONTRIBUTIONAMOUNT, MISCAMOUNT)"
-			+ " values  (#{sponsorId}, #{paymentDate}, #{effectiveDate}, #{contributionAmount}, #{miscAmount})")
+	@Insert("INSERT INTO ENROLLMENT (SPONSORID, PAYMENTDATE, EFFECTIVEDATE, CONTRIBUTIONAMOUNT, MISCAMOUNT, createdBy)"
+			+ " values  (#{sponsorId}, #{paymentDate}, #{effectiveDate}, #{contributionAmount}, #{miscAmount}, #{createdBy})")
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	void insert(Enrollment enrollment);	
 	

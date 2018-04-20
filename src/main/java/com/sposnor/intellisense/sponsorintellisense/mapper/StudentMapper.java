@@ -32,9 +32,9 @@ public interface StudentMapper {
 	List<Student> listByProjectId(@Param("id") Long id);
 	
 	@Insert("INSERT INTO STUDENT (PROJECTID, STUDENTNAME, GENDER, DATEOFBIRTH, ADDRESS, HOBBIES, TALENT, "
-			+ "RECENTACHIVEMENTS, PROFILEPICTURE, SOFTLOCKED, studentCode) "
+			+ "RECENTACHIVEMENTS, PROFILEPICTURE, SOFTLOCKED, studentCode, createdBy) "
 			+ "VALUES (#{projectId}, #{studentName},  #{gender}, #{dateOfBirth}, #{address},"
-			+ "#{hobbies}, #{talent}, #{recentAchivements}, #{profilePicture}, #{softlocked}, #{studentCode})")
+			+ "#{hobbies}, #{talent}, #{recentAchivements}, #{profilePicture}, #{softlocked}, #{studentCode}, #{createdBy})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id",
 			before = false, resultType= Long.class)
 	void insert(Student student);
@@ -42,10 +42,10 @@ public interface StudentMapper {
 	@Update("UPDATE STUDENT SET projectId= #{projectId} , studentName = #{studentName}, "
 			+ "gender= #{gender}, dateOfBirth= #{dateOfBirth}, address= #{address},"
 			+ " status= #{status}, hobbies= #{hobbies}, talent= #{talent}, recentAchivements= #{recentAchivements}, profilePicture= #{profilePicture},"
-			+ " softlocked= #{softlocked} WHERE id=#{id}")	
+			+ " softlocked= #{softlocked}, updatedBy= #{updatedBy} WHERE id=#{id}")	
 	void update(Student student);
 	
-	@Update("UPDATE STUDENT SET profilePicture = #{profilePicture} WHERE id=#{id}")
+	@Update("UPDATE STUDENT SET profilePicture = #{profilePicture}, updatedBy= #{updatedBy} WHERE id=#{id}")
 	void uploadImage(Student student);
 	
 	@Select("SELECT ID, STUDENTNAME, studentCode FROM STUDENT WHERE STATUS = 0 AND FIRSTNAME LIKE #{name} ")
