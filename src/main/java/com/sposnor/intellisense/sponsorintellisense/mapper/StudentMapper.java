@@ -68,8 +68,10 @@ public interface StudentMapper {
 	List<Student> listMatchingStudentsByName(@Param("name") String name);
 	
 	@Select("SELECT EN.ID, CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',SP.SPONSORCODE) UNIQUEID, "
-			+ "CONCAT(FIRSTNAME,' ',MIDDLEINITIAL,' ',LASTNAME ) sponsorName, NICKNAME,  P.NAME parishName,P.CITY parishCity,C.NAME centerName, R.NAME regionName, "
-			+ "APPARTMENTNUMBER,STREET, SP.CITY sponsorCity, STATE sponsorState,POSTALCODE, SP.EMAILADDRESS emailAddress,  DATE_FORMAT(effectiveDate, \"%M %D %Y\") effectiveDate,  "
+			+ "CASE hasAnyCoSponser WHEN '1' THEN CONCAT(FIRSTNAME,' ','&',' ',coSponserName ) ELSE CONCAT(FIRSTNAME,' ',MIDDLEINITIAL,' ',LASTNAME ) END sponsorName, "
+			+ "NICKNAME,  P.NAME parishName,P.CITY parishCity,C.NAME centerName, R.NAME regionName, "
+			+ "APPARTMENTNUMBER,STREET, SP.CITY sponsorCity, STATE sponsorState,POSTALCODE, SP.EMAILADDRESS emailAddress, "
+			+ "emailAddress2, phone1, phone2, DATE_FORMAT(effectiveDate, \"%M %D %Y\") effectiveDate,  "
 			+ "(CONTRIBUTIONAMOUNT + MISCAMOUNT) CONTRIBUTION, EN.CREATEDDATE FROM SPONSOR SP, PARISH P, ENROLLMENT EN , CENTER C, "
 			+ "REGION R WHERE P.ID = SP.PARISHID  AND SPONSORID = SP.ID  AND P.CENTERID = C.ID AND C.REGIONID = R.ID "
 			+ "AND EN.ID = #{id}")

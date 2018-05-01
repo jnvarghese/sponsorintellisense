@@ -72,10 +72,15 @@ public class ManageProgramController {
 		map.put("timeNow", time);
 		map.put("sponsorId", sponser.getUniqueId());
 		map.put("sponsorName", sponser.getSponsorName());
-		map.put("sponsorParish", sponser.getParishName() +" "+sponser.getParishCity());
-		map.put("sponsorParishRegion", sponser.getRegionName()+" "+sponser.getCenterName());
-		map.put("sponsorAddress", sponser.getAppartmentNumber()+" "+sponser.getStreet()+ " "+sponser.getSponsorCity()+" "+sponser.getSponsorState()+" "+sponser.getPostalCode());
-		map.put("sponsorPhone", "N/A");
+		map.put("sponsorParish", sponser.getParishName() +" - "+sponser.getParishCity());
+		map.put("sponsorParishRegion", sponser.getRegionName()+" - "+sponser.getCenterName());
+		if(null != sponser.getAppartmentNumber()) {
+			map.put("sponsorAddress", sponser.getAppartmentNumber()+", "+sponser.getStreet()+ ", "+sponser.getSponsorCity()+", "+sponser.getSponsorState()+" - "+sponser.getPostalCode());
+		}else {
+			map.put("sponsorAddress", sponser.getStreet()+ ", "+sponser.getSponsorCity()+", "+sponser.getSponsorState()+" - "+sponser.getPostalCode());
+		}
+		
+		map.put("sponsorPhone", sponser.getPhone1());
 		map.put("sponsorEmail", sponser.getEmailAddress() == null  ? "N/A" : sponser.getEmailAddress());
 		map.put("sponseeList", sponseeList);
 		map.put("totalChildrenSposored", sponseeList.size());
@@ -87,11 +92,10 @@ public class ManageProgramController {
 	ResponseEntity<byte[]> generatePdf(@PathVariable(value = "enrollmentId") Long enrollmentId) throws Exception{
 		
 		List<SponseeReport> sponseeList= sponsorMapper.listSponseesByEnrolmentId(enrollmentId);
+		
 		SponsorReport sponsorReport = studentMapper.findSponsorByEnrolmentId(enrollmentId);
-		
 		String htmlstring = VelocityTemplateParser.generateHTML(getDataMap(sponsorReport,sponseeList));
-		
-		//System.out.println("htmlstring - : "+htmlstring);
+		System.out.println(htmlstring);
 		ByteArrayOutputStream byteArrayPutStream = new ByteArrayOutputStream();
 		 byte[] pdfBytes = byteArrayPutStream.toByteArray();
 		
@@ -160,30 +164,30 @@ public class ManageProgramController {
 		return manageProgramMapper.getSponsorshipContribution(studentId, sponsorId);
 	}
 	
-	 class Base64ImageProvider extends AbstractImageProvider {
-		 
-	        @Override
-	        public Image retrieve(String src) {
-	            int pos = src.indexOf("base64,");
-	            try {
-	                if (src.startsWith("data") && pos > 0) {
-	                    byte[] img = Base64.decode(src.substring(pos + 7));
-	                    return Image.getInstance(img);
-	                }
-	                else {
-	                    return Image.getInstance(src);
-	                }
-	            } catch (BadElementException ex) {
-	                return null;
-	            } catch (IOException ex) {
-	                return null;
+	class Base64ImageProvider extends AbstractImageProvider {
+
+	    @Override
+	    public Image retrieve(String src) {
+	        int pos = src.indexOf("base64,");
+	        try {
+	            if (src.startsWith("data") && pos > 0) {
+	                byte[] img = Base64.decode(src.substring(pos + 7));
+	                return Image.getInstance(img);
 	            }
-	        }
-	 
-	        @Override
-	        public String getImageRootPath() {
+	            else {
+	                return Image.getInstance(src);
+	            }
+	        } catch (BadElementException ex) {
+	            return null;
+	        } catch (IOException ex) {
 	            return null;
 	        }
 	    }
+
+	    @Override
+	    public String getImageRootPath() {
+	        return null;
+	    }
+	}
 	
 }

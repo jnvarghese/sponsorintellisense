@@ -36,20 +36,8 @@ public class VelocityTemplateParser {
 		context.put("totalChildrenSposored", dataMap.get("totalChildrenSposored"));
 		context.put("spnStartDate", dataMap.get("spnStartDate"));
 		context.put("totalPaymentReceived", dataMap.get("totalPaymentReceived"));
-		/*context.put("childId", "CARD-SNKMP-5191");
-		context.put("childName", "Neha Chappa");
-		context.put("childDOB", "June 13, 2011");
-		context.put("childGrade", "2nd Grade");
-		context.put("childGender", "Female");
-		context.put("childMediumOfStudy", "Hindi");
-		context.put("childCluster", "Sarvodaya");
-		context.put("childHobby", "Drawing");
-		context.put("childFavColor", "Blue");
-		context.put("childFavGame", "Hide - Seek");
-		context.put("programPartner", "Christian Agency for Rural Development [CARD]");
-		context.put("programLocation", "Shanthi Nagar – Kshipra Village – Madhya Pradesh");
-		
-		context.put("paymentMethod","[Yearly] [Check] [$20/Child/Month]");*/
+
+		context.put("paymentMethod","[Yearly] [Check] [$20/Child/Month]");
 		/* now render the template into a StringWriter */
 		StringWriter writer = new StringWriter();
 		t.merge(context, writer);

@@ -26,12 +26,12 @@ public interface SponsorMapper {
 	
 	public static final String INSERT_SPONSOR = "INSERT INTO SPONSOR(parishId, firstName, lastName, middleInitial, nickName, dayOfBirth, "
 			+ "monthOfBirth, sponsorStatus, emailAddress, appartmentNumber, street, city, state, postalCode, hasAnyCoSponser, "
-			+ "coSponserName, sponsorCode, createdBy)"
+			+ "coSponserName, sponsorCode, phone1, phone2, createdBy)"
 			+ " values  (#{parishId},#{firstName},#{lastName},#{middleInitial},#{nickName}, #{dayOfBirth},#{monthOfBirth},#{sponsorStatus},#{emailAddress},"
-			+ "#{appartmentNumber},#{street},#{city},#{state},#{postalCode},#{hasAnyCoSponser},#{coSponserName}, #{sponsorCode}, #{createdBy})";
+			+ "#{appartmentNumber},#{street},#{city},#{state},#{postalCode},#{hasAnyCoSponser},#{coSponserName}, #{sponsorCode}, #{phone1}, #{phone2}, #{createdBy})";
 	
-	public static final String UPDATE_SPONSOR = "UPDATE SPONSOR SET parishId= #{parishId} , firstName= #{firstName}, lastName= #{lastName}, "
-			+ "middleInitial= #{middleInitial}, nickName=#{nickName}, dayOfBirth= #{dayOfBirth}, monthOfBirth= #{monthOfBirth}, sponsorStatus= #{sponsorStatus},"
+	public static final String UPDATE_SPONSOR = "UPDATE SPONSOR SET parishId= #{parishId} , firstName= #{firstName}, lastName= #{lastName}, phone1=#{phone1}, phone2=#{phone2}"
+			+ " middleInitial= #{middleInitial}, nickName=#{nickName}, dayOfBirth= #{dayOfBirth}, monthOfBirth= #{monthOfBirth}, sponsorStatus= #{sponsorStatus},"
 			+ " emailAddress= #{emailAddress}, appartmentNumber= #{appartmentNumber}, street= #{street}, city= #{city}, state= #{state},"
 			+ " postalCode= #{postalCode}, hasAnyCoSponser= #{hasAnyCoSponser}, coSponserName= #{coSponserName}, updatedBy= #{updatedBy} WHERE id=#{id}";
 	
@@ -64,7 +64,7 @@ public interface SponsorMapper {
 	
 	@Select("SELECT CONCAT(A.CODE,'-',P.CODE,'-',ST.STUDENTCODE) UNIQUEID, STUDENTNAME, "
 			+ "DATEOFBIRTH, GENDER, GRADE,FAVCOLOR,FAVGAME,NAMEOFGUARDIAN,OCCUPATIONOFGUARDIAN,BASELANGUAGE,"
-			+ " HOBBIES hobby, A.NAME AGENCYNAME, P.NAME PROJECTNAME, profilePicture FROM ENROLLMENT EN, SPONSEE SPE, "
+			+ " HOBBIES hobby, A.NAME AGENCYNAME, P.NAME PROJECTNAME, P.ADDRESS ADDRESS , profilePicture FROM ENROLLMENT EN, SPONSEE SPE, "
 			+ "STUDENT ST, PROJECT P, AGENCY A WHERE EN.ID = SPE.ENROLLMENTID AND SPE.STUDENTID = ST.ID "
 			+ "AND ST.PROJECTID = P.ID AND P.AGENCYID = A.ID AND EN.ID = #{id} ")
 	List<SponseeReport> listSponseesByEnrolmentId(@Param("id") Long id);

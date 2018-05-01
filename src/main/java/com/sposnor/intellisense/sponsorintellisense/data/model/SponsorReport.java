@@ -28,9 +28,15 @@ public class SponsorReport {
 	
 	private String emailAddress;
 	
+	private String emailAddress2;
+	
+	private String phone1;
+	
+	private String phone2;
+	
 	private String effectiveDate;
 	
-	private String contribution;
+	private double contribution;
 
 	public String getUniqueId() {
 		return uniqueId;
@@ -145,14 +151,49 @@ public class SponsorReport {
 		this.effectiveDate = effectiveDate;
 	}
 
-	public String getContribution() {
+	public double getContribution() {
 		return contribution;
 	}
 
-	public void setContribution(String contribution) {
+	public void setContribution(double contribution) {
 		this.contribution = contribution;
 	}
 
+	public String getEmailAddress2() {
+		return emailAddress2;
+	}
+
+	public void setEmailAddress2(String emailAddress2) {
+		this.emailAddress2 = emailAddress2;
+	}
+
+	public String getPhone1() {
+		return phone1;
+	}
+
+	public void setPhone1(String phone1) {
+		this.phone1 = phone1;
+	}
+
+	public String getPhone2() {
+		return phone2;
+	}
+
+	public void setPhone2(String phone2) {
+		this.phone2 = phone2;
+	}
+
+	@Override
+	public String toString() {
+		return "SponsorReport [uniqueId=" + uniqueId + ", sponsorName=" + sponsorName + ", nickName=" + nickName
+				+ ", parishName=" + parishName + ", parishCity=" + parishCity + ", centerName=" + centerName
+				+ ", regionName=" + regionName + ", appartmentNumber=" + appartmentNumber + ", street=" + street
+				+ ", sponsorCity=" + sponsorCity + ", sponsorState=" + sponsorState + ", postalCode=" + postalCode
+				+ ", emailAddress=" + emailAddress + ", emailAddress1=" + emailAddress2 + ", phone1=" + phone1
+				+ ", phone2=" + phone2 + ", effectiveDate=" + effectiveDate + ", contribution=" + contribution + "]";
+	}
+
+	
 	
 	
 }
