@@ -46,6 +46,16 @@ public class SponsorReport {
 	private String effectiveDate;
 	
 	private double contribution;
+	
+	private String renewalDue;
+	
+	public String getRenewalDue() {
+		return renewalDue;
+	}
+
+	public void setRenewalDue(String renewalDue) {
+		this.renewalDue = renewalDue;
+	}
 
 	public String getUniqueId() {
 		return uniqueId;

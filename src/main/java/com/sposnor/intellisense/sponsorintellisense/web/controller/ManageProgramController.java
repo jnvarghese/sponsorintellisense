@@ -89,6 +89,7 @@ public class ManageProgramController {
 		map.put("totalChildrenSposored", sponseeList.size());
 		map.put("totalPaymentReceived", sponser.getContribution());
 		map.put("spnStartDate", sponser.getEffectiveDate());
+		map.put("renewalDue", sponser.getRenewalDue());		
 		map.put("sign2", sponser.getSign2());
 		map.put("sign1", sponser.getSign1());
 		map.put("waterMark", sponser.getWaterMark());
@@ -107,7 +108,7 @@ public class ManageProgramController {
 		String coverLetter = VelocityTemplateParser.generateCoverLetter(sponsorReport, sponseeList.size());
 		String htmlstring = VelocityTemplateParser.generateHTML(getDataMap(sponsorReport,sponseeList));
 		String consolidatedData =  coverLetter + htmlstring;
-		System.out.println(" consolidatedData "+consolidatedData);    
+		//System.out.println(" consolidatedData "+consolidatedData);    
 
 		ByteArrayOutputStream byteArrayPutStream = new ByteArrayOutputStream();
 		 byte[] pdfBytes = byteArrayPutStream.toByteArray();

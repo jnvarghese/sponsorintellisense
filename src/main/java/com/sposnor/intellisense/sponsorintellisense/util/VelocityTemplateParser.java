@@ -75,9 +75,9 @@ public class VelocityTemplateParser {
 		context.put("sponsorAddress", dataMap.get("sponsorAddress"));
 		context.put("sponsorPhone", dataMap.get("sponsorPhone"));
 		context.put("sponsorEmail", dataMap.get("sponsorEmail"));
-		
+		context.put("renewalDue",  dataMap.get("renewalDue"));
 		context.put("sign2", dataMap.get("sign2"));
-		//context.put("sign1", dataMap.get("sign1"));
+
 		context.put("waterMark", dataMap.get("waterMark"));
 		
 		context.put("sponseeList", dataMap.get("sponseeList"));

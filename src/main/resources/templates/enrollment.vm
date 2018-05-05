@@ -337,6 +337,20 @@
           </tr>
         </table>
       </div>
+      
+      <div id="container">
+        <table class="tableStyle">         
+          <tr>
+            <td class="tdHighLightStyle" width="200px;">
+              <span class="tdSpanStyle">SPONSORSHIP RENEWAL DUE</span>
+            </td>
+            <td class="thStype" colspan="3">
+              <span class="tdSpanStyle" style="background-color: yellow;">$renewalDue</span>
+            </td>           
+          </tr>        
+        </table>
+      </div>
+      
       <div>
         <div style="padding-bottom: 2px;">
           <div style="padding-left:20px; padding-bottom: 10px;">
