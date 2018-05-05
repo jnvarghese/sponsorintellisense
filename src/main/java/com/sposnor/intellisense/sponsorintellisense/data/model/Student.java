@@ -42,6 +42,8 @@ public class Student implements Serializable {
 	private String occupationOfGuardian;
 	private String baseLanguage;
 	
+	private String imageLinkRef;
+	
 	private Date createdDate;
 	private Date updatedDate;
 	private int expirationMonth;
@@ -51,6 +53,13 @@ public class Student implements Serializable {
 	
 	private Long updatedBy;	
 
+	
+	public String getImageLinkRef() {
+		return imageLinkRef;
+	}
+	public void setImageLinkRef(String imageLinkRef) {
+		this.imageLinkRef = imageLinkRef;
+	}
 	public Long getCreatedBy() {
 		return createdBy;
 	}

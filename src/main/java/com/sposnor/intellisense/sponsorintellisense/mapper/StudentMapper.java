@@ -16,17 +16,17 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.Student;
 public interface StudentMapper {
 
 	@Select("SELECT S.ID, S.PROJECTID, STUDENTNAME, GENDER, DATEOFBIRTH, S.ADDRESS, HOBBIES, S.STATUS,TALENT, "
-			+ "RECENTACHIVEMENTS, SOFTLOCKED, P.NAME PROJECTNAME, A.NAME AGENCYNAME, studentCode FROM STUDENT S "
+			+ "RECENTACHIVEMENTS, SOFTLOCKED, P.NAME PROJECTNAME, A.NAME AGENCYNAME, studentCode, imageLinkRef FROM STUDENT S "
 			+ "LEFT JOIN PROJECT P ON S.PROJECTID = P.ID "
 			+ "LEFT JOIN AGENCY A ON P.AGENCYID = A.ID "
 			+ "WHERE S.ID = #{id}")
 	Student findById(@Param("id") Long id);
 	
-	@Select("SELECT S.ID, STUDENTNAME, GENDER, P.NAME projectName, A.NAME agencyName, studentCode FROM STUDENT S "
+	@Select("SELECT S.ID, STUDENTNAME, GENDER, P.NAME projectName, A.NAME agencyName, studentCode, imageLinkRef FROM STUDENT S "
 			+ "LEFT JOIN PROJECT P ON S.PROJECTID = P.ID LEFT JOIN AGENCY A ON P.AGENCYID = A.ID WHERE S.STATUS = 0 ")
 	List<Student> list();
 	
-	@Select("SELECT S.ID, STUDENTNAME, GENDER, P.NAME projectName, A.NAME agencyName, studentCode FROM STUDENT S "
+	@Select("SELECT S.ID, STUDENTNAME, GENDER, P.NAME projectName, A.NAME agencyName, studentCode, imageLinkRef FROM STUDENT S "
 			+ "LEFT JOIN PROJECT P ON S.PROJECTID = P.ID LEFT JOIN AGENCY A ON P.AGENCYID = A.ID WHERE "
 			+ " projectid IN ( #{id} ) AND S.STATUS = 0 ")
 	List<Student> listByProjectId(@Param("id") Long id);
@@ -68,10 +68,10 @@ public interface StudentMapper {
 	List<Student> listMatchingStudentsByName(@Param("name") String name);
 	
 	@Select("SELECT EN.ID, CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',SP.SPONSORCODE) UNIQUEID, "
-			+ "CASE hasAnyCoSponser WHEN '1' THEN CONCAT(FIRSTNAME,' ','&',' ',coSponserName ) ELSE CONCAT(FIRSTNAME,' ',MIDDLEINITIAL,' ',LASTNAME ) END sponsorName, "
+			+ "CASE hasAnyCoSponser WHEN '1' THEN CONCAT(FIRSTNAME,' ','&',' ',coSponserName ) ELSE CONCAT(FIRSTNAME,' ',COALESCE(MIDDLEINITIAL, ''),' ',LASTNAME ) END sponsorName, "
 			+ "NICKNAME,  P.NAME parishName,P.CITY parishCity,C.NAME centerName, R.NAME regionName, "
 			+ "APPARTMENTNUMBER,STREET, SP.CITY sponsorCity, STATE sponsorState,POSTALCODE, SP.EMAILADDRESS emailAddress, "
-			+ "emailAddress2, phone1, phone2, DATE_FORMAT(effectiveDate, \"%M %D %Y\") effectiveDate,  "
+			+ "emailAddress2, phone1, phone2, DATE_FORMAT(effectiveDate, \"%M 1 %Y\") effectiveDate,  "
 			+ "(CONTRIBUTIONAMOUNT + MISCAMOUNT) CONTRIBUTION, EN.CREATEDDATE FROM SPONSOR SP, PARISH P, ENROLLMENT EN , CENTER C, "
 			+ "REGION R WHERE P.ID = SP.PARISHID  AND SPONSORID = SP.ID  AND P.CENTERID = C.ID AND C.REGIONID = R.ID "
 			+ "AND EN.ID = #{id}")

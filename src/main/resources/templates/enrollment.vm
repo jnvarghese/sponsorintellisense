@@ -2,314 +2,367 @@
 <html>
 
 <head>
-    <style>
-        .bodyStyle {
-            font-family: serif;
-        }
+  <style>
+    .bodyStyle {
+      font-family: serif;
+    }
 
-        .tableStyle {
-            border-spacing: 1px;
-            border-collapse: separate;
-            width: 97.7%;
-        }
+    .tableStyle {
+      border-spacing: 1px;
+      border-collapse: separate;
+      width: 97.7%;
+    }
 
-        .thStype {
-            border: .2px solid black;
-            border-collapse: inherit;
-            padding-left: 5px;
-            padding-top: 2px;
-            height: 20px;
-            text-align: left;
-        }
+    .thStype {
+      border: .2px solid black;
+      border-collapse: inherit;
+      padding-left: 5px;
+      padding-top: 2px;
+      height: 20px;
+      text-align: left;
+    }
 
-        .tdSpanStyle {
-            font-size: 10px;
-        }
+    .thImageStype {
 
-        .thSpanStyle {
-            font-size: 12px;
-        }
+      padding-left: 5px;
+      padding-top: 2px;
+      height: 20px;
+      text-align: center;
+    }
 
-        .tdHighLightStyle {
-            border: .5px solid black;
-            border-collapse: collapse;
-            padding-left: 5px;
-            padding-top: 2px;
-            text-align: left;
-            background-color: #e6e6e6;
-            color: #800000;
-        }
+    .tdSpanStyle {
+      font-size: 10px;
+    }
 
-        #container {
-            width: 100%;
-            font-size: 0;
-            margin: 15px;
-            padding-left: 20px;
-            padding-bottom: 20px;
-        }
-    </style>
+    .thSpanStyle {
+      font-size: 12px;
+    }
+
+    .tdHighLightStyle {
+      border: .5px solid black;
+      border-collapse: collapse;
+      padding-left: 5px;
+      padding-top: 2px;
+      padding-right: 5px;
+      text-align: left;
+      background-color: #e6e6e6;
+      color: #800000;
+    }
+
+    #container {
+      width: 100%;
+      font-size: 0;
+      margin: 15px;
+      padding-left: 20px;
+      padding-bottom: 20px;
+    }
+
+    .wtrMark {
+      background: url('data:image/png;base64,$waterMark');
+
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .wtrMark .wtrMarkCnt {
+      background-color: white;
+      opacity: 0.9;
+    }
+  </style>
 </head>
 
 <body class="bodyStyle">
-    <div>
-        <div style="border:1px solid black; padding-bottom: 15px;">
-            <div style="padding-left:150px">
-                <h2 style="padding: 0px;margin: 0px;">MAR THOMA MISSION BOARD</h2>
-            </div>
-            <div style="padding-left:80px">
-                <h2 style="padding: 0px;margin: 0px;">DIOCESE OF NORTH AMERICA & EUROPE</h2>
-            </div>
-            <div style="padding-left:200px">
-                <p style="padding: 0px;margin: 0px; font-size: 13px;">2320 Merrick Ave, Merrick, New York - 11566</p>
-            </div>
-            <div style="padding-left:40px">
-                <span style="font-size: 12px;">
-                    Phone: (516) 377-3311 Email: marthomamissionboard@gmail.com Website: www.marthomamissionnae.org</span>
-            </div>
-        </div>
-        <div style="background:rgb(230,230,230); padding-left:300px; padding-bottom:5px; padding-top:4px;">
-            <b style="color:rgb(128,0,0); font-size: 12px;">LIGHT TO LIFE </b>
-        </div>
-        <div style="padding-left:270px;">
-            <b style="color: #a31010; font-size: 10px;">SPONSORSHIP INFORMATION</b>
-        </div>
+  <div>
+     <div style="border:1px solid black; padding-bottom: 15px;">
+      <div style="padding-left:170px">
+        <h2 style="padding: 0px;margin: 0px;">MAR THOMA MISSION BOARD</h2>
+      </div>
+      <div style="padding-left:100px">
+        <h2 style="padding: 0px;margin: 0px;">DIOCESE OF NORTH AMERICA & EUROPE</h2>
+      </div>
+      <div style="padding-left:220px">
+        <p style="padding: 0px;margin: 0px; font-size: 13px;">2320 Merrick Ave, Merrick, New York - 11566</p>
+      </div>
+      <div style="padding-left:60px">
+        <span style="font-size: 12px;">
+          Phone: (516) 377-3311 Email: marthomamissionboard@gmail.com Website: www.marthomamissionnae.org</span>
+      </div>
     </div>
-    <div>
+    <div style="background:rgb(230,230,230); padding-left:300px; padding-bottom:5px; padding-top:4px;">
+      <b style="color:rgb(128,0,0); font-size: 16px;">LIGHT TO LIFE </b>
+    </div>
+    <div style="padding-left:220px;">
+      <b style="color: #a31010; font-size: 14px;">SPONSORSHIP INFORMATION DOCUMENT</b>
+    </div>
+  </div>
+  <div class="wtrMark">
+    <div class="wtrMarkCnt">
+      <div>
         <div style="padding-bottom: 1px;">
-            <div style="padding-left:20px">
-                <span style="font-size: 13px;">$timeNow</span>
-                <br/>
-                <br/>
-                <span style="font-size: 13px;">Dear $sponsorName,</span>
-                <br/>
-                <br/>
-                <span style="font-size: 13px;">The Mar Thoma Mission Board-Diocese of North America &amp; Europe would like to thank you for supporting
-                    the Light to Life project and actively participating by pledging to sponsor a child.</span>
-                <br/>
-                <br/>
-                <span style="font-size: 13px;">The following are your sponsorship details:</span>
-                <br/>
-                <br/>
-            </div>
+          <div style="padding-left:20px">
+            <span style="font-size: 13px;">$timeNow</span>
+            <br/>
+            <br/>
+            <span style="font-size: 13px;">Dear $sponsorName,</span>
+            <br/>
+            <br/>
+            <span style="font-size: 13px;">The Mar Thoma Mission Board-Diocese of North America &amp; Europe would like to thank you for supporting the
+              Light to Life project and actively participating by pledging to sponsor a child.</span>
+            <br/>
+            <br/>
+            <span style="font-size: 13px;">The following are your sponsorship details:</span>
+            <br/>
+            <br/>
+          </div>
         </div>
-    </div>
-    <div id="container">
+      </div>
+      <div id="container">
         <table class="tableStyle">
-            <tr>
-                <td class="thStype" colspan="4">
-                    <span class="thSpanStyle">SPONSOR INFORMATION</span>
-                </td>
-            </tr>
-            <tr>
-                <td class="tdHighLightStyle" width="20px;">
-                    <span class="tdSpanStyle">ID</span>
-                </td>
-                <td class="thStype">
-                    <span class="tdSpanStyle">$sponsorId</span>
-                </td>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Name of Sponsor</span>
-                </td>
-                <td class="thStype">
-                    <span class="tdSpanStyle">$sponsorName</span>
-                </td>
-            </tr>
-            <tr>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Region/ Center</span>
-                </td>
-                <td class="thStype">
-                    <span class="tdSpanStyle">$sponsorParishRegion</span>
-                </td>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Parish</span>
-                </td>
-                <td class="thStype">
-                    <span class="tdSpanStyle">$sponsorParish</span>
-                </td>
-            </tr>
-            <tr>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Address</span>
-                </td>
-                <td class="thStype" colspan="3">
-                    <span class="tdSpanStyle">$sponsorAddress</span>
-                </td>
-            </tr>
-            <tr>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Phone</span>
-                </td>
-                <td class="thStype">
-                    <span class="tdSpanStyle">$!sponsorPhone</span>
-                </td>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">E-Mail</span>
-                </td>
-                <td class="thStype" width="150px">
-                    <span class="tdSpanStyle">$!sponsorEmail</span>
-                </td>
-            </tr>
+          <tr>
+            <td class="thStype" colspan="4">
+              <span class="thSpanStyle">SPONSOR INFORMATION</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="tdHighLightStyle" width="20px;">
+              <span class="tdSpanStyle">ID</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$sponsorId</span>
+            </td>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">NAME</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$sponsorName</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">REGION/CENTER</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$sponsorParishRegion</span>
+            </td>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">PARISH</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$sponsorParish</span>
+            </td>
+          </tr>         
+          <tr>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">PHONE</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$!sponsorPhone</span>
+            </td>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">E-MAIL</span>
+            </td>
+            <td class="thStype" width="150px">
+              <span class="tdSpanStyle">$!sponsorEmail</span>
+            </td>
+          </tr>
+           <tr>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">ADDRESS</span>
+            </td>
+            <td class="thStype" colspan="3">
+              <span class="tdSpanStyle">$sponsorAddress</span>
+            </td>
+          </tr>
         </table>
-    </div>
-    <br/> #foreach ($sponsee in $sponseeList)
-    <div id="container">
+      </div>
+     
+      #set($studentSize = $sponseeList.size())
+      
+   <br/>
+      #foreach ($sponsee in $sponseeList)
+      <div id="container">
         <table class="tableStyle">
-            <tr>
-                <td class="thStype" colspan="7">
-                    <span class="thSpanStyle">CHILD INFORMATION</span>
-                </td>
-            </tr>
-            <tr>
-                <td class="tdHighLightStyle" width="20px;">
-                    <span class="tdSpanStyle">ID</span>
-                </td>
-                <td class="thStype">
-                    <span class="tdSpanStyle">$!sponsee.uniqueId</span>
-                </td>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Name of Child</span>
-                </td>
-                <td class="thStype" colspan="4">
-                    <span class="tdSpanStyle">$!sponsee.studentName</span>
-                </td>
-            </tr>
-            <tr>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Date of Birth</span>
-                </td>
-                <td class="thStype">
-                    <span class="tdSpanStyle">$!sponsee.dateOfBirth</span>
-                </td>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Class/Grade Level</span>
-                </td>
-                $!sponsee.grade
-                <td class="thStype" colspan="3">
-                    <span class="tdSpanStyle">$!sponsee.grade</span>
-                </td>
-                <td width="45px" rowspan="6">
-                    <img width="100px" src="data:image/png;base64,$sponsee.profilePicture" alt="imagename" />
-                    
-                </td>
-            </tr>
-            <tr>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Gender</span>
-                </td>
-                <td class="thStype">
-                    <span class="tdSpanStyle">$!sponsee.gender</span>
-                </td>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Medium of Study</span>
-                </td>
-                <td class="thStype" colspan="3">
-                    <span class="tdSpanStyle">$!sponsee.baseLanguage</span>
-                </td>
-                <!-- <td class="tdHighLightStyle">
-<span class="tdSpanStyle">Cluster</span>
-</td>
-<td class="thStype">
-<span class="tdSpanStyle">$!sponsee.cluster</span>
-</td>-->
-            </tr>
-            <tr>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Hobby</span>
-                </td>
-                <td class="thStype">
-                    <span class="tdSpanStyle">$!sponsee.hobby</span>
-                </td>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Favorite Color</span>
-                </td>
-                <td class="thStype">
-                    <span class="tdSpanStyle">$!sponsee.favColor</span>
-                </td>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Favorite Game</span>
-                </td>
-                <td class="thStype">
-                    <span class="tdSpanStyle">$!sponsee.favGame</span>
-                </td>
-            </tr>
+          <tr>
+            <td class="thStype" colspan="7">
+              <span class="thSpanStyle">CHILD INFORMATION</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="tdHighLightStyle" width="105px;">
+              <span class="tdSpanStyle">ID</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$!sponsee.uniqueId</span>
+            </td>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">NAME</span>
+            </td>
+            <td class="thStype" colspan="2">
+              <span class="tdSpanStyle">$!sponsee.studentName</span>
+            </td>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">DATE OF BIRTH</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$sponsee.dateOfBirth</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">GENDER</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$!sponsee.gender</span>
+            </td>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">CLASS/GRADE</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$!sponsee.grade</span>
+            </td>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">MEDIUM OF STUDY</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$!sponsee.baseLanguage</span>
+            </td>
+            <td class="thImageStype" rowspan="6">
+              <img width="100" src="data:image/png;base64,$sponsee.profilePicture" alt="imagename" />
+            </td>
+          </tr>
 
-            <tr>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Partner Organization</span>
-                </td>
-                <td class="thStype" colspan="5">
-                    <span class="tdSpanStyle">$!sponsee.agencyName</span>
-                </td>
-            </tr>
-            <tr>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Project Location</span>
-                </td>
-                <td class="thStype" colspan="5">
-                    <span class="tdSpanStyle">$!sponsee.projectName - $!sponsee.address</span>
-                </td>
-            </tr>
+          <tr>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">HOBBY</span>
+            </td>
+            <td class="thStype" colspan="5">
+              <span class="tdSpanStyle">$!sponsee.hobby</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">FAVORITE COLOR</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$!sponsee.favColor</span>
+            </td>
+            <td class="tdHighLightStyle" colspan="2">
+              <span class="tdSpanStyle">FAVORITE GAME</span>
+            </td>
+            <td class="thStype" colspan="2">
+              <span class="tdSpanStyle">$!sponsee.favGame</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">NAME OF GUARDIAN</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$!sponsee.nameOfGuardian</span>
+            </td>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">OCCUPATION</span>
+            </td>
+            <td class="thStype" colspan="3">
+              <span class="tdSpanStyle">$!sponsee.occupationOfGuardian</span>
+            </td>
+          </tr>         
+          <tr>
+            <td class="tdHighLightStyle" colspan="2">
+              <span class="tdSpanStyle">PARTNER ORGANIZATION</span>
+            </td>
+            <td class="thStype" colspan="4">
+              <span class="tdSpanStyle">$!sponsee.agencyName</span>
+            </td>         
+          </tr>
+          <tr>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">PROJECT LOCATION</span>
+            </td>
+            <td class="thStype" colspan="5">
+              <span class="tdSpanStyle">$!sponsee.projectName - $!sponsee.address</span>
+            </td>
+          </tr>
         </table>
-    </div>
-    #end
-    <div id="container">
+      </div>  
+       #if( $studentSize == 2 )
+           <br/>
+           <br/>
+      	#end
+      
+      #end
+      
+      #if( $studentSize == 2 )
+           <br/>
+           <br/>
+           <br/>
+            <br/>
+           <br/>
+      #end
+     
+      <div id="container">
         <table class="tableStyle">
-            <tr>
-                <td class="thStype" colspan="4">
-                    <span class="thSpanStyle">PAYMENT DETAILS</span>
-                </td>
-            </tr>
-            <tr>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Number of Children Sponsored</span>
-                </td>
-                <td class="thStype">
-                    <span class="tdSpanStyle">$!totalChildrenSposored</span>
-                </td>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Sponsorship Start Date</span>
-                </td>
-                <td class="thStype">
-                    <span class="tdSpanStyle">$!spnStartDate</span>
-                </td>
-            </tr>
-            <tr>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Total Payment Received</span>
-                </td>
-                <td class="thStype">
-                    <span class="tdSpanStyle">$!totalPaymentReceived</span>
-                </td>
-                <td class="tdHighLightStyle">
-                    <span class="tdSpanStyle">Payment Method</span>
-                </td>
-                <td class="thStype">
-                    <span class="tdSpanStyle">$!paymentMethod</span>
-                </td>
-            </tr>
+          <tr>
+            <td class="thStype" colspan="4">
+              <span class="thSpanStyle">PAYMENT DETAILS</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">NUMBER OF CHILDREN SPONSORED</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$!totalChildrenSposored</span>
+            </td>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">SPONSORSHIP START DATE</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$!spnStartDate</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">TOTAL PAYMENT RECEIVED</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$$!totalPaymentReceived</span>
+            </td>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">PAYMENT METHOD</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$!paymentMethod</span>
+            </td>
+          </tr>
         </table>
-    </div>
-    <div>
+      </div>
+      <div>
         <div style="padding-bottom: 2px;">
-            <div style="padding-left:20px; padding-bottom: 10px;">
-                <span style="font-size: 13px;">Once again, we really appreciate your prayers and support. Please contact the office of the Mar Thoma Mission
-                    Board if you have any questions or concerns. Please find contact information above.</span>
-            </div>
-            <div style="padding-left:20px">
-                <span style="font-size: 13px;">Regards,</span>
-            </div>
-            <div style="padding-left:20px">
-                <span style="font-size: 13px;">Akash Daniel Mathew</span>
-            </div>
-            <div style="padding-left:20px">
-                <span style="font-size: 13px;">Mar Thoma Mission Board</span>
-            </div>
-            <div style="padding-left:20px">
-                <span style="font-size: 13px;">Diocese of North America &amp; Europe</span>
-            </div>
+          <div style="padding-left:20px; padding-bottom: 10px;">
+            <span style="font-size: 13px;">Once again, we really appreciate your prayers and support. Please contact the office of the Mar Thoma Mission
+              Board if you have any questions or concerns. Please find contact information above.</span>
+          </div>
+          <div style="padding-left:20px">
+            <span style="font-size: 13px;">Regards,</span>
+          </div>        
+
+          <div style="padding-left:25px">
+            <img width="70px" src="data:image/png;base64,$sign2" />
+          </div>
+ 		  <div style="padding-left:20px">
+            <span style="font-size: 13px;">Akash Daniel Mathew</span>
+          </div>
+          <div style="padding-left:20px">
+            <span style="font-size: 13px;">Mar Thoma Mission Board</span>
+          </div>
+          <div style="padding-left:20px">
+            <span style="font-size: 13px;">Diocese of North America &amp; Europe</span>
+          </div>
         </div>
+      </div>
     </div>
+  </div>
 </body>
 
 </html>

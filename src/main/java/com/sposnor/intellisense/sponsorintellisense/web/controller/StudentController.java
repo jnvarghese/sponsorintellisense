@@ -1,10 +1,17 @@
 package com.sposnor.intellisense.sponsorintellisense.web.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +53,7 @@ public class StudentController {
 	public Student createStudent(@RequestBody Student note) {
 		studentMapper.insert(note);	    
 	    return note;
-	}
-	
+	}	
 	@PostMapping("/image/{id}")
 	public ResponseEntity<String> uploadImage(
 			@RequestParam("file") MultipartFile multipartFile,
@@ -55,19 +61,47 @@ public class StudentController {
 			String message = "";
 			String name = null ;
 			Student student = new Student();
+			ByteArrayOutputStream baos  = new ByteArrayOutputStream();
 			try {
 				name = multipartFile.getOriginalFilename();
-				System.out.println("File name: "+multipartFile);
-				student.setProfilePicture(multipartFile.getBytes());
+				
+				System.out.println("File name: "+multipartFile);				
+				convertFormat(multipartFile.getInputStream(), "png", baos);
+				System.out.println( " - imageBytes -" + baos.toByteArray());
+				byte[] arr = baos.toByteArray();
+				//student.setProfilePicture(multipartFile.getBytes());
+				student.setProfilePicture(arr);
 				student.setId(studentId);
 				studentMapper.uploadImage(student);
 				message = "You successfully uploaded " + name + "!";
 				return ResponseEntity.status(HttpStatus.OK).body(message);
 			} catch (Exception e) {
+				e.printStackTrace();
 				message = "FAIL to upload " + name + "!";
-				return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
+				return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(e.getMessage());
+			}finally {
+				baos.close();
 			}
 	}
+	
+	private OutputStream convertFormat(InputStream inputStream, String formatName, OutputStream baos) throws IOException {
+		
+			//ByteArrayOutputStream baos  = new ByteArrayOutputStream();			
+			byte [] currentImage;
+			// reads input image from file
+			BufferedImage inputImage = ImageIO.read(inputStream);
+
+			// writes to the output image in specified format
+			boolean result = ImageIO.write(inputImage, "png", baos);
+			System.out.println( " - result -- "+result);
+			//baos.flush();
+			
+		    //currentImage = baos.toByteArray();
+		    //baos.close();
+			//inputStream.close();
+
+			return baos;
+			}
 	
 	@GetMapping("/find/{id}")
 	public ResponseEntity<Student> getStudentById(@PathVariable(value = "id") Long studentId) {

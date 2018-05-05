@@ -3,7 +3,9 @@ package com.sposnor.intellisense.sponsorintellisense.web.controller;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -43,7 +45,7 @@ import com.sposnor.intellisense.sponsorintellisense.mapper.ManageProgramMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.StudentMapper;
 import com.sposnor.intellisense.sponsorintellisense.util.VelocityTemplateParser;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+//import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 @RestController
 @RequestMapping("/api")
@@ -64,9 +66,10 @@ public class ManageProgramController {
 	}
 	
 	private Map<String,Object> getDataMap(SponsorReport sponser, List<SponseeReport> sponseeList){
-		SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy");
+		SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd yyyy");
 		Date date = new Date();
 		String time = sdf.format(date);
+		
 		
 		Map<String, Object> map = new HashMap<String,Object>();
 		map.put("timeNow", time);
@@ -86,29 +89,40 @@ public class ManageProgramController {
 		map.put("totalChildrenSposored", sponseeList.size());
 		map.put("totalPaymentReceived", sponser.getContribution());
 		map.put("spnStartDate", sponser.getEffectiveDate());
+		map.put("sign2", sponser.getSign2());
+		map.put("sign1", sponser.getSign1());
+		map.put("waterMark", sponser.getWaterMark());
+		
 		return map;
 	}
 	@RequestMapping(value = "/enrollment/generatereport/{enrollmentId}", method = RequestMethod.GET, produces = "application/pdf")
 	ResponseEntity<byte[]> generatePdf(@PathVariable(value = "enrollmentId") Long enrollmentId) throws Exception{
 		
 		List<SponseeReport> sponseeList= sponsorMapper.listSponseesByEnrolmentId(enrollmentId);
-		
+		for(SponseeReport sr: sponseeList) {
+			//System.out.println(" --- " +sr.getUniqueId());
+		}
 		SponsorReport sponsorReport = studentMapper.findSponsorByEnrolmentId(enrollmentId);
+		
+		String coverLetter = VelocityTemplateParser.generateCoverLetter(sponsorReport, sponseeList.size());
 		String htmlstring = VelocityTemplateParser.generateHTML(getDataMap(sponsorReport,sponseeList));
-		System.out.println(htmlstring);
+		String consolidatedData =  coverLetter + htmlstring;
+		System.out.println(" consolidatedData "+consolidatedData);    
+
 		ByteArrayOutputStream byteArrayPutStream = new ByteArrayOutputStream();
 		 byte[] pdfBytes = byteArrayPutStream.toByteArray();
-		
+  
 	     // step 1
         Document document = new Document();
         // step 2
+     
         PdfWriter writer = PdfWriter.getInstance(document, byteArrayPutStream);
         // step 3
         document.open();
-        // step 4
- 
+        // step 4   
+        
         // CSS
-        CSSResolver cssResolver =
+        CSSResolver cssResolver = 
                 XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
  
         // HTML
@@ -124,8 +138,9 @@ public class ManageProgramController {
         // XML Worker
         XMLWorker worker = new XMLWorker(css, true);
         XMLParser p = new XMLParser(worker);
-        p.parse(new ByteArrayInputStream(htmlstring.getBytes()));
- 
+        p.parse(new ByteArrayInputStream(consolidatedData.getBytes()));
+
+        
         // step 5
         document.close();
         
@@ -171,7 +186,8 @@ public class ManageProgramController {
 	        int pos = src.indexOf("base64,");
 	        try {
 	            if (src.startsWith("data") && pos > 0) {
-	                byte[] img = Base64.decode(src.substring(pos + 7));
+	            	String str = src.substring(pos + 7);
+	            	byte[] img = Base64.getDecoder().decode(str);
 	                return Image.getInstance(img);
 	            }
 	            else {

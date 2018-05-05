@@ -27,9 +27,9 @@ public interface ManageProgramMapper {
 	List<Contribution> getSponsorshipContribution(@Param("studentId") Long studentId, @Param("sponsorId") Long sponsorId);	
 	
 	
-	@Select("SELECT EN.ID enrollmentId, CASE hasAnyCoSponser WHEN '1' THEN CONCAT(FIRSTNAME,' ','&',' ',coSponserName ) ELSE CONCAT(FIRSTNAME,' ',MIDDLEINITIAL,' ',LASTNAME ) END sponsorName, "
+	@Select("SELECT EN.ID enrollmentId, CASE hasAnyCoSponser WHEN '1' THEN CONCAT(FIRSTNAME,' ','&',' ',coSponserName ) ELSE CONCAT(FIRSTNAME,' ',COALESCE(MIDDLEINITIAL, ''),' ',LASTNAME ) END sponsorName, "
 			+ "NICKNAME sponsorNickName, P.NAME parishName, DATE_FORMAT(effectiveDate, \"%M %D %Y\") effectiveDate,(CONTRIBUTIONAMOUNT + MISCAMOUNT) CONTRIBUTION, "
 			+ "EN.CREATEDDATE FROM SPONSOR SP, PARISH P, ENROLLMENT EN WHERE P.ID = SP.PARISHID "
-			+ "AND SPONSORID = SP.ID ORDER BY EN.CREATEDDATE DESC")
+			+ "AND SPONSORID = SP.ID ORDER BY sponsorName") //  EN.CREATEDDATE DESC
 	List<ViewEnroll> selectEnrollments();
 }
