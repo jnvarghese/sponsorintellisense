@@ -1,27 +1,38 @@
 package com.sposnor.intellisense.sponsorintellisense.web.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.FileUpload;
+import com.sposnor.intellisense.sponsorintellisense.data.model.UploadDocument;
 import com.sposnor.intellisense.sponsorintellisense.mapper.UploadMapper;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/file")
 public class UploadController {
 	
 	@Autowired
 	private UploadMapper uploadMapper;
 
+	@GetMapping("/list")
+	public List<UploadDocument> listFile(@RequestHeader String type) {
+		
+		System.out.println(" -- type-- "+type);
+		return null;
+	}
+		
 	@PostMapping("/upload/{agencyId}/{projectId}/{userId}")
 	public ResponseEntity<String> uploadImage(
 			@RequestParam("file") MultipartFile multipartFile,
