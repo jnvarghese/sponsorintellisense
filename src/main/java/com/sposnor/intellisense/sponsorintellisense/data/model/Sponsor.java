@@ -1,6 +1,7 @@
 package com.sposnor.intellisense.sponsorintellisense.data.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Date;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -19,7 +20,7 @@ public class Sponsor implements Serializable {
 	private String middleInitial;
 	@NotBlank
 	private String lastName;	
-	@NotBlank
+	//@NotBlank
 	private String sponsorCode;
 	private String nickName;
 	private String dayOfBirth;
@@ -237,8 +238,15 @@ public class Sponsor implements Serializable {
 		return createdDate;
 	}
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public void setCreatedDate(Date createdDate) throws ParseException {
+		java.util.Date dt = new java.util.Date();
+
+		java.text.SimpleDateFormat sdf = 
+		     new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		String currentTime = sdf.format(dt);
+		
+		this.createdDate = sdf.parse(currentTime);
 	}
 
 	public Date getUpdatedDate() {
@@ -264,5 +272,20 @@ public class Sponsor implements Serializable {
 	public void setNickName(String nickName) {
 		this.nickName = nickName;
 	}
+
+	@Override
+	public String toString() {
+		return "Sponsor [id=" + id + ", firstName=" + firstName + ", middleInitial=" + middleInitial + ", lastName="
+				+ lastName + ", sponsorCode=" + sponsorCode + ", nickName=" + nickName + ", dayOfBirth=" + dayOfBirth
+				+ ", monthOfBirth=" + monthOfBirth + ", sponsorStatus=" + sponsorStatus + ", emailAddress="
+				+ emailAddress + ", appartmentNumber=" + appartmentNumber + ", street=" + street + ", city=" + city
+				+ ", state=" + state + ", postalCode=" + postalCode + ", hasAnyCoSponser=" + hasAnyCoSponser
+				+ ", coSponserName=" + coSponserName + ", parishId=" + parishId + ", parishName=" + parishName
+				+ ", parishCity=" + parishCity + ", centerId=" + centerId + ", createdDate=" + createdDate
+				+ ", updatedDate=" + updatedDate + ", createdBy=" + createdBy + ", updatedBy=" + updatedBy + ", phone1="
+				+ phone1 + ", phone2=" + phone2 + "]";
+	}
+	
+	
 	
 }

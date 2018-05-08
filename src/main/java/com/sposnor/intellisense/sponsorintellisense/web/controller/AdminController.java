@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -57,7 +58,8 @@ public class AdminController {
 	}
 
 	@PostMapping("/projects/add")
-	public Project createProject(@Valid @RequestBody Project project) {
+	public Project createProject(@RequestHeader Long userId, @Valid @RequestBody Project project) {
+		project.setCreatedBy(userId);
 		projectMapper.insert(project);
 		return project;
 	}
@@ -72,8 +74,9 @@ public class AdminController {
 	}
 
 	@PutMapping("/projects/modify/{id}")
-	public Project updateProject(@PathVariable(value = "id") Long projectId,
+	public Project updateProject(@RequestHeader Long userId, @PathVariable(value = "id") Long projectId,
 			@Valid @RequestBody Project project) {
+		project.setUpdatedBy(userId);
 		projectMapper.update(project);
 		return project;
 	}
@@ -94,8 +97,9 @@ public class AdminController {
 	}
 
 	@PostMapping("/parishes/add")
-	public Parish createParish(@RequestBody Parish parish) {	
+	public Parish createParish(@RequestHeader Long userId, @RequestBody Parish parish) {	
 		try {
+			parish.setCreatedBy(userId);
 			parishMapper.insert(parish);
 			for(ParishProject pp: parish.getProjects()) {
 				pp.setParishId(parish.getId());
@@ -127,9 +131,9 @@ public class AdminController {
 	}
 
 	@PutMapping("/parishes/modify/{id}")
-	public Parish updateParish(@PathVariable(value = "id") Long parishId,
+	public Parish updateParish(@RequestHeader Long userId, @PathVariable(value = "id") Long parishId,
 			 @RequestBody Parish parish) {
-		System.out.println( " -- parish "+ parish);
+		parish.setUpdatedBy(userId);
 		parishMapper.update(parish);
 		for(ParishProject pp: parish.getProjects()) {
 			pp.setParishId(parish.getId());
@@ -150,8 +154,9 @@ public class AdminController {
 	}
 
 	@PostMapping("/agencies/add")
-	public Agency createSponsor(@Valid @RequestBody Agency agency) {
+	public Agency createSponsor(@RequestHeader Long userId, @Valid @RequestBody Agency agency) {
 		try {
+			agency.setCreatedBy(userId);
 			agencyMapper.insert(agency);			
 		} catch (SQLIntegrityConstraintViolationException ex) {
 			ex.printStackTrace();
@@ -172,8 +177,9 @@ public class AdminController {
 	}
 
 	@PutMapping("/agencies/modify/{id}")
-	public Agency updateAgency(@PathVariable(value = "id") Long agencyId,
+	public Agency updateAgency(@RequestHeader Long userId, @PathVariable(value = "id") Long agencyId,
 			@Valid @RequestBody Agency agency) {
+		agency.setUpdatedBy(userId);
 		agencyMapper.update(agency);
 		return agency;
 	}

@@ -26,11 +26,11 @@ public interface SponsorMapper {
 	
 	public static final String INSERT_SPONSOR = "INSERT INTO SPONSOR(parishId, firstName, lastName, middleInitial, nickName, dayOfBirth, "
 			+ "monthOfBirth, sponsorStatus, emailAddress, appartmentNumber, street, city, state, postalCode, hasAnyCoSponser, "
-			+ "coSponserName, sponsorCode, phone1, phone2, createdBy)"
+			+ "coSponserName, sponsorCode, phone1, phone2, createdBy, createdDate)"
 			+ " values  (#{parishId},#{firstName},#{lastName},#{middleInitial},#{nickName}, #{dayOfBirth},#{monthOfBirth},#{sponsorStatus},#{emailAddress},"
-			+ "#{appartmentNumber},#{street},#{city},#{state},#{postalCode},#{hasAnyCoSponser},#{coSponserName}, #{sponsorCode}, #{phone1}, #{phone2}, #{createdBy})";
+			+ "#{appartmentNumber},#{street},#{city},#{state},#{postalCode},#{hasAnyCoSponser},#{coSponserName}, #{sponsorCode}, #{phone1}, #{phone2}, #{createdBy}, #{createdDate})";
 	
-	public static final String UPDATE_SPONSOR = "UPDATE SPONSOR SET parishId= #{parishId} , firstName= #{firstName}, lastName= #{lastName}, phone1=#{phone1}, phone2=#{phone2}"
+	public static final String UPDATE_SPONSOR = "UPDATE SPONSOR SET parishId= #{parishId} , firstName= #{firstName}, lastName= #{lastName}, phone1=#{phone1}, phone2=#{phone2}, "
 			+ " middleInitial= #{middleInitial}, nickName=#{nickName}, dayOfBirth= #{dayOfBirth}, monthOfBirth= #{monthOfBirth}, sponsorStatus= #{sponsorStatus},"
 			+ " emailAddress= #{emailAddress}, appartmentNumber= #{appartmentNumber}, street= #{street}, city= #{city}, state= #{state},"
 			+ " postalCode= #{postalCode}, hasAnyCoSponser= #{hasAnyCoSponser}, coSponserName= #{coSponserName}, updatedBy= #{updatedBy} WHERE id=#{id}";

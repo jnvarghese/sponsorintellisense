@@ -32,9 +32,9 @@ public interface StudentMapper {
 	List<Student> listByProjectId(@Param("id") Long id);
 	
 	@Insert("INSERT INTO STUDENT (PROJECTID, STUDENTNAME, GENDER, DATEOFBIRTH, ADDRESS, HOBBIES, TALENT, "
-			+ "RECENTACHIVEMENTS, PROFILEPICTURE, SOFTLOCKED, studentCode, createdBy) "
+			+ "RECENTACHIVEMENTS, PROFILEPICTURE, SOFTLOCKED, studentCode, createdBy, createdDate) "
 			+ "VALUES (#{projectId}, #{studentName},  #{gender}, #{dateOfBirth}, #{address},"
-			+ "#{hobbies}, #{talent}, #{recentAchivements}, #{profilePicture}, #{softlocked}, #{studentCode}, #{createdBy})")
+			+ "#{hobbies}, #{talent}, #{recentAchivements}, #{profilePicture}, #{softlocked}, #{studentCode}, #{createdBy}, #{createdDate})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id",
 			before = false, resultType= Long.class)
 	void insert(Student student);

@@ -1,6 +1,7 @@
 package com.sposnor.intellisense.sponsorintellisense.data.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -41,10 +42,32 @@ public class Parish implements Serializable {
 	
 	private List<ParishProject> projects = new ArrayList<ParishProject>();
 	
-	private Date created_date;
+	private Date createdDate;
 
-	private Date updated_date;
+	private Date updatedDate;
 	
+	private Long createdBy;
+	
+	private Long updatedBy;
+	
+	
+	
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Long getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(Long updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -125,29 +148,39 @@ public class Parish implements Serializable {
 		this.projects = projects;
 	}
 
-	public Date getCreated_date() {
-		return created_date;
+	
+	public Date getCreatedDate() {
+		return createdDate;
 	}
 
-	public void setCreated_date(Date created_date) {
-		this.created_date = created_date;
+	public void setCreatedDate(Date createdDate) throws ParseException {
+		java.util.Date dt = new java.util.Date();
+
+		java.text.SimpleDateFormat sdf = 
+		     new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		String currentTime = sdf.format(dt);
+		
+		this.createdDate = sdf.parse(currentTime);
 	}
 
-	public Date getUpdated_date() {
-		return updated_date;
+	public Date getUpdatedDate() {
+		return updatedDate;
 	}
 
-	public void setUpdated_date(Date updated_date) {
-		this.updated_date = updated_date;
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
 	}
 
 	@Override
 	public String toString() {
 		return "Parish [id=" + id + ", code=" + code + ", centerId=" + centerId + ", name=" + name + ", city=" + city
 				+ ", status=" + status + ", regionName=" + regionName + ", centerName=" + centerName + ", sponsors="
-				+ sponsors + ", projects=" + projects + ", created_date=" + created_date + ", updated_date="
-				+ updated_date + "]";
+				+ sponsors + ", projects=" + projects + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate
+				+ ", createdBy=" + createdBy + ", updatedBy=" + updatedBy + "]";
 	}
 
+
+	
 	
 }

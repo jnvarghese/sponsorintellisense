@@ -20,11 +20,11 @@ public interface AgencyMapper {
 	@Select("select * from agency where status = 1")
 	List<Agency> list();
 	
-	@Insert("insert into agency (code, name, status) values (#{code}, #{name}, #{status})")
+	@Insert("insert into agency (code, name, status, createdBy, createdDate) values (#{code}, #{name}, #{status}, #{createdBy}, #{createdDate})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id",
 			before = false, resultType= Long.class)
 	void insert(Agency agency) throws java.sql.SQLIntegrityConstraintViolationException;
 	
-	@Update("update agency set code= #{code}, name= #{name}, status= #{status} where id = #{id}")	
+	@Update("update agency set code= #{code}, name= #{name}, status= #{status}, updatedBy= #{updatedBy} where id = #{id}")	
 	void update(Agency sponsor);
 }

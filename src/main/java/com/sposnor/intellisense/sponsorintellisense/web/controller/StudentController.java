@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,7 +51,8 @@ public class StudentController {
 	}
 	
 	@PostMapping("/add")
-	public Student createStudent(@RequestBody Student note) {
+	public Student createStudent(@RequestHeader Long userId, @RequestBody Student note) {
+		note.setCreatedBy(userId);
 		studentMapper.insert(note);	    
 	    return note;
 	}	
@@ -113,8 +115,9 @@ public class StudentController {
 	}
 	
 	@PutMapping("/modify/{id}")
-	public Student updateStudent(@PathVariable(value = "id") Long studentId, 
-			@Valid @RequestBody Student studentToModify) {		
+	public Student updateStudent(@RequestHeader Long userId,@PathVariable(value = "id") Long studentId, 
+			@Valid @RequestBody Student studentToModify) {	
+		studentToModify.setUpdatedBy(userId);
 		studentMapper.update(studentToModify);	    
 	    return studentToModify;
 	}

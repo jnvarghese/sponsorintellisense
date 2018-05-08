@@ -32,13 +32,13 @@ public interface ProjectMapper {
 	List<Project> findProjectsByParishId(@Param("parishId") Long parishId);
 	
 	
-	@Insert("insert into project (code, agencyId, name, address, contactNumber, contactEmail, status) "
-			+ "values (#{code}, #{agencyId}, #{name}, #{address}, #{contactNumber}, #{contactEmail}, #{status})")
+	@Insert("insert into project (code, agencyId, name, address, contactNumber, contactEmail, status, createdBy, createdDate) "
+			+ "values (#{code}, #{agencyId}, #{name}, #{address}, #{contactNumber}, #{contactEmail}, #{status}, #{createdBy}, #{createdDate})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id",
 			before = false, resultType= Long.class)
 	void insert(Project p);
 	
 	@Update("update project set code= #{code}, agencyId= #{agencyId}, name= #{name}, address=#{address}, contactNumber=#{contactNumber},"
-			+ " contactEmail= #{contactEmail}, status= #{status} where id = #{id}")	
+			+ " contactEmail= #{contactEmail}, status= #{status}, updatedBy= #{updatedBy} where id = #{id}")	
 	void update(Project p);
 }

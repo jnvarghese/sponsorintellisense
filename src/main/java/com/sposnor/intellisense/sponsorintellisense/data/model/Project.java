@@ -1,6 +1,7 @@
 package com.sposnor.intellisense.sponsorintellisense.data.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Date;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -41,6 +42,28 @@ public class Project implements Serializable {
 	private Date createdDate;
 
 	private Date updatedDate;
+	
+	private Long createdBy;
+	
+	private Long updatedBy;
+	
+	
+
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Long getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(Long updatedBy) {
+		this.updatedBy = updatedBy;
+	}
 
 	public Long getId() {
 		return id;
@@ -94,8 +117,15 @@ public class Project implements Serializable {
 		return createdDate;
 	}
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public void setCreatedDate(Date createdDate) throws ParseException {
+		java.util.Date dt = new java.util.Date();
+
+		java.text.SimpleDateFormat sdf = 
+		     new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		String currentTime = sdf.format(dt);
+		
+		this.createdDate = sdf.parse(currentTime);
 	}
 
 	public Date getUpdatedDate() {

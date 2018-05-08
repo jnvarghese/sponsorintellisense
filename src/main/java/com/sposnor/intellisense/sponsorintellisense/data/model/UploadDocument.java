@@ -11,9 +11,24 @@ public class UploadDocument {
 	private boolean status;
 	private Long batchExecutionStatus;
 	private String createdDate;
-	private String type;
+	private String type;	
+	private Long createdBy;
+	private Long updatedBy;
 	
 	
+	
+	public Long getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
+	}
+	public Long getUpdatedBy() {
+		return updatedBy;
+	}
+	public void setUpdatedBy(Long updatedBy) {
+		this.updatedBy = updatedBy;
+	}
 	public String getType() {
 		return type;
 	}

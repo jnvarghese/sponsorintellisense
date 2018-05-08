@@ -1,6 +1,7 @@
 package com.sposnor.intellisense.sponsorintellisense.data.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Date;
 
 import org.hibernate.validator.constraints.NotBlank;
@@ -17,7 +18,7 @@ public class Student implements Serializable {
 	@NotBlank
 	private String studentName;
 	
-	@NotBlank
+	//@NotBlank
 	private String studentCode;
 	
 	@NotBlank
@@ -179,8 +180,16 @@ public class Student implements Serializable {
 	public Date getCreatedDate() {
 		return createdDate;
 	}
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public void setCreatedDate(Date createdDate) throws ParseException {
+		java.util.Date dt = new java.util.Date();
+
+		java.text.SimpleDateFormat sdf = 
+		     new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		String currentTime = sdf.format(dt);
+		
+		this.createdDate = sdf.parse(currentTime);
+		
 	}
 	public Date getUpdatedDate() {
 		return updatedDate;

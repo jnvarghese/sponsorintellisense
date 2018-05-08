@@ -28,11 +28,11 @@ public interface ParishMapper {
 			+ "REGION R, CENTER C WHERE P.CENTERID = C.ID AND C.REGIONID = R.ID AND P.STATUS= 1 ORDER BY P.NAME, P.CITY;")
 	List<Parish> list();
 	
-	@Insert("insert into parish (code, name, status, city, centerId) values (#{code}, #{name}, #{status}, #{city}, #{centerId})")
+	@Insert("insert into parish (code, name, status, city, centerId, createdBy, createdDate) values (#{code}, #{name}, #{status}, #{city}, #{centerId} , #{createdBy}, #{createdDate})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id",
 			before = false, resultType= Long.class)
 	void insert(Parish parish) throws java.sql.SQLIntegrityConstraintViolationException;
 	
-	@Update("update parish set code= #{code}, name= #{name}, status= #{status}, city = #{city}, centerId = #{centerId} where id = #{id}")	
+	@Update("update parish set code= #{code}, name= #{name}, status= #{status}, city = #{city}, centerId = #{centerId}, updatedBy= #{updatedBy} where id = #{id}")	
 	void update(Parish parish);
 }
