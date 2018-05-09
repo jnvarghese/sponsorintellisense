@@ -4,8 +4,11 @@ public class UploadDocument {
 
 	private Long id;
 	private Long  agencyId;
+	private String agencyName;
 	private Long  projectId;
+	private String projectName;
 	private Long  userId;
+	private String uploadedBy;
 	private String userName;
 	private String fileName;
 	private boolean status;
@@ -17,6 +20,24 @@ public class UploadDocument {
 	
 	
 	
+	public String getAgencyName() {
+		return agencyName;
+	}
+	public void setAgencyName(String agencyName) {
+		this.agencyName = agencyName;
+	}
+	public String getProjectName() {
+		return projectName;
+	}
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
+	}
+	public String getUploadedBy() {
+		return uploadedBy;
+	}
+	public void setUploadedBy(String uploadedBy) {
+		this.uploadedBy = uploadedBy;
+	}
 	public Long getCreatedBy() {
 		return createdBy;
 	}

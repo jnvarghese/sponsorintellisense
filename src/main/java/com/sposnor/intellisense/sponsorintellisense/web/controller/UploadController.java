@@ -28,9 +28,11 @@ public class UploadController {
 
 	@GetMapping("/list")
 	public List<UploadDocument> listFile(@RequestHeader String type) {
-		
-		System.out.println(" -- type-- "+type);
-		return null;
+		String fileType = "ST";
+		if("sponsor".equalsIgnoreCase(type)) {
+			fileType = "SP";
+		}
+		return uploadMapper.list(fileType);
 	}
 		
 	@PostMapping("/upload/{agencyId}/{projectId}/{userId}")
