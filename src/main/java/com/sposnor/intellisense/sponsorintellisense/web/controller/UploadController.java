@@ -38,6 +38,7 @@ public class UploadController {
 			fileType = "SP";
 			return uploadMapper.listSponsorUploads(fileType);			
 		}
+		 System.out.println("  s3Wrapper.list() " + s3Wrapper.list());
 		return uploadMapper.listStudentUploads(fileType);
 	}
 		

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.Center;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Dashboard;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Region;
 import com.sposnor.intellisense.sponsorintellisense.mapper.DashboardMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.InitMapper;
@@ -24,11 +25,18 @@ public class DashboardController {
 	private InitMapper initMapper;
 		
 	@GetMapping("/dashboard")
-	public String getDashboard() {
-		Long sponsorCount = dashboardMapper.getCountOfActiveSponsor();
-		Long studentCount = dashboardMapper.getCountOfActiveStudent();
-		Long enrollmentCount = dashboardMapper.getCountOfActiveEnrollments();
-		return "{\"sponsorCount\":"+sponsorCount+",\"studentCount\":"+studentCount+",\"enrollmentCount\":"+enrollmentCount+"}";
+	public Dashboard getDashboard() {
+		int sponsorCount = dashboardMapper.getCountOfActiveSponsor();
+		int studentCount = dashboardMapper.getCountOfActiveStudent();
+		int enrollmentCount = dashboardMapper.getCountOfActiveEnrollments();
+		Dashboard db = new Dashboard();
+		db.setStudentCount(studentCount);
+		db.setSponsorCount(sponsorCount);
+		db.setEnrollmentCount(enrollmentCount);
+		db.setMaxOutOverviews0(dashboardMapper.getMaxedOut());
+		db.setMaxOutOverviews1(dashboardMapper.getMaxOutInOneMonth());
+		db.setMaxOutOverviews2(dashboardMapper.getMaxOutInTwoMonth());
+		return db;
 	}
 	
 	@GetMapping("/init/region")
