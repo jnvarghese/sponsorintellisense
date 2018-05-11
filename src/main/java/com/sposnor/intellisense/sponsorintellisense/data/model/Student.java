@@ -44,6 +44,7 @@ public class Student implements Serializable {
 	private String baseLanguage;
 	
 	private String imageLinkRef;
+	private boolean hasImageUploaded;
 	
 	private Date createdDate;
 	private Date updatedDate;
@@ -53,8 +54,13 @@ public class Student implements Serializable {
 	private Long createdBy;
 	
 	private Long updatedBy;	
-
 	
+	public boolean isHasImageUploaded() {
+		return hasImageUploaded;
+	}
+	public void setHasImageUploaded(boolean hasImageUploaded) {
+		this.hasImageUploaded = hasImageUploaded;
+	}
 	public String getImageLinkRef() {
 		return imageLinkRef;
 	}

@@ -16,7 +16,7 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.Student;
 public interface StudentMapper {
 
 	@Select("SELECT S.ID, S.PROJECTID, STUDENTNAME, GENDER, DATEOFBIRTH, S.ADDRESS, HOBBIES, S.STATUS,TALENT, "
-			+ "RECENTACHIVEMENTS, SOFTLOCKED, P.NAME PROJECTNAME, A.NAME AGENCYNAME, studentCode, imageLinkRef FROM STUDENT S "
+			+ "RECENTACHIVEMENTS, SOFTLOCKED, P.NAME PROJECTNAME, A.NAME AGENCYNAME, studentCode, imageLinkRef,grade,favColor,favGame,nameOfGuardian,occupationOfGuardian,baseLanguage FROM STUDENT S "
 			+ "LEFT JOIN PROJECT P ON S.PROJECTID = P.ID "
 			+ "LEFT JOIN AGENCY A ON P.AGENCYID = A.ID "
 			+ "WHERE S.ID = #{id}")
@@ -32,19 +32,21 @@ public interface StudentMapper {
 	List<Student> listByProjectId(@Param("id") Long id);
 	
 	@Insert("INSERT INTO STUDENT (PROJECTID, STUDENTNAME, GENDER, DATEOFBIRTH, ADDRESS, HOBBIES, TALENT, "
-			+ "RECENTACHIVEMENTS, PROFILEPICTURE, SOFTLOCKED, studentCode, createdBy, createdDate) "
+			+ "RECENTACHIVEMENTS, PROFILEPICTURE, SOFTLOCKED,grade,favColor,favGame,nameOfGuardian,occupationOfGuardian,baseLanguage,studentCode, createdBy, createdDate) "
 			+ "VALUES (#{projectId}, #{studentName},  #{gender}, #{dateOfBirth}, #{address},"
-			+ "#{hobbies}, #{talent}, #{recentAchivements}, #{profilePicture}, #{softlocked}, #{studentCode}, #{createdBy}, #{createdDate})")
+			+ "#{hobbies}, #{talent}, #{recentAchivements}, #{profilePicture}, #{softlocked}, #{grade}, #{favColor}, #{favGame}, #{nameOfGuardian}, "
+			+ "#{occupationOfGuardian}, #{baseLanguage}, #{studentCode}, #{createdBy}, #{createdDate})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id",
 			before = false, resultType= Long.class)
 	void insert(Student student);
 	
 	@Update("UPDATE STUDENT SET projectId= #{projectId} , studentName = #{studentName}, "
 			+ "gender= #{gender}, dateOfBirth= #{dateOfBirth}, address= #{address},"
-			+ " status= #{status}, hobbies= #{hobbies}, talent= #{talent}, recentAchivements= #{recentAchivements}, profilePicture= #{profilePicture},"
+			+ " status= #{status}, hobbies= #{hobbies}, talent= #{talent}, recentAchivements= #{recentAchivements}, "
+			+ " grade= #{grade}, favColor= #{favColor}, favGame= #{favGame}, nameOfGuardian= #{nameOfGuardian}, occupationOfGuardian= #{occupationOfGuardian}, baseLanguage= #{baseLanguage},"
 			+ " softlocked= #{softlocked}, updatedBy= #{updatedBy} WHERE id=#{id}")	
 	void update(Student student);
-	
+
 	@Update("UPDATE STUDENT SET profilePicture = #{profilePicture}, updatedBy= #{updatedBy} WHERE id=#{id}")
 	void uploadImage(Student student);
 	
