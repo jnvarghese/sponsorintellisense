@@ -6,9 +6,7 @@ public class FileUpload {
 	
 	private Long userId;
 	
-	private Long agencyId;
-	
-	private Long projectId;
+	private Long referenceId;
 
 	private String fileName;
 	
@@ -19,9 +17,28 @@ public class FileUpload {
 	private String username;
 	
 	private String user;
+	
+	private String type;
 
+	private String uploaduri;
 	
 	
+	public String getUploaduri() {
+		return uploaduri;
+	}
+
+	public void setUploaduri(String uploaduri) {
+		this.uploaduri = uploaduri;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public Long getUserId() {
 		return userId;
 	}
@@ -78,21 +95,14 @@ public class FileUpload {
 		this.status = status;
 	}
 
-	public Long getAgencyId() {
-		return agencyId;
+	public Long getReferenceId() {
+		return referenceId;
 	}
 
-	public void setAgencyId(Long agencyId) {
-		this.agencyId = agencyId;
+	public void setReferenceId(Long referenceId) {
+		this.referenceId = referenceId;
 	}
 
-	public Long getProjectId() {
-		return projectId;
-	}
-
-	public void setProjectId(Long projectId) {
-		this.projectId = projectId;
-	}
 
 	
 }

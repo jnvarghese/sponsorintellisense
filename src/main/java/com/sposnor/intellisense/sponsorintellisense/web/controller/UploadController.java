@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.sposnor.intellisense.sponsorintellisense.data.model.FileUpload;
 import com.sposnor.intellisense.sponsorintellisense.data.model.UploadDocument;
 import com.sposnor.intellisense.sponsorintellisense.mapper.UploadMapper;
+import com.sposnor.intellisense.sponsorintellisense.s3.S3Wrapper;
 
 @RestController
 @RequestMapping("/api/file")
@@ -25,34 +27,46 @@ public class UploadController {
 	
 	@Autowired
 	private UploadMapper uploadMapper;
+	
+	@Autowired
+	S3Wrapper s3Wrapper;
 
 	@GetMapping("/list")
 	public List<UploadDocument> listFile(@RequestHeader String type) {
 		String fileType = "ST";
 		if("sponsor".equalsIgnoreCase(type)) {
 			fileType = "SP";
+			return uploadMapper.listSponsorUploads(fileType);			
 		}
-		return uploadMapper.list(fileType);
+		return uploadMapper.listStudentUploads(fileType);
 	}
 		
-	@PostMapping("/upload/{agencyId}/{projectId}/{userId}")
+	@PostMapping("/upload/{type}/{id}")
 	public ResponseEntity<String> uploadImage(
+			@RequestParam("userId") String userId,
 			@RequestParam("file") MultipartFile multipartFile,
-			@PathVariable(value = "agencyId") Long agencyId, 
-			@PathVariable(value = "projectId") Long projectId,
-			@PathVariable(value = "userId") Long userId
+			@PathVariable(value = "id") Long id,
+			@PathVariable(value = "type") String type
 			) throws IOException {
+			System.out.println( " ------------ > " +userId);
 			String message = "";
 			String name = null ;
 			FileUpload fileUpload = new FileUpload();
 			try {
 				name = multipartFile.getOriginalFilename();
-				System.out.println("File name: "+multipartFile);
 				fileUpload.setFileName(multipartFile.getOriginalFilename());
 				fileUpload.setFileData(multipartFile.getBytes());
-				fileUpload.setProjectId(projectId);
-				fileUpload.setAgencyId(agencyId);
-				fileUpload.setUserId(userId);
+				fileUpload.setReferenceId(id);
+				if("sponsor".equalsIgnoreCase(type)) {
+					fileUpload.setType("SP");
+				}else if("student".equalsIgnoreCase(type)) {
+					fileUpload.setType("ST");
+				}else {
+					System.err.println(" Unknown file type "+type);
+				}				
+				fileUpload.setUserId(Long.valueOf(userId));
+				PutObjectResult putObjectResult = s3Wrapper.upload(multipartFile);
+				System.out.println( " putObjectResult " +putObjectResult);
 				uploadMapper.uploadFile(fileUpload);
 				message = "You successfully uploaded " + name + "!";
 				return ResponseEntity.status(HttpStatus.OK).body(message);

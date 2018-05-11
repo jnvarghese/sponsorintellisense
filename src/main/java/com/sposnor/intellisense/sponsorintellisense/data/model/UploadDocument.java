@@ -7,6 +7,10 @@ public class UploadDocument {
 	private String agencyName;
 	private Long  projectId;
 	private String projectName;
+	private Long centerId;
+	private String centerName;
+	private Long parishId;
+	private String parishName;
 	private Long  userId;
 	private String uploadedBy;
 	private String userName;
@@ -17,9 +21,32 @@ public class UploadDocument {
 	private String type;	
 	private Long createdBy;
 	private Long updatedBy;
+
 	
-	
-	
+	public Long getCenterId() {
+		return centerId;
+	}
+	public void setCenterId(Long centerId) {
+		this.centerId = centerId;
+	}
+	public String getCenterName() {
+		return centerName;
+	}
+	public void setCenterName(String centerName) {
+		this.centerName = centerName;
+	}
+	public Long getParishId() {
+		return parishId;
+	}
+	public void setParishId(Long parishId) {
+		this.parishId = parishId;
+	}
+	public String getParishName() {
+		return parishName;
+	}
+	public void setParishName(String parishName) {
+		this.parishName = parishName;
+	}
 	public String getAgencyName() {
 		return agencyName;
 	}
