@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.Contribution;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Receipt;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorshipInfo;
 import com.sposnor.intellisense.sponsorintellisense.data.model.ViewEnroll;
 
@@ -32,4 +33,8 @@ public interface ManageProgramMapper {
 			+ "EN.CREATEDDATE FROM SPONSOR SP, PARISH P, ENROLLMENT EN WHERE P.ID = SP.PARISHID "
 			+ "AND SPONSORID = SP.ID ORDER BY sponsorName") //  EN.CREATEDDATE DESC
 	List<ViewEnroll> selectEnrollments();
+	
+	@Select("select r.id, receivedfrom,address,parish,missionname,total, paymentmethod, DATE_FORMAT(r.createddate, '%M %d %Y') createddate from enrollment ern, "
+			+ "receipt r where ern.receiptId= r.id and ern.id = #{ernId}")
+	Receipt getReceipt(@Param("ernId") Long ernId);
 }

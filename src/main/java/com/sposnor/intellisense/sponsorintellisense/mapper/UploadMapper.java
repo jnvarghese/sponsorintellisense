@@ -14,8 +14,8 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.UploadDocument;
 @Mapper
 public interface UploadMapper {
 
-	@Insert("insert into file_upload (referenceId, userId, fileName,fileData, type) "
-			+ " VALUES (#{referenceId}, #{userId}, #{fileName}, #{fileData}, #{type})")
+	@Insert("insert into file_upload (referenceId, userId, fileName,fileData, type, initiativeId) "
+			+ " VALUES (#{referenceId}, #{userId}, #{fileName}, #{fileData}, #{type}, #{initiativeId})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id",
 	before = false, resultType= Long.class)
 	void uploadFile(FileUpload fileUpload);

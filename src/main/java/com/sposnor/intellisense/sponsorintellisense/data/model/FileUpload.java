@@ -7,6 +7,8 @@ public class FileUpload {
 	private Long userId;
 	
 	private Long referenceId;
+	
+	private Long initiativeId;
 
 	private String fileName;
 	
@@ -103,6 +105,12 @@ public class FileUpload {
 		this.referenceId = referenceId;
 	}
 
+	public Long getInitiativeId() {
+		return initiativeId;
+	}
 
-	
+	public void setInitiativeId(Long initiativeId) {
+		this.initiativeId = initiativeId;
+	}
+
 }

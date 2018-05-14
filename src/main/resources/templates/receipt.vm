@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .bodyStyle {
+            font-family: serif;
+        }
+
+        #container {
+            width: 100%;
+            font-size: 0;
+            margin: 15px;
+            padding-left: 80px;
+            padding-right: 50px;
+            padding-bottom: 20px;
+        }
+
+        .tableStyle {
+            border-spacing: 1px;
+            border-collapse: separate;
+            width: 97.7%;
+        }
+
+        .thStype {
+            border: .2px solid black;
+            border-collapse: inherit;
+            padding-left: 5px;
+            padding-top: 2px;
+            height: 40px;
+            text-align: left;
+        }
+
+        .thStype2 {
+            border: .2px solid black;
+            border-collapse: inherit;
+            padding-left: 5px;
+            padding-top: 2px;
+            height: 40px;
+            text-align: right;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+
+<body class="bodyStyle">
+    <div>
+        <br/>
+        <div style="border:1px solid black; padding-bottom: 15px;">
+            <div style="padding-left:100px">
+                <h2 style="padding: 0px;margin: 0px;">DIOCESE OF NORTH AMERICA & EUROPE</h2>
+            </div>
+            <div style="padding-left:220px">
+                <p style="padding: 0px;margin: 0px; font-size: 13px;">2320 Merrick Ave, Merrick, New York - 11566</p>
+            </div>
+            <div style="padding-left:60px">
+                <span style="font-size: 12px;">
+                    Phone: (516) 377-3311 Email: marthomamissionboard@gmail.com Website: www.marthomamissionnae.org</span>
+            </div>
+        </div>
+    </div>
+    <div>
+
+        <br/>
+        <div id="container">
+            <table cellpadding="5" cellspacing="5">
+                <tr>
+                    <td>
+                        <span>No: $receiptNo</span>
+                    </td>
+                    <td width="37%">
+                        <span></span>
+                    </td>
+                    <td>
+                        <span>Date: $createddate</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="container">
+            <table cellpadding="5" cellspacing="5">
+                <tr>
+                    <td>
+                        <span>Received with thanks from: $receivedfrom</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Address: $address</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Parish: $parish</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="container">
+            <table class="tableStyle">
+                <tr>
+                    <td class="thStype" width="10px;">
+                        <span>1</span>
+                    </td>
+                    <td class="thStype">
+                        <span>$missionname</span>
+                    </td>
+                    <td class="thStype">
+                        <span>$$total</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="thStype2" colspan="2">
+                        <span>
+                            <b>TOTAL</b>
+                        </span>
+                    </td>
+                    <td class="thStype">
+                        <span>$$total</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <br/>
+        <br/>
+        <div id="container">
+            <table cellpadding="5" cellspacing="5">
+                <!--
+                <tr>
+                    <td>
+                        <span>Total Amount in words:</span>
+                    </td>
+                </tr>
+                -->
+                <tr>
+                    <td>
+                        <span>Method of Payment: $paymentmethod</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Secretary............................................ Treasurer.............................................</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+</body>
+
+</html>

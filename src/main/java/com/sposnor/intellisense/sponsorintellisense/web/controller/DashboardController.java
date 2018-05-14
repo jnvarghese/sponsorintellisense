@@ -1,6 +1,5 @@
 package com.sposnor.intellisense.sponsorintellisense.web.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.Center;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Dashboard;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Initiative;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Region;
 import com.sposnor.intellisense.sponsorintellisense.mapper.DashboardMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.InitMapper;
@@ -40,10 +40,13 @@ public class DashboardController {
 	}
 	
 	@GetMapping("/init/region")
-	public List getRegions() {
-		List consolidatedList = new ArrayList();
-		List<Region> regions = initMapper.getRegions();
-		return consolidatedList;
+	public List<Region> getRegions() {
+		return initMapper.getRegions();
+	}
+	
+	@GetMapping("/init/initiative")
+	public List<Initiative> getInitiatives() {
+		return initMapper.getInitiatives();
 	}
 	
 	@GetMapping("/dashboard/center")

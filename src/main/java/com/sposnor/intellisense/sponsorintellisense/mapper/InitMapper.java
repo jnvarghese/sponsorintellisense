@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.Center;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Initiative;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Region;
 
 @Mapper
@@ -21,5 +22,8 @@ public interface InitMapper {
 	
 	@Select("SELECT C.ID, C.CODE, C.NAME, C.REGIONID FROM CENTER C, REGION R WHERE C.STATUS = 1 AND C.REGIONID = R.ID AND R.ID = #{regionId}")
 	List<Center> getCenterByRegionId(@Param("regionId")  Long regionId);
+	
+	@Select("select * from initiative where active= 'Y'")
+	List<Initiative> getInitiatives();
 	
 }

@@ -3,7 +3,6 @@ package com.sposnor.intellisense.sponsorintellisense.web.controller;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
@@ -37,6 +36,7 @@ import com.itextpdf.tool.xml.pipeline.html.AbstractImageProvider;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Contribution;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Receipt;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponseeReport;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReport;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorshipInfo;
@@ -178,6 +178,60 @@ public class ManageProgramController {
 	public List<Contribution> getSponsorshipContribution
 		(@PathVariable(value = "studentid") Long studentId, @PathVariable(value = "sponsorid") Long sponsorId) {
 		return manageProgramMapper.getSponsorshipContribution(studentId, sponsorId);
+	}
+	 
+
+	@RequestMapping(value = "/enrollment/generatereceipt/{enrollmentId}", method = RequestMethod.GET, produces = "application/pdf")
+	ResponseEntity<byte[]> generatereceipt(@PathVariable(value = "enrollmentId") Long enrollmentId) throws Exception{
+		
+		Receipt receipt =  manageProgramMapper.getReceipt(enrollmentId);
+		String receiptHtml = VelocityTemplateParser.generateReceipt(receipt);
+		
+		//System.out.println(receipt);
+		ByteArrayOutputStream byteArrayPutStream = new ByteArrayOutputStream();
+		 byte[] pdfBytes = byteArrayPutStream.toByteArray();
+ 
+	     // step 1
+       Document document = new Document();
+       // step 2
+    
+       PdfWriter writer = PdfWriter.getInstance(document, byteArrayPutStream);
+       // step 3
+       document.open();
+       // step 4   
+       
+       // CSS
+       CSSResolver cssResolver = 
+               XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
+
+       // HTML
+       HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
+       htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
+       htmlContext.setImageProvider(new Base64ImageProvider());
+
+       // Pipelines
+       PdfWriterPipeline pdf = new PdfWriterPipeline(document, writer);
+       HtmlPipeline html = new HtmlPipeline(htmlContext, pdf);
+       CssResolverPipeline css = new CssResolverPipeline(cssResolver, html);
+
+       // XML Worker
+       XMLWorker worker = new XMLWorker(css, true);
+       XMLParser p = new XMLParser(worker);
+       p.parse(new ByteArrayInputStream(receiptHtml.getBytes()));
+
+       
+       // step 5
+       document.close();
+       
+       pdfBytes = byteArrayPutStream.toByteArray();
+       
+       HttpHeaders headers = new HttpHeaders();
+       headers.setContentType(MediaType.parseMediaType("application/pdf"));
+       String filename = "output.pdf";
+       headers.setContentDispositionFormData(filename, filename);
+       headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+       ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfBytes, headers, HttpStatus.OK);
+       return response;
 	}
 	
 	class Base64ImageProvider extends AbstractImageProvider {

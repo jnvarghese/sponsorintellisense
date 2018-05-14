@@ -1,5 +1,7 @@
 package com.sposnor.intellisense.sponsorintellisense.web.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,10 +32,12 @@ public class AuthenticationController {
 
     @Autowired
     private UserMapper userService;
+    
+    Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(value = "/generate-token", method = RequestMethod.POST)
     public ResponseEntity<AuthToken> register(@RequestBody LoginUser loginUser) throws AuthenticationException {
-
+    	LOGGER.info(" Generating token. ");
         final Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginUser.getUsername(),
@@ -41,7 +45,8 @@ public class AuthenticationController {
                 )
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        final User user = userService.findOne(loginUser.getUsername());
+        User user = userService.findOne(loginUser.getUsername());
+        LOGGER.info(" Setting the token. ");
         final String token = jwtTokenUtil.generateToken(user);
         return ResponseEntity.ok(new AuthToken(token, user.getId(),user.getFirstname(), user.getMiddlename(), user.getLastName()));
     }

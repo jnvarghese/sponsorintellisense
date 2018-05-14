@@ -46,10 +46,10 @@ public class UploadController {
 	public ResponseEntity<String> uploadImage(
 			@RequestParam("userId") String userId,
 			@RequestParam("file") MultipartFile multipartFile,
+			@RequestParam("initiativeId") String initiativeId,
 			@PathVariable(value = "id") Long id,
-			@PathVariable(value = "type") String type
+			@PathVariable(value = "type") String type			
 			) throws IOException {
-			System.out.println( " ------------ > " +userId);
 			String message = "";
 			String name = null ;
 			FileUpload fileUpload = new FileUpload();
@@ -58,6 +58,7 @@ public class UploadController {
 				fileUpload.setFileName(multipartFile.getOriginalFilename());
 				fileUpload.setFileData(multipartFile.getBytes());
 				fileUpload.setReferenceId(id);
+				fileUpload.setInitiativeId(Long.valueOf(initiativeId));
 				if("sponsor".equalsIgnoreCase(type)) {
 					fileUpload.setType("SP");
 				}else if("student".equalsIgnoreCase(type)) {
@@ -65,10 +66,11 @@ public class UploadController {
 				}else {
 					System.err.println(" Unknown file type "+type);
 				}				
-				fileUpload.setUserId(Long.valueOf(userId));
+				fileUpload.setUserId(Long.valueOf(userId));	
+				fileUpload.setUploaduri("https://s3.us-east-2.amazonaws.com/datafileupload/"+multipartFile.getOriginalFilename());
+				uploadMapper.uploadFile(fileUpload);
 				PutObjectResult putObjectResult = s3Wrapper.upload(multipartFile);
 				System.out.println( " putObjectResult " +putObjectResult);
-				uploadMapper.uploadFile(fileUpload);
 				message = "You successfully uploaded " + name + "!";
 				return ResponseEntity.status(HttpStatus.OK).body(message);
 			} catch (Exception e) {
