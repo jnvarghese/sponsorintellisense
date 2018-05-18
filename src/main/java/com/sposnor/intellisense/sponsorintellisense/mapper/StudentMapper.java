@@ -66,7 +66,7 @@ public interface StudentMapper {
 	
 	@Select("SELECT S.ID, STUDENTNAME, studentCode FROM STUDENT S "
 			+ "LEFT JOIN SPONSEE SE ON S.ID = SE.STUDENTID "
-			+ "WHERE S.STATUS = 0 AND FIRSTNAME LIKE #{name}  GROUP BY S.ID, STUDENTNAME, studentCode")
+			+ "WHERE S.STATUS = 0 AND STUDENTNAME LIKE #{name}  GROUP BY S.ID, STUDENTNAME, studentCode")
 	List<Student> listMatchingStudentsByName(@Param("name") String name);
 	
 	
