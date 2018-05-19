@@ -11,11 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.Enrollment;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Parish;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Receipt;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsee;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsor;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorMaxOut;
 import com.sposnor.intellisense.sponsorintellisense.data.model.StudentMaxOut;
 import com.sposnor.intellisense.sponsorintellisense.mapper.EnrollmentMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.MaxOutMapper;
+import com.sposnor.intellisense.sponsorintellisense.mapper.ParishMapper;
+import com.sposnor.intellisense.sponsorintellisense.mapper.ReceiptMapper;
+import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
 
 @RestController
 @RequestMapping("/api")
@@ -25,13 +31,44 @@ public class EnrollmentController {
 	private EnrollmentMapper enrollmentMapper;
 	
 	@Autowired
+	private ParishMapper parishMapper;
+	
+	@Autowired
+	private ReceiptMapper receiptMapper;
+	
+	@Autowired
+	private SponsorMapper sponsorMapper;
+	
+	@Autowired
 	private MaxOutMapper maxOutMapper;
 	
 	@PostMapping("/enroll")
 	public ResponseEntity<String> createStudent(@RequestHeader(value="userId") Long userId, @RequestBody Enrollment enrollment) {
-		//Set<Date> dateSet = new HashSet<Date>();
-		System.out.println( " Sponsee " + userId);
 		enrollment.setCreatedBy(userId);
+		Sponsor sponsor = sponsorMapper.findById(enrollment.getSponsorId());
+		Parish parish = parishMapper.findById(sponsor.getParishId());
+		Receipt receipt = new Receipt();
+		if(null!=sponsor.getAppartmentNumber()) {
+			receipt.setAddress(sponsor.getAppartmentNumber()+" "+sponsor.getStreet()+" "+sponsor.getCity()+ " "+ sponsor.getState()+ " "+ sponsor.getPostalCode());
+		}else {
+			receipt.setAddress(sponsor.getStreet()+" "+sponsor.getCity()+ " "+ sponsor.getState()+ " "+ sponsor.getPostalCode());
+		}		
+		receipt.setCreatedby(2L);
+		receipt.setMissionname("Light To Life");
+		receipt.setParish(parish.getName() + "-"+ parish.getCity());
+		receipt.setPaymentmethod("Online");
+		if(sponsor.isHasAnyCoSponser()) {
+			receipt.setReceivedfrom(sponsor.getFirstName()+ " & "+ sponsor.getCoSponserName());
+		}else {
+			receipt.setReceivedfrom(sponsor.getFirstName()+ " "+ sponsor.getLastName());
+		}
+		
+		receipt.setTotal(String.valueOf(enrollment.getContributionAmount()));
+		receipt.setCreatedby(userId);
+		receiptMapper.insert(receipt);
+		
+		enrollment.setReceiptId(receipt.getId());
+		
 		enrollmentMapper.insert(enrollment);
 		Calendar c = Calendar.getInstance();
 		Enrollment e = enrollmentMapper.selectEnrollmentForId(enrollment.getSponsorId(), enrollment.getPaymentDate(), enrollment.getEffectiveDate());

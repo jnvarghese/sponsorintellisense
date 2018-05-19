@@ -29,6 +29,8 @@ public class Enrollment  implements Serializable {
 	
 	private Long sponsorId;
 	
+	private Long receiptId;
+	
 	private Long createdBy;
 	
 	public Long getCreatedBy() {
@@ -117,6 +119,14 @@ public class Enrollment  implements Serializable {
 	}
 	
 	
+	public Long getReceiptId() {
+		return receiptId;
+	}
+
+	public void setReceiptId(Long receiptId) {
+		this.receiptId = receiptId;
+	}
+
 	@Override
 	public String toString() {
 		return "Enrollment [id=" + id + ", sponsees=" + sponsees + ", paymentDate=" + paymentDate + ", effectiveDate="

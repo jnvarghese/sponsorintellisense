@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
+import com.sposnor.intellisense.sponsorintellisense.data.model.Sequence;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponseeReport;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsor;
 
@@ -28,18 +29,23 @@ public interface SponsorMapper {
 			+ "monthOfBirth, sponsorStatus, emailAddress, appartmentNumber, street, city, state, postalCode, hasAnyCoSponser, "
 			+ "coSponserName, sponsorCode, phone1, phone2, createdBy, createdDate)"
 			+ " values  (#{parishId},#{firstName},#{lastName},#{middleInitial},#{nickName}, #{dayOfBirth},#{monthOfBirth},#{sponsorStatus},#{emailAddress},"
-			+ "#{appartmentNumber},#{street},#{city},#{state},#{postalCode},#{hasAnyCoSponser},#{coSponserName}, #{sponsorCode}, #{phone1}, #{phone2}, #{createdBy}, #{createdDate})";
+			+ "#{appartmentNumber},#{street},#{city},#{state},#{postalCode},#{hasAnyCoSponser},#{coSponserName},"
+			+ " #{sponsorCode}, #{phone1}, #{phone2}, #{createdBy}, #{createdDate})";
 	
 	public static final String UPDATE_SPONSOR = "UPDATE SPONSOR SET parishId= #{parishId} , firstName= #{firstName}, lastName= #{lastName}, phone1=#{phone1}, phone2=#{phone2}, "
 			+ " middleInitial= #{middleInitial}, nickName=#{nickName}, dayOfBirth= #{dayOfBirth}, monthOfBirth= #{monthOfBirth}, sponsorStatus= #{sponsorStatus},"
 			+ " emailAddress= #{emailAddress}, appartmentNumber= #{appartmentNumber}, street= #{street}, city= #{city}, state= #{state},"
-			+ " postalCode= #{postalCode}, hasAnyCoSponser= #{hasAnyCoSponser}, coSponserName= #{coSponserName}, updatedBy= #{updatedBy} WHERE id=#{id}";
+			+ " postalCode= #{postalCode}, hasAnyCoSponser= #{hasAnyCoSponser}, "
+			+ " sponsorCode= #{sponsorCode} , coSponserName= #{coSponserName}, updatedBy= #{updatedBy} WHERE id=#{id}";
 	
 	public static final String SEARCH_BY_NAME ="SELECT S.ID, FIRSTNAME, LASTNAME, MIDDLEINITIAL, NICKNAME, PARISHID, NAME parishName, P.CITY parishCity "
 			+ "FROM SPONSOR S, PARISH P WHERE S.PARISHID = P.ID AND SPONSORSTATUS = 0 AND FIRSTNAME LIKE #{name} ";
 	
 	@Select(SELECT_SPONSOR_BY_ID)
 	Sponsor findById(@Param("id") Long id);
+	
+	@Select("select (CASE WHEN max(seq_val) IS NULL THEN 5000 ELSE max(seq_val) END) sequence from sponsor_sequence where parishId=#{id}")
+	Sequence getSequenceByParishId(@Param("id") Long id);
 	
 	@Select(SELECT_ALL_ACTIVE_SPONSORS)
 	List<Sponsor> list();

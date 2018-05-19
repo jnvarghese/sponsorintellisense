@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.sposnor.intellisense.sponsorintellisense.data.model.Sequence;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Student;
 import com.sposnor.intellisense.sponsorintellisense.mapper.StudentMapper;
 
@@ -43,6 +44,12 @@ public class StudentController {
 	@GetMapping("/list")
 	public List<Student> getAllStudents() {
 		return studentMapper.list();
+	}
+	
+	@GetMapping("/sequence/{id}")
+	public ResponseEntity<Sequence> getSequenceByParishId(@PathVariable(value = "id") Long projectId) {
+		Sequence sequence = studentMapper.getSequenceByProjectId(projectId);	    
+	    return ResponseEntity.ok().body(sequence);
 	}
 	
 	@GetMapping("/list/byproject/{id}")

@@ -1,7 +1,5 @@
 package com.sposnor.intellisense.sponsorintellisense.data.model;
 
-import java.util.Date;
-
 public class Receipt {
 
 	private Long id;

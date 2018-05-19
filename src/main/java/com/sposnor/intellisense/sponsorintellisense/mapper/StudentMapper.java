@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
+import com.sposnor.intellisense.sponsorintellisense.data.model.Sequence;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReport;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Student;
 
@@ -31,6 +32,9 @@ public interface StudentMapper {
 			+ " projectid IN ( #{id} ) AND S.STATUS = 0 ")
 	List<Student> listByProjectId(@Param("id") Long id);
 	
+	@Select("select (CASE WHEN max(seq_val) IS NULL THEN 1000 ELSE max(seq_val) END) sequence from student_sequence where projectId=#{id}")
+	Sequence getSequenceByProjectId(@Param("id") Long id);
+	
 	@Insert("INSERT INTO STUDENT (PROJECTID, STUDENTNAME, GENDER, DATEOFBIRTH, ADDRESS, HOBBIES, TALENT, "
 			+ "RECENTACHIVEMENTS, PROFILEPICTURE, SOFTLOCKED,grade,favColor,favGame,nameOfGuardian,occupationOfGuardian,baseLanguage,studentCode, createdBy, createdDate) "
 			+ "VALUES (#{projectId}, #{studentName},  #{gender}, #{dateOfBirth}, #{address},"
@@ -44,7 +48,7 @@ public interface StudentMapper {
 			+ "gender= #{gender}, dateOfBirth= #{dateOfBirth}, address= #{address},"
 			+ " status= #{status}, hobbies= #{hobbies}, talent= #{talent}, recentAchivements= #{recentAchivements}, "
 			+ " grade= #{grade}, favColor= #{favColor}, favGame= #{favGame}, nameOfGuardian= #{nameOfGuardian}, occupationOfGuardian= #{occupationOfGuardian}, baseLanguage= #{baseLanguage},"
-			+ " softlocked= #{softlocked}, updatedBy= #{updatedBy} WHERE id=#{id}")	
+			+ " softlocked= #{softlocked}, studentCode= #{studentCode}, updatedBy= #{updatedBy} WHERE id=#{id}")	
 	void update(Student student);
 
 	@Update("UPDATE STUDENT SET profilePicture = #{profilePicture}, updatedBy= #{updatedBy} WHERE id=#{id}")
