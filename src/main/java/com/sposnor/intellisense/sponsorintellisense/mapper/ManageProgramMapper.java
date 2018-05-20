@@ -28,11 +28,14 @@ public interface ManageProgramMapper {
 	List<Contribution> getSponsorshipContribution(@Param("studentId") Long studentId, @Param("sponsorId") Long sponsorId);	
 	
 	
-	@Select("SELECT EN.ID enrollmentId, CASE hasAnyCoSponser WHEN '1' THEN CONCAT(FIRSTNAME,' ','&',' ',coSponserName ) ELSE CONCAT(FIRSTNAME,' ',COALESCE(MIDDLEINITIAL, ''),' ',LASTNAME ) END sponsorName, "
-			+ "NICKNAME sponsorNickName, P.NAME parishName, DATE_FORMAT(effectiveDate, \"%M %D %Y\") effectiveDate,(CONTRIBUTIONAMOUNT + MISCAMOUNT) CONTRIBUTION, "
-			+ "EN.CREATEDDATE FROM SPONSOR SP, PARISH P, ENROLLMENT EN WHERE P.ID = SP.PARISHID "
+	@Select("SELECT EN.ID enrollmentId,  CONCAT(U.firstname,' ', U.lastname) createdBy, CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',SP.SPONSORCODE) uniqueId, "
+			+ "CASE hasAnyCoSponser WHEN '1' THEN CONCAT(SP.FIRSTNAME,' ','&',' ',coSponserName ) ELSE CONCAT(SP.FIRSTNAME,' ',COALESCE(MIDDLEINITIAL, ''),' ',SP.LASTNAME ) END sponsorName, "
+			+ "NICKNAME sponsorNickName, P.NAME parishName, DATE_FORMAT(effectiveDate, \"%M %D %Y\") paymentDate,(CONTRIBUTIONAMOUNT + MISCAMOUNT) CONTRIBUTION, "
+			+ "EN.CREATEDDATE FROM SPONSOR SP, PARISH P, ENROLLMENT EN, USERS U, CENTER C,REGION R WHERE P.ID = SP.PARISHID "
+			+ "AND EN.CREATEDBY = U.ID AND P.CENTERID = C.ID AND C.REGIONID = R.ID "
+			+ "AND P.ID= #{id} "
 			+ "AND SPONSORID = SP.ID ORDER BY sponsorName") //  EN.CREATEDDATE DESC
-	List<ViewEnroll> selectEnrollments();
+	List<ViewEnroll> selectEnrollments(@Param("id") Long parishId);
 	
 	@Select("select r.id, receivedfrom,address,parish,missionname,total, paymentmethod, DATE_FORMAT(r.createddate, '%M %d %Y') createddate from enrollment ern, "
 			+ "receipt r where ern.receiptId= r.id and ern.id = #{ernId}")

@@ -27,7 +27,9 @@ public interface StudentMapper {
 			+ "LEFT JOIN PROJECT P ON S.PROJECTID = P.ID LEFT JOIN AGENCY A ON P.AGENCYID = A.ID WHERE S.STATUS = 0 ")
 	List<Student> list();
 	
-	@Select("SELECT S.ID, STUDENTNAME, GENDER, P.NAME projectName, A.NAME agencyName, studentCode, imageLinkRef FROM STUDENT S "
+	@Select("SELECT S.ID, STUDENTNAME, GENDER, P.NAME projectName, A.NAME agencyName, studentCode, imageLinkRef, "
+			+ "IF(profilePicture IS NULL,0,1) imagePresent "
+			+ "FROM STUDENT S "
 			+ "LEFT JOIN PROJECT P ON S.PROJECTID = P.ID LEFT JOIN AGENCY A ON P.AGENCYID = A.ID WHERE "
 			+ " projectid IN ( #{id} ) AND S.STATUS = 0 ")
 	List<Student> listByProjectId(@Param("id") Long id);

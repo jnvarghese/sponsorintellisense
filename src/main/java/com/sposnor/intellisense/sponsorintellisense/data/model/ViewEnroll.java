@@ -13,6 +13,27 @@ public class ViewEnroll {
 	private float contribution;
 	
 	private String paymentDate;
+	
+	private String createdBy;
+	
+	private String uniqueId;
+	
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public String getUniqueId() {
+		return uniqueId;
+	}
+
+	public void setUniqueId(String uniqueId) {
+		this.uniqueId = uniqueId;
+	}
 
 	public Long getEnrollmentId() {
 		return enrollmentId;

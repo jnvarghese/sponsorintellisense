@@ -60,9 +60,9 @@ public class ManageProgramController {
 	@Autowired
 	private StudentMapper studentMapper;
 	
-	@GetMapping("/view/enrollment")
-	public List<ViewEnroll> listEnrollments() {
-		return manageProgramMapper.selectEnrollments();
+	@GetMapping("/view/enrollment/{id}")
+	public List<ViewEnroll> listEnrollments(@PathVariable(value = "id") Long parishId) {
+		return manageProgramMapper.selectEnrollments(parishId);
 	}
 	
 	private Map<String,Object> getDataMap(SponsorReport sponser, List<SponseeReport> sponseeList){

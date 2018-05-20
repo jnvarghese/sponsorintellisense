@@ -46,6 +46,9 @@ public class Student implements Serializable {
 	private String imageLinkRef;
 	private boolean hasImageUploaded;
 	
+	// 1 for present 0 for null.
+	private int imagePresent;
+	
 	private Date createdDate;
 	private Date updatedDate;
 	private int expirationMonth;
@@ -259,6 +262,14 @@ public class Student implements Serializable {
 	}
 	public void setBaseLanguage(String baseLanguage) {
 		this.baseLanguage = baseLanguage;
+	}
+	
+	
+	public int getImagePresent() {
+		return imagePresent;
+	}
+	public void setImagePresent(int imagePresent) {
+		this.imagePresent = imagePresent;
 	}
 	@Override
 	public String toString() {
