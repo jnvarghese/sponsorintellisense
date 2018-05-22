@@ -10,7 +10,19 @@ private String regionName;
 	
 	private String sponsorName;
 	
+	private double miscAmount;
+	
 	private String maxOut;
+	
+	
+
+	public double getMiscAmount() {
+		return miscAmount;
+	}
+
+	public void setMiscAmount(double miscAmount) {
+		this.miscAmount = miscAmount;
+	}
 
 	public String getRegionName() {
 		return regionName;
