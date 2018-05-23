@@ -127,3 +127,83 @@ CREATE TABLE IF NOT EXISTS `student` (
   KEY `project_key` (`project_id`),
   CONSTRAINT `project_key` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+
+
+
+-- Data exporting was unselected.
+-- Dumping structure for function spn_intellisense.getNextSponsorSeq
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `getNextSponsorSeq`(sParishId VARCHAR(10), sSponsorCode INT(6)) RETURNS varchar(10) CHARSET latin1
+BEGIN
+  DECLARE nLast_val INT;
+  SET nLast_val = (SELECT seq_val FROM sponsor_sequence WHERE parishId = sParishId);
+  IF nLast_val IS NULL THEN
+	IF sSponsorCode IS NULL THEN
+		SET nLast_val = 5001;
+	ELSE
+		SET nLast_val = sSponsorCode;
+	END IF;
+	   INSERT INTO sponsor_sequence (parishId,seq_val) VALUES (sParishId, nLast_Val);
+  ELSE
+	  IF (sSponsorCode>=nLast_val) THEN
+			SET nLast_val = sSponsorCode;
+		ELSE
+			SET nLast_val = nLast_val + 1;
+		END IF;     
+     UPDATE sponsor_sequence SET seq_val = nLast_val WHERE parishId = sParishId;
+  END IF;
+	 -- SET @ret = (SELECT concat(sParishId,'-',lpad(nLast_val,6,'0')));
+	 -- RETURN @ret;
+	 RETURN nLast_val;
+END//
+DELIMITER ;
+
+-- Dumping structure for function spn_intellisense.getNextStudentSeq
+DELIMITER //
+CREATE DEFINER=`root`@`localhost` FUNCTION `getNextStudentSeq`(sProjectId VARCHAR(10), sStudentCode INT(6)) RETURNS varchar(10) CHARSET latin1
+BEGIN
+  DECLARE nLast_val INT;
+  SET nLast_val = (SELECT seq_val FROM student_sequence WHERE projectId = sProjectId);
+  IF nLast_val IS NULL THEN
+    IF sStudentCode IS NULL THEN
+		SET nLast_val = 5001;
+	ELSE
+		SET nLast_val = sStudentCode;
+	END IF;
+	 INSERT INTO student_sequence (projectId,seq_val) VALUES (sProjectId, nLast_Val);
+	 ELSE
+	  IF (sStudentCode>=nLast_val) THEN
+			SET nLast_val = sStudentCode;
+		ELSE
+			SET nLast_val = nLast_val + 1;
+		END IF;
+    UPDATE student_sequence SET seq_val = nLast_val WHERE projectId = sProjectId;
+	 END IF;
+	 -- SET @ret = (SELECT concat(sProjectId,'-',lpad(nLast_val,6,'0')));
+	 -- RETURN @ret;
+	 RETURN nLast_val;
+END//
+DELIMITER ;
+
+
+
+-- Dumping structure for trigger spn_intellisense.custom_student_bi
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='';
+DELIMITER //
+CREATE TRIGGER `custom_student_bi` BEFORE INSERT ON `student` FOR EACH ROW BEGIN
+DECLARE x INT;
+SET NEW.studentCode = getNextStudentSeq(NEW.projectId, NEW.studentCode);
+END//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
+
+
+-- Data exporting was unselected.
+-- Dumping structure for trigger spn_intellisense.custom_sponsor_bi
+SET @OLDTMP_SQL_MODE=@@SQL_MODE, SQL_MODE='';
+DELIMITER //
+CREATE TRIGGER `custom_sponsor_bi` BEFORE INSERT ON `sponsor` FOR EACH ROW BEGIN
+SET NEW.sponsorCode = getNextSponsorSeq(NEW.parishId, NEW.sponsorCode);
+END//
+DELIMITER ;
+SET SQL_MODE=@OLDTMP_SQL_MODE;
