@@ -16,7 +16,7 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.Receipt;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReport;
 
 public class VelocityTemplateParser {
-
+  
 	public static String generateReceipt(Receipt receipt) throws Exception {
 		final Properties props = new Properties();
 		props.setProperty("resource.loader", "class");
@@ -121,7 +121,7 @@ public class VelocityTemplateParser {
 		context.put("sponsorEmail", dataMap.get("sponsorEmail"));
 		context.put("renewalDue",  dataMap.get("renewalDue"));
 		context.put("sign2", dataMap.get("sign2"));
-
+ 
 		context.put("waterMark", dataMap.get("waterMark"));
 		
 		context.put("sponseeList", dataMap.get("sponseeList"));
@@ -129,6 +129,10 @@ public class VelocityTemplateParser {
 		context.put("totalChildrenSposored", dataMap.get("totalChildrenSposored"));
 		context.put("spnStartDate", dataMap.get("spnStartDate"));
 		context.put("totalPaymentReceived", dataMap.get("totalPaymentReceived"));
+		
+		context.put("fundUsed", dataMap.get("fundUsed"));
+		context.put("totalBalance", dataMap.get("totalBalance"));
+		context.put("totalSponsorshipReceived", dataMap.get("totalSponsorshipReceived"));
 
 		context.put("paymentMethod","[Yearly] [Check] [$20/Child/Month]");
 		

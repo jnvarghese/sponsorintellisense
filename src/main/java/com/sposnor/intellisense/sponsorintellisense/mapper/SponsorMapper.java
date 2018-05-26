@@ -22,8 +22,11 @@ public interface SponsorMapper {
 	public static final String SELECT_ALL_ACTIVE_SPONSORS = "SELECT S.ID, FIRSTNAME, LASTNAME, MIDDLEINITIAL, NICKNAME, STATE,"
 			+ "sponsorCode, P.NAME parishName, P.CITY PARISHCITY FROM SPONSOR S LEFT JOIN PARISH P ON S.PARISHID = P.ID WHERE S.SPONSORSTATUS = 0";
 	
-	public static final String SELECT_ALL_ACTIVE_SPONSORS_BY_PARISHID = "SELECT S.ID, FIRSTNAME, LASTNAME, MIDDLEINITIAL, NICKNAME, STATE, parishId "
-			+ "FROM SPONSOR S, PARISH P WHERE S.PARISHID = P.ID AND S.PARISHID = #{id} AND S.SPONSORSTATUS = 0";
+	public static final String SELECT_ALL_ACTIVE_SPONSORS_BY_PARISHID = "SELECT S.ID, CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',S.SPONSORCODE) sponsorCode, "
+			+ "FIRSTNAME, LASTNAME, MIDDLEINITIAL, NICKNAME,street, s.city, STATE,postalCode, parishId "
+			+ "FROM SPONSOR S, PARISH P, CENTER C,REGION R WHERE S.PARISHID = P.ID "
+			+ "AND P.CENTERID = C.ID AND C.REGIONID = R.ID "
+			+ "AND S.PARISHID = #{id} AND S.SPONSORSTATUS = 0";
 	
 	public static final String INSERT_SPONSOR = "INSERT INTO SPONSOR(parishId, firstName, lastName, middleInitial, nickName, dayOfBirth, "
 			+ "monthOfBirth, sponsorStatus, emailAddress, appartmentNumber, street, city, state, postalCode, hasAnyCoSponser, "

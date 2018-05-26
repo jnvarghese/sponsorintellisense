@@ -296,6 +296,7 @@
            <br/>
            <br/>
            <br/>
+           <br/>
             <br/>
            <br/>
       #end
@@ -304,7 +305,7 @@
         <table class="tableStyle">
           <tr>
             <td class="thStype" colspan="4">
-              <span class="thSpanStyle">PAYMENT DETAILS</span>
+              <span class="thSpanStyle">SPONSORSHIP DETAILS</span>
             </td>
           </tr>
           <tr>
@@ -323,16 +324,30 @@
           </tr>
           <tr>
             <td class="tdHighLightStyle">
-              <span class="tdSpanStyle">TOTAL PAYMENT RECEIVED</span>
+              <span class="tdSpanStyle">TOTAL DONATION RECEIVED</span>
             </td>
             <td class="thStype">
-              <span class="tdSpanStyle">$$!totalPaymentReceived</span>
+              <span class="tdSpanStyle">$$!totalSponsorshipReceived</span>
             </td>
             <td class="tdHighLightStyle">
               <span class="tdSpanStyle">PAYMENT METHOD</span>
             </td>
             <td class="thStype">
               <span class="tdSpanStyle">$!paymentMethod</span>
+            </td>
+          </tr>
+           <tr>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">FUNDS UTILIZED</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$$!fundUsed</span>
+            </td>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">BALANCE</span>
+            </td>
+            <td class="thStype">
+              <span class="tdSpanStyle">$$!totalBalance</span>
             </td>
           </tr>
         </table>

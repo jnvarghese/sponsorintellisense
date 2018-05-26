@@ -59,11 +59,11 @@ public interface StudentMapper {
 	@Select("SELECT ID, STUDENTNAME, studentCode FROM STUDENT WHERE STATUS = 0 AND FIRSTNAME LIKE #{name} ")
 	List<Student> searchByName(@Param("name") String name);
 	
-	@Select("SELECT S.ID, S.STUDENTNAME, MAX(MAXOUT) MAXOUT "
+	@Select("SELECT S.ID, S.STUDENTNAME, S.GENDER, S.GRADE, MAX(MAXOUT) MAXOUT "
 			+ "FROM STUDENT S LEFT JOIN STUDENT_MAXOUT MX ON S.ID = MX.STUDENTID, PARISH_PROJECT PP "
 			+ "WHERE S.PROJECTID = PP.PROJECTID AND PP.PROJECTID = #{projectId} "
 			+ "AND (MAXOUT IS NULL OR DATE(MAXOUT) < #{effectiveDate}) "
-			+ "AND S.STATUS = 0 GROUP BY S.ID, S.STUDENTNAME")
+			+ "AND S.STATUS = 0 GROUP BY S.ID, S.STUDENTNAME ORDER BY S.STUDENTNAME")
 	List<Student> findStudentsBySponsorshipStatus(
 			@Param("name") String name,
 			@Param("projectId") Long projectId,
@@ -81,8 +81,9 @@ public interface StudentMapper {
 			+ "NICKNAME,  P.NAME parishName,P.CITY parishCity,C.NAME centerName, R.NAME regionName, "
 			+ "APPARTMENTNUMBER,STREET, SP.CITY sponsorCity, STATE sponsorState,POSTALCODE, SP.EMAILADDRESS emailAddress, "
 			+ "emailAddress2, phone1, phone2, DATE_FORMAT(effectiveDate, \"%M 1 %Y\") effectiveDate,  "
-			+ "(CONTRIBUTIONAMOUNT) CONTRIBUTION, EN.CREATEDDATE FROM SPONSOR SP, PARISH P, ENROLLMENT EN , CENTER C, "
+			+ "ROUND(CONTRIBUTIONAMOUNT,2) CONTRIBUTION, ROUND(MISCAMOUNT,2) MISCAMOUNT, ROUND(CONTRIBUTIONAMOUNT + MISCAMOUNT,2) TOTAL, "
+			+ "EN.CREATEDDATE FROM SPONSOR SP, PARISH P, ENROLLMENT EN , CENTER C, "
 			+ "REGION R, SPONSOR_MAXOUT SM  WHERE P.ID = SP.PARISHID AND EN.ID=SM.ENROLLMENTID AND EN.SPONSORID = SP.ID  AND P.CENTERID = C.ID AND C.REGIONID = R.ID "
-			+ "AND EN.ID = #{id}")
+			+ "AND EN.ID = #{id}  GROUP BY en.id")
 	SponsorReport findSponsorByEnrolmentId(@Param("id") Long id);
 }

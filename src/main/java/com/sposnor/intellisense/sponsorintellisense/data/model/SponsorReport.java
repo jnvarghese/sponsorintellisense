@@ -45,10 +45,31 @@ public class SponsorReport {
 	
 	private String effectiveDate;
 	
-	private double contribution;
+	private String contribution;
+	
+	private String miscAmount;
+	
+	private String total;
 	
 	private String renewalDue;
 	
+		
+	public String getMiscAmount() {
+		return miscAmount;
+	}
+
+	public void setMiscAmount(String miscAmount) {
+		this.miscAmount = miscAmount;
+	}
+
+	public String getTotal() {
+		return total;
+	}
+
+	public void setTotal(String total) {
+		this.total = total;
+	}
+
 	public String getRenewalDue() {
 		return renewalDue;
 	}
@@ -170,11 +191,11 @@ public class SponsorReport {
 		this.effectiveDate = effectiveDate;
 	}
 
-	public double getContribution() {
+	public String getContribution() {
 		return contribution;
 	}
 
-	public void setContribution(double contribution) {
+	public void setContribution(String contribution) {
 		this.contribution = contribution;
 	}
 

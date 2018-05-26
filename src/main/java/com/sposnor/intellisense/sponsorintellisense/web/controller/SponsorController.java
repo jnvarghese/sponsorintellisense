@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -24,6 +26,8 @@ import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
 @RequestMapping("/api/sponsor")
 public class SponsorController {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(SponsorController.class);
+	
 	@Autowired
 	private SponsorMapper sponsorMapper;
 	
@@ -42,6 +46,9 @@ public class SponsorController {
 		 //@RequestHeader HttpHeaders httpHeaders, 
 		 //Map<String,String> headerMap=httpHeaders.toSingleValueMap();
 		sponsor.setCreatedBy(userId);
+		if(!StringUtils.isEmpty(sponsor.getCoSponserName())) {
+			sponsor.setHasAnyCoSponser(true);
+		}
 		sponsorMapper.insert(sponsor);	    
 	    return sponsor;
 	}
@@ -70,6 +77,11 @@ public class SponsorController {
 		}
 		if(StringUtils.isEmpty(sponsorToModify.getMonthOfBirth())) {
 			sponsorToModify.setMonthOfBirth("1");
+		}
+		if(!StringUtils.isEmpty(sponsorToModify.getCoSponserName())) {
+			sponsorToModify.setHasAnyCoSponser(true);
+		}else {
+			sponsorToModify.setHasAnyCoSponser(false);
 		}
 		sponsorMapper.update(sponsorToModify);	    
 	    return sponsorToModify;

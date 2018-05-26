@@ -140,11 +140,14 @@ public class StudentController {
 		Calendar c = Calendar.getInstance();
 		c.set(year, month, 1, 0, 0);  
 		System.out.println(" Effective Date in search "+ c.getTime());
-		List<Student> sponsors = studentMapper.findStudentsBySponsorshipStatus(name+"%", projectId, MYSQL_DT_FORMAT.format(c.getTime()));
-	    if(sponsors == null) {
+		List<Student> students = studentMapper.findStudentsBySponsorshipStatus(name+"%", projectId, MYSQL_DT_FORMAT.format(c.getTime()));
+	    for( Student student: students) {
+	    	student.setGender(student.getGender().equals("M") ? "Male" : student.getGender().equals("F") ? "Female" : student.getGender().equals("O") ? "Other" : "");
+	    }
+		if(students == null) {
 	        return ResponseEntity.notFound().build();
 	    }
-	    return ResponseEntity.ok().body(sponsors);
+	    return ResponseEntity.ok().body(students);
 	}
 	
 	@GetMapping("/search/{name}")
