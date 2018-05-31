@@ -47,7 +47,7 @@ public interface SponsorMapper {
 	@Select(SELECT_SPONSOR_BY_ID)
 	Sponsor findById(@Param("id") Long id);
 	
-	@Select("select (CASE WHEN max(seq_val) IS NULL THEN 5000 ELSE max(seq_val) END) sequence from sponsor_sequence where parishId=#{id}")
+	@Select("select (CASE WHEN max(seq_val) IS NULL THEN 1000 ELSE max(seq_val) END) sequence from sponsor_sequence where parishId=#{id}")
 	Sequence getSequenceByParishId(@Param("id") Long id);
 	
 	@Select(SELECT_ALL_ACTIVE_SPONSORS)
