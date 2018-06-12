@@ -9,7 +9,6 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.ParishProject;
-import com.sposnor.intellisense.sponsorintellisense.data.model.Project;
 
 @Mapper
 public interface ParishProjectMapper {

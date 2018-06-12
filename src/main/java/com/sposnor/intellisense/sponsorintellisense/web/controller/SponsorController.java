@@ -43,8 +43,6 @@ public class SponsorController {
 	
 	@PostMapping("/add")
 	public Sponsor createSponsor(@RequestHeader Long userId, @Valid @RequestBody Sponsor sponsor) {		
-		 //@RequestHeader HttpHeaders httpHeaders, 
-		 //Map<String,String> headerMap=httpHeaders.toSingleValueMap();
 		sponsor.setCreatedBy(userId);
 		if(!StringUtils.isEmpty(sponsor.getCoSponserName())) {
 			sponsor.setHasAnyCoSponser(true);
@@ -72,6 +70,7 @@ public class SponsorController {
 	public Sponsor updateSponsor(@RequestHeader Long userId, @PathVariable(value = "id") Long sponsorId, 
 	                                       @Valid @RequestBody Sponsor sponsorToModify) {
 		sponsorToModify.setUpdatedBy(userId);
+		LOGGER.debug(" Dob {}", sponsorToModify.getDayOfBirth());
 		if(StringUtils.isEmpty(sponsorToModify.getDayOfBirth())) {
 			sponsorToModify.setDayOfBirth("1");
 		}

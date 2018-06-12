@@ -31,6 +31,7 @@ public class ReceiptsController {
 	
 	@GetMapping("/list")
 	public List<Receipts> list() {
+		LOGGER.debug(" Listing Receipts");
 		return receiptsMapper.list();
 	}
 	

@@ -2,8 +2,6 @@ package com.sposnor.intellisense.sponsorintellisense.web.controller;
 
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -96,7 +94,6 @@ public class StudentController {
 	private OutputStream convertFormat(InputStream inputStream, String formatName, OutputStream baos) throws IOException {
 		
 			//ByteArrayOutputStream baos  = new ByteArrayOutputStream();			
-			byte [] currentImage;
 			// reads input image from file
 			BufferedImage inputImage = ImageIO.read(inputStream);
 

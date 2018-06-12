@@ -3,6 +3,8 @@ package com.sposnor.intellisense.sponsorintellisense.web.controller;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,8 @@ public class UploadController {
 	
 	@Autowired
 	private UploadMapper uploadMapper;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(UploadController.class);
 	
 	@Autowired
 	S3Wrapper s3Wrapper;
@@ -70,7 +74,7 @@ public class UploadController {
 				fileUpload.setUploaduri("https://s3.us-east-2.amazonaws.com/datafileupload/"+multipartFile.getOriginalFilename());
 				//uploadMapper.uploadFile(fileUpload);
 				PutObjectResult putObjectResult = s3Wrapper.upload(multipartFile);
-				//System.out.println( " putObjectResult " +putObjectResult);
+				LOGGER.debug( "Put Object Result  {} ", putObjectResult);
 				message = "You successfully uploaded " + name + "!";
 				return ResponseEntity.status(HttpStatus.OK).body(message);
 			} catch (Exception e) {
