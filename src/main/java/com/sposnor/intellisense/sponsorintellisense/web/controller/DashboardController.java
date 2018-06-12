@@ -44,7 +44,7 @@ public class DashboardController {
 		return initMapper.getRegions();
 	}
 	
-	@GetMapping("/init/initiative")
+	@GetMapping("/init/initiative/list")
 	public List<Initiative> getInitiatives() {
 		return initMapper.getInitiatives();
 	}

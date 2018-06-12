@@ -68,8 +68,8 @@ public class UploadController {
 				}				
 				fileUpload.setUserId(Long.valueOf(userId));	
 				fileUpload.setUploaduri("https://s3.us-east-2.amazonaws.com/datafileupload/"+multipartFile.getOriginalFilename());
-				uploadMapper.uploadFile(fileUpload);
-				//PutObjectResult putObjectResult = s3Wrapper.upload(multipartFile);
+				//uploadMapper.uploadFile(fileUpload);
+				PutObjectResult putObjectResult = s3Wrapper.upload(multipartFile);
 				//System.out.println( " putObjectResult " +putObjectResult);
 				message = "You successfully uploaded " + name + "!";
 				return ResponseEntity.status(HttpStatus.OK).body(message);
