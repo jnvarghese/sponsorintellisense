@@ -1,7 +1,5 @@
 package com.sposnor.intellisense.sponsorintellisense.data.model;
 
-import java.util.Date;
-
 public class Receipts {
 	
 	private Long receiptId;
@@ -46,13 +44,55 @@ public class Receipts {
 	
 	private int type;
 	
+	private String createdbyName;
+	
 	private Long createdby;
 
 	private int status;
 	
+	private int receiptType;
+	
 	private Long updatedBy;
+	
+	private String orgName;
+	
+	private String parishName;
+	
+	private String initiativeName;
 
 	
+	public int getReceiptType() {
+		return receiptType;
+	}
+
+	public void setReceiptType(int receiptType) {
+		this.receiptType = receiptType;
+	}
+
+	public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+	public String getParishName() {
+		return parishName;
+	}
+
+	public void setParishName(String parishName) {
+		this.parishName = parishName;
+	}
+
+	public String getInitiativeName() {
+		return initiativeName;
+	}
+
+	public void setInitiativeName(String initiativeName) {
+		this.initiativeName = initiativeName;
+	}
+
 	public Long getCenterId() {
 		return centerId;
 	}
@@ -67,6 +107,14 @@ public class Receipts {
 
 	public void setUpdatedBy(Long updatedBy) {
 		this.updatedBy = updatedBy;
+	}
+
+	public String getCreatedbyName() {
+		return createdbyName;
+	}
+
+	public void setCreatedbyName(String createdbyName) {
+		this.createdbyName = createdbyName;
 	}
 
 	public Long getCreatedby() {

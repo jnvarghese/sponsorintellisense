@@ -33,6 +33,13 @@ public interface ReceiptsMapper {
 			+ "WHERE parishId = #{parishId}")
 	List<Receipts> listByParishId(@Param("parishId") Long parishId);
 	
+	@Select("SELECT receiptId, rdate, receiptType,referenceId, fullName, amount, org.name orgName, p.name parishName, "
+			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName "
+			+ "FROM receipts r left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
+			+ "initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id  "
+			+ "and date_format(str_to_date(rdate, '%m/%d/%Y'), '%Y-%m-%d') >= CURDATE() - INTERVAL #{range} DAY;")
+	List<Receipts> listByRange(@Param("range") int range);
+	
 	
 	@Select("SELECT receiptId, rdate, firstName, middleName, lastName, fullName, transaction, amount,initiativeId, streetAddress, city, "
 			+ "state, zipCode, parishId, email1, email2, phone1, phone2, type, status, createdby FROM receipts "		

@@ -35,6 +35,11 @@ public class ReceiptsController {
 		return receiptsMapper.list();
 	}
 	
+	@GetMapping("/listbyrange/{id}")
+	public List<Receipts> listByRange(@PathVariable(value = "id") int range) {
+		return receiptsMapper.listByRange(range);	
+	}
+	
 	@GetMapping("/listbyparish/{id}")
 	public List<Receipts> listByParishId(@PathVariable(value = "id") Long parishId) {
 		return receiptsMapper.listByParishId(parishId);	
