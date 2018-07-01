@@ -46,7 +46,6 @@ import com.itextpdf.tool.xml.pipeline.html.AbstractImageProvider;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Contribution;
-import com.sposnor.intellisense.sponsorintellisense.data.model.Receipt;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponseeReport;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReport;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorshipInfo;
@@ -56,11 +55,11 @@ import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.StudentMapper;
 import com.sposnor.intellisense.sponsorintellisense.util.VelocityTemplateParser;
 //import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
-
 @RestController
 @RequestMapping("/api")
 public class ManageProgramController {
-
+	
+	
 	@Autowired
 	private ManageProgramMapper manageProgramMapper;
 
@@ -190,7 +189,7 @@ public class ManageProgramController {
 			@PathVariable(value = "sponsorid") Long sponsorId) {
 		return manageProgramMapper.getSponsorshipContribution(studentId, sponsorId);
 	}
-
+/*
 	@RequestMapping(value = "/enrollment/generatereceipt/{enrollmentId}", method = RequestMethod.GET, produces = "application/pdf")
 	ResponseEntity<byte[]> generatereceipt(@PathVariable(value = "enrollmentId") Long enrollmentId) throws Exception {
 
@@ -243,7 +242,7 @@ public class ManageProgramController {
 		ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfBytes, headers, HttpStatus.OK);
 		return response;
 	}
-
+*/
 	class Base64ImageProvider extends AbstractImageProvider {
 
 		@Override

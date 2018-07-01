@@ -11,13 +11,14 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.tools.generic.DateTool;
 import org.apache.velocity.tools.generic.NumberTool;
+import org.springframework.util.StringUtils;
 
-import com.sposnor.intellisense.sponsorintellisense.data.model.Receipt;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Receipts;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReport;
 
 public class VelocityTemplateParser {
   
-	public static String generateReceipt(Receipt receipt) throws Exception {
+	public static String generateReceipt(Receipts receipt) throws Exception {
 		final Properties props = new Properties();
 		props.setProperty("resource.loader", "class");
 		props.setProperty("class.resource.loader.class",
@@ -27,32 +28,59 @@ public class VelocityTemplateParser {
 		final VelocityContext context = new VelocityContext();
 		engine.init();
 
-	
+		StringBuilder sb = new StringBuilder();
 		/* next, get the Template */
 		Template t = engine.getTemplate("templates/receipt.vm");
 		/* create a context and add data */
-		context.put("receiptNo", receipt.getId());
-		context.put("createddate", receipt.getCreateddate());
-		context.put("receivedfrom", receipt.getReceivedfrom());
-		context.put("address", receipt.getAddress());
-		context.put("parish", receipt.getParish());
-		context.put("missionname", receipt.getMissionname());
-		if(receipt.getTotal().contains(".")) {
-			String[] totalSplit= receipt.getTotal().split("\\.");
+		context.put("receiptNo", receipt.getReceiptId());
+		context.put("receiptDate", receipt.getRdate());
+		if(!StringUtils.isEmpty(receipt.getFullName())) {
+			context.put("receivedfrom", receipt.getFullName());
+		}else {
+			context.put("receivedfrom", receipt.getFirstName() +" "+ receipt.getLastName());
+		}
+		if(!StringUtils.isEmpty(receipt.getStreetAddress())) {
+			sb.append(receipt.getStreetAddress());
+			sb.append(", ");
+		}
+		if(!StringUtils.isEmpty(receipt.getCity())) {
+			sb.append(receipt.getCity().trim());
+			sb.append(", ");
+		}
+		if(!StringUtils.isEmpty(receipt.getState())) {
+			sb.append(receipt.getState());
+			sb.append(", ");
+		}
+		if(!StringUtils.isEmpty(receipt.getZipCode())) {
+			sb.append(receipt.getZipCode());
+		}
+		
+		context.put("address", sb.toString());
+		if(receipt.getReceiptType() == 0) {
+			context.put("from", receipt.getParishName());
+		}else if(receipt.getReceiptType() == 1) {
+			context.put("from", receipt.getOrgName());
+		}else {
+			context.put("from", receipt.getFirstName() +" "+ receipt.getLastName());
+		}
+		context.put("missionname", receipt.getInitiativeName());
+		
+		if(String.valueOf(receipt.getAmount()).contains(".")) {
+			String[] totalSplit= String.valueOf(receipt.getAmount()).split("\\.");
 			if(totalSplit[1].length()==1) {
 				context.put("total", totalSplit[0]+"."+totalSplit[1]+"0");
 			}else {
 				context.put("total", totalSplit[0]+"."+totalSplit[1]);
 			}			
 		}else {
-			context.put("total", receipt.getTotal()+"."+00);
+			context.put("total", String.valueOf(receipt.getAmount())+"."+00);
 		}
-		
-		context.put("paymentmethod", receipt.getPaymentmethod());
-		
+		context.put("rType", receipt.getReceiptType());
+		context.put("paymentmethod", receipt.getTransaction());
+		context.put("waterMark", receipt.getWaterMark());
+		 
 		context.put("number", new NumberTool());
-		context.put("date", new DateTool());
-	
+		context.put("dateUtil", new DateTool());
 		/* now render the template into a StringWriter */
 		StringWriter writer = new StringWriter();
 		t.merge(context, writer);

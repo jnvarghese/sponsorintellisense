@@ -17,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.Agency;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Organization;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Parish;
 import com.sposnor.intellisense.sponsorintellisense.data.model.ParishProject;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Project;
 import com.sposnor.intellisense.sponsorintellisense.mapper.AgencyMapper;
+import com.sposnor.intellisense.sponsorintellisense.mapper.OrganizationMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ParishMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ParishProjectMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ProjectMapper;
@@ -37,6 +39,9 @@ public class AdminController {
 
 	@Autowired
 	private ProjectMapper projectMapper;
+	
+	@Autowired
+	private OrganizationMapper organizationMapper;
 	
 	@Autowired
 	private ParishProjectMapper parishProjectMapper;
@@ -182,5 +187,40 @@ public class AdminController {
 		agency.setUpdatedBy(userId);
 		agencyMapper.update(agency);
 		return agency;
+	}
+	
+	@GetMapping("/orgns/list")
+	public List<Organization> getOrganizations() {
+		return organizationMapper.list();
+	}
+
+	@PostMapping("/orgns/add")
+	public Organization createOrgn(@RequestHeader Long userId, @Valid @RequestBody Organization orgn) {
+		try {
+			orgn.setCreatedBy(userId);
+			organizationMapper.insert(orgn);			
+		} catch (SQLIntegrityConstraintViolationException ex) {
+			ex.printStackTrace();
+			return orgn;
+			//return ResponseEntity.badRequest().body("Duplicate Code "+agency.getCode()+".Please try a different code.");
+		}		
+		return orgn;
+	}
+
+	@GetMapping("/orgn/find/{id}")
+	public ResponseEntity<Organization> getOrgnById(@PathVariable(value = "id") Long orgnId) {
+		Organization orgn = organizationMapper.findById(orgnId);
+		if (orgn == null) {
+			return ResponseEntity.notFound().build();
+		}
+		return ResponseEntity.ok().body(orgn);
+	}
+
+	@PutMapping("/orgns/modify/{id}")
+	public Organization updateOrgn(@RequestHeader Long userId, @PathVariable(value = "id") Long orgnId,
+			@Valid @RequestBody Organization orgn) {
+		orgn.setUpdatedBy(userId);
+		organizationMapper.update(orgn);
+		return orgn;
 	}
 }
