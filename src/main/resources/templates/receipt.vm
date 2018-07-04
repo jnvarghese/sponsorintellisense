@@ -45,31 +45,38 @@
 		    height: 40px !important; /* overwrites any other rules */
 		    background-color: #FFFFFF;
 		}
-        .wtrMark {
-            background: url('data:image/png;base64,$waterMark');
-
-            background-repeat: no-repeat;
-            background-position: center;
-        }
+       
+        h2 {
+		    display: block;
+		    font-size: 1.3em;
+		    margin-top: 0.10em;
+		    margin-bottom: 0.83em;
+		    margin-left: 0;
+		    margin-right: 0;
+		    font-weight: bold;
+		}
     </style>
 </head>
 
 <body class="bodyStyle">
     <div>
-        <div class="wtrMark">
+        <div style="float: left;padding-left:85px;">
+        <img width="60" src="data:image/png;base64,$waterMark" alt="imagename" />
         </div>
-        <div>
-            <br/>
-            <div style="border:1px solid black; padding-bottom: 15px;">
-                <div style="padding-left:100px">
+        <div style="float: right; width: 95%">
+            <div style="padding: 0px;margin: 0px;">
+                <div style="padding-left: 0px">
                     <h2 style="padding: 0px;margin: 0px;">DIOCESE OF NORTH AMERICA & EUROPE</h2>
                 </div>
-                <div style="padding-left:220px">
+                <div style="padding-left:80px">
                     <p style="padding: 0px;margin: 0px; font-size: 13px;">2320 Merrick Ave, Merrick, New York - 11566</p>
                 </div>
-                <div style="padding-left:60px">
+                <div style="padding-left: 45px">
                     <span style="font-size: 12px;">
-                        Phone: (516) 377-3311 Email: marthomamissionboard@gmail.com Website: www.marthomamissionnae.org</span>
+                        Phone: (516) 377-3311 Email: marthomamissionboard@gmail.com</span>
+                </div>
+                <div style="padding-left: 100px">
+                    <span style="font-size: 12px;">Website: www.marthomamissionnae.org</span>
                 </div>
             </div>
         </div>
