@@ -65,17 +65,17 @@
         </div>
         <div style="float: right; width: 95%">
             <div style="padding: 0px;margin: 0px;">
-                <div style="padding-left: 0px">
-                    <h2 style="padding: 0px;margin: 0px;">DIOCESE OF NORTH AMERICA & EUROPE</h2>
+                <div style="padding-left: 55px">
+                    <h2 style="padding: 0px;margin: 0px;">MAR THOMA MISSION BOARD</h2>
                 </div>
-                <div style="padding-left:80px">
+                <div style="padding-left:75px">
                     <p style="padding: 0px;margin: 0px; font-size: 13px;">2320 Merrick Ave, Merrick, New York - 11566</p>
                 </div>
-                <div style="padding-left: 45px">
+                <div style="padding-left: 40px">
                     <span style="font-size: 12px;">
                         Phone: (516) 377-3311 Email: marthomamissionboard@gmail.com</span>
                 </div>
-                <div style="padding-left: 100px">
+                <div style="padding-left: 95px">
                     <span style="font-size: 12px;">Website: www.marthomamissionnae.org</span>
                 </div>
             </div>
@@ -83,11 +83,12 @@
     </div>
     <div>
         <br/>
+        <br/>
         <div id="container">
             <table cellpadding="5" cellspacing="5">
                 <tr>
                     <td>
-                        <span>No: $receiptNo</span>
+                        <span style="font-weight: bold; color: red">No: $receiptNo</span>
                     </td>
                     <td width="37%">
                         <span></span>
@@ -98,6 +99,8 @@
                 </tr>
             </table>
         </div>
+        <br/>
+        <br/>
         <div id="container">
             <table cellpadding="5" cellspacing="5">
                 <tr>
@@ -153,22 +156,44 @@
         <br/>
         <br/>
         <div id="container">
-            <table cellpadding="5" cellspacing="5">
+            <table cellpadding="5" cellspacing="5" width="100%">
                 <tr>
-                    <td>
+                    <td colspan="2">
                         <span>Method of Payment: $!paymentmethod</span>
-                    </td>
+                    </td>                   
                 </tr>
                 <tr class="blank_row">
-				    <td></td>
+				      <td colspan="2"></td>				   
 				</tr>
                 <tr>
                     <td>
-                        <span>Secretary............................................ Treasurer.............................................</span>
+                        Secretary
                     </td>
+                     <td>Treasurer</td>
+                </tr>
+                <tr>
+				    <td colspan="2">
+					    <div style="padding-left:5px">
+			       	     <img width="70px" src="data:image/png;base64,$sign2" />
+			            </div>
+                    </td>
+				</tr>
+                <tr>
+                    <td>
+                        Akash Daniel Mathew
+                    </td>
+                     <td></td>
+                </tr>
+                <tr>
+                <td colspan="2">			        
+			       <div style="padding-left:100px">
+                     <img width="160px" src="data:image/png;base64,$seal" />
+                   </div>
+                 </td>
                 </tr>
             </table>
         </div>
+     
     </div>
 </body>
 </html>
