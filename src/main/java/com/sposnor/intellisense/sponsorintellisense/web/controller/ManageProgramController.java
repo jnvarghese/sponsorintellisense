@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -53,12 +55,14 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.ViewEnroll;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ManageProgramMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.StudentMapper;
+import com.sposnor.intellisense.sponsorintellisense.s3.S3Wrapper;
 import com.sposnor.intellisense.sponsorintellisense.util.VelocityTemplateParser;
 //import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 @RestController
 @RequestMapping("/api")
 public class ManageProgramController {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(ManageProgramController.class);
 	
 	@Autowired
 	private ManageProgramMapper manageProgramMapper;
@@ -68,6 +72,9 @@ public class ManageProgramController {
 
 	@Autowired
 	private StudentMapper studentMapper;
+	
+	@Autowired
+	S3Wrapper s3Wrapper;
 
 	@GetMapping("/view/enrollment/{id}")
 	public List<ViewEnroll> listEnrollments(@PathVariable(value = "id") Long parishId) {
@@ -114,6 +121,10 @@ public class ManageProgramController {
 
 		List<SponseeReport> sponseeList = sponsorMapper.listSponseesByEnrolmentId(enrollmentId);
 
+		for(SponseeReport sr : sponseeList) {
+			sr.setProfilePicture(s3Wrapper.downloadProfilePicture(sr.getProjectId(), sr.getStudentId(), sr.getImageLinkRef()));
+		}
+		
 		SponsorReport sponsorReport = studentMapper.findSponsorByEnrolmentId(enrollmentId);
 
 		String coverLetter = VelocityTemplateParser.generateCoverLetter(sponsorReport, sponseeList.size());

@@ -26,6 +26,7 @@ import com.sposnor.intellisense.sponsorintellisense.mapper.OrganizationMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ParishMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ParishProjectMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ProjectMapper;
+import com.sposnor.intellisense.sponsorintellisense.s3.S3Wrapper;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -42,6 +43,9 @@ public class AdminController {
 	
 	@Autowired
 	private OrganizationMapper organizationMapper;
+	
+	@Autowired
+	S3Wrapper s3Wrapper;
 	
 	@Autowired
 	private ParishProjectMapper parishProjectMapper;
@@ -66,6 +70,7 @@ public class AdminController {
 	public Project createProject(@RequestHeader Long userId, @Valid @RequestBody Project project) {
 		project.setCreatedBy(userId);
 		projectMapper.insert(project);
+		s3Wrapper.createFolder(String.valueOf(project.getId()));
 		return project;
 	}
 

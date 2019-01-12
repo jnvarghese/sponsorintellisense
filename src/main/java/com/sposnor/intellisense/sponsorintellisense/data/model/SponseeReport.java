@@ -40,6 +40,12 @@ public class SponseeReport {
 	
 	private String address;
 	
+	private String projectId;
+	
+	private String studentId;
+	
+	private String imageLinkRef;
+	
 	public String getAddress() {
 		return address;
 	}
@@ -178,6 +184,32 @@ public class SponseeReport {
 
 	public void setAgencyName(String agencyName) {
 		this.agencyName = agencyName;
+	}
+
+	
+	public String getProjectId() {
+		return projectId;
+	}
+
+	public void setProjectId(String projectId) {
+		this.projectId = projectId;
+	}
+
+	
+	public String getStudentId() {
+		return studentId;
+	}
+
+	public void setStudentId(String studentId) {
+		this.studentId = studentId;
+	}
+	
+	public String getImageLinkRef() {
+		return imageLinkRef;
+	}
+
+	public void setImageLinkRef(String imageLinkRef) {
+		this.imageLinkRef = imageLinkRef;
 	}
 
 	@Override

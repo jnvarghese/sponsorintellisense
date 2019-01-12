@@ -12,12 +12,12 @@ import com.sposnor.intellisense.sponsorintellisense.s3.S3Wrapper;
 @RestController
 public class S3BucketController {
 	
-	@Autowired
-	private S3Wrapper s3wrapper;
+	//@Autowired
+	//private S3Wrapper s3wrapper;
 	
 	@GetMapping("/s3/bucketlist")
 	public List<S3ObjectSummary> getProjects() {
-		return s3wrapper.list();
+		return null;//s3wrapper.list();
 	}
 
 }

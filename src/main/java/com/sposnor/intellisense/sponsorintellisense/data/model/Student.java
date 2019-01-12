@@ -58,6 +58,9 @@ public class Student implements Serializable {
 	
 	private Long updatedBy;	
 	
+	private String uploadstatus;
+	
+	
 	public boolean isHasImageUploaded() {
 		return hasImageUploaded;
 	}
@@ -265,6 +268,12 @@ public class Student implements Serializable {
 	}
 	
 	
+	public String getUploadstatus() {
+		return uploadstatus;
+	}
+	public void setUploadstatus(String uploadstatus) {
+		this.uploadstatus = uploadstatus;
+	}
 	public int getImagePresent() {
 		return imagePresent;
 	}

@@ -5,35 +5,34 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSStaticCredentialsProvider;
-import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 
 @Configuration
 public class S3AutoConfiguration {
 
+	@Value("${amazon.s3.region}")
+	private String region;
 
-	@Value("${amazon.aws.access-key-id}")
-    private String accessKey;
+	@Bean
+	public com.amazonaws.auth.AWSCredentials basicAWSCredentials() {
+		return null;
+	}
 
-    @Value("${amazon.aws.access-key-secret}")
-    private String secretKey;
+	@Bean
+	public AWSCredentialsProvider awsCredentialsProvider() {
+		return new InstanceProfileCredentialsProvider(false);
+	}
 
-    @Value("${amazon.s3.region}")
-    private String region;
+	@Bean
+	public AmazonS3 amazonS3Client(AWSCredentials awsCredentials) {
+		AmazonS3ClientBuilder builder = AmazonS3ClientBuilder.standard();
+		builder.withCredentials(awsCredentialsProvider());
+		builder.setRegion(region);
+		AmazonS3 amazonS3 = builder.build();
+		return amazonS3;
 
-    @Bean
-    public BasicAWSCredentials basicAWSCredentials() {
-        return new BasicAWSCredentials(accessKey, secretKey);
-    }
-
-    @Bean
-    public AmazonS3 amazonS3Client(AWSCredentials awsCredentials) {    
-    	AmazonS3ClientBuilder builder = AmazonS3ClientBuilder.standard();
-        builder.withCredentials(new AWSStaticCredentialsProvider(awsCredentials));
-        builder.setRegion(region);
-        AmazonS3 amazonS3 = builder.build();
-        return amazonS3;
-    }
+	}
 }

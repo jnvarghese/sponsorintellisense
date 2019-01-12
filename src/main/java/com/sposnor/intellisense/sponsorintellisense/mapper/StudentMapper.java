@@ -52,6 +52,9 @@ public interface StudentMapper {
 			+ " grade= #{grade}, favColor= #{favColor}, favGame= #{favGame}, nameOfGuardian= #{nameOfGuardian}, occupationOfGuardian= #{occupationOfGuardian}, baseLanguage= #{baseLanguage},"
 			+ " softlocked= #{softlocked}, studentCode= #{studentCode}, updatedBy= #{updatedBy} WHERE id=#{id}")	
 	void update(Student student);
+	
+	@Update("UPDATE STUDENT SET uploadstatus= #{uploadstatus} WHERE id=#{id}")	
+	void updateUploadStatus(Student student);
 
 	@Update("UPDATE STUDENT SET profilePicture = #{profilePicture}, updatedBy= #{updatedBy} WHERE id=#{id}")
 	void uploadImage(Student student);
