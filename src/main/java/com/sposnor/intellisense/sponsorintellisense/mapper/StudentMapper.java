@@ -31,7 +31,7 @@ public interface StudentMapper {
 			+ "IF(profilePicture IS NULL,0,1) imagePresent "
 			+ "FROM STUDENT S "
 			+ "LEFT JOIN PROJECT P ON S.PROJECTID = P.ID LEFT JOIN AGENCY A ON P.AGENCYID = A.ID WHERE "
-			+ " projectid IN ( #{id} ) AND S.STATUS = 0 ")
+			+ " projectid IN ( #{id} ) AND S.STATUS = 0  ORDER BY studentCode")
 	List<Student> listByProjectId(@Param("id") Long id);
 	
 	@Select("select (CASE WHEN max(seq_val) IS NULL THEN 1000 ELSE max(seq_val) END) sequence from student_sequence where projectId=#{id}")
