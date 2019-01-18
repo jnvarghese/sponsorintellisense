@@ -2,198 +2,203 @@
 <html>
 
 <head>
-    <style>
-        .bodyStyle {
-            font-family: serif;
-        }
+  <style>
+    .bodyStyle {
+      font-family: serif;
+    }
 
-        #container {
-            width: 100%;
-            font-size: 0;
-            margin: 15px;
-            padding-left: 80px;
-            padding-right: 50px;
-            padding-bottom: 20px;
-        }
+    #container {
+      width: 100%;
+      font-size: 0;
+      margin: 15px;
+      padding-left: 80px;
+      padding-right: 50px;
+      padding-bottom: 20px;
+    }
 
-        .tableStyle {
-            border-spacing: 1px;
-            border-collapse: separate;
-            width: 97.7%;
-        }
+    .tableStyle {
+      border-spacing: 1px;
+      border-collapse: separate;
+      width: 97.7%;
+    }
 
-        .thStype {
-            border: .2px solid black;
-            border-collapse: inherit;
-            padding-left: 5px;
-            padding-top: 2px;
-            height: 40px;
-            text-align: left;
-        }
+    .thStype {
+      border: .2px solid black;
+      border-collapse: inherit;
+      padding-left: 5px;
+      padding-top: 2px;
+      height: 40px;
+      text-align: left;
+    }
 
-        .thStype2 {
-            border: .2px solid black;
-            border-collapse: inherit;
-            padding-left: 5px;
-            padding-top: 2px;
-            height: 40px;
-            text-align: right;
-            vertical-align: middle;
-        }
-		.blank_row
-		{
-		    height: 40px !important; /* overwrites any other rules */
-		    background-color: #FFFFFF;
-		}
-       
-        h2 {
-		    display: block;
-		    font-size: 1.3em;
-		    margin-top: 0.10em;
-		    margin-bottom: 0.83em;
-		    margin-left: 0;
-		    margin-right: 0;
-		    font-weight: bold;
-		}
-    </style>
+    .thStype2 {
+      border: .2px solid black;
+      border-collapse: inherit;
+      padding-left: 5px;
+      padding-top: 2px;
+      height: 40px;
+      text-align: right;
+      vertical-align: middle;
+    }
+
+    .blank_row {
+      height: 40px !important;
+      /* overwrites any other rules */
+      background-color: #FFFFFF;
+    }
+
+    h2 {
+      display: block;
+      font-size: 1.3em;
+      margin-top: 0.10em;
+      margin-bottom: 0.83em;
+      margin-left: 0;
+      margin-right: 0;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body class="bodyStyle">
-    <div>
-        <div style="float: left;padding-left:85px;">
-        <img width="60" src="data:image/png;base64,$waterMark" alt="imagename" />
+  <div>
+    <div style="float: left;padding-left:85px;">
+      <img width="90" src="data:image/png;base64,$waterMark" alt="imagename" />
+    </div>
+    <div style="float: right; width: 90%">
+      <div style="padding: 0px;margin: 0px;">
+        <div style="padding-left: 18px">
+          <h2 style="padding: 0px;margin: 0px;">MAR THOMA MISSION BOARD</h2>
         </div>
-        <div style="float: right; width: 95%">
-            <div style="padding: 0px;margin: 0px;">
-                <div style="padding-left: 55px">
-                    <h2 style="padding: 0px;margin: 0px;">MAR THOMA MISSION BOARD</h2>
-                </div>
-                <div style="padding-left:75px">
-                    <p style="padding: 0px;margin: 0px; font-size: 13px;">2320 Merrick Ave, Merrick, New York - 11566</p>
-                </div>
-                <div style="padding-left: 40px">
-                    <span style="font-size: 12px;">
-                        Phone: (516) 377-3311 Email: marthomamissionboard@gmail.com</span>
-                </div>
-                <div style="padding-left: 95px">
-                    <span style="font-size: 12px;">Website: www.marthomamissionnae.org</span>
-                </div>
+        <div style="padding-left:28px">
+          <p style="padding: 0px;margin: 0px; font-size: 14px;">2320 Merrick Ave, Merrick, New York - 11566</p>
+        </div>
+        <div style="padding-left: -8px">
+          <span style="font-size: 13px;">
+            Phone: (516) 377-3311 Email: marthomamissionboard@gmail.com</span>
+        </div>
+        <div style="padding-left: 40px">
+          <span style="font-size: 14px;">Website: www.marthomamissionnae.org</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <br />
+    <br />
+    <div id="container">
+      <table cellpadding="5" cellspacing="5">
+        <tr>
+          <td>
+            <span style="font-size:20;font-weight: bold; color: red">No: $receiptNo</span>
+          </td>
+          <td width="37%">
+            <span></span>
+          </td>
+          <td>
+            <span>Date: $!receiptDate</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <br />
+    <br />
+    <div id="container">
+      <table cellpadding="5" cellspacing="5">
+        <tr>
+          <td>
+            <span style="font-weight: bold;">Received with thanks from:</span> $!receivedfrom
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <span style="font-weight: bold;">Address:</span> $!address
+          </td>
+        </tr>
+        <tr>
+          <td>
+            #if( $rType == 0 )
+            <span style="font-weight: bold;">Parish:</span> $from
+            #elseif( $rType == 1 )
+            <span style="font-weight: bold;">Organization:</span> $from
+            #elseif( $rType == 2 )
+            <span style="font-weight: bold;">Name :</span> $from
+            #else
+            <span></span>
+            #end
+          </td>
+        </tr>
+      </table>
+    </div>
+    <div id="container">
+      <table class="tableStyle">
+        <tr>
+          <td class="thStype" width="10px;">
+            <span>1</span>
+          </td>
+          <td class="thStype">
+            <span>$!missionname</span>
+          </td>
+          <td class="thStype">
+            <span>$$total</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="thStype2" colspan="2">
+            <span>
+              <b>TOTAL</b>
+            </span>
+          </td>
+          <td class="thStype">
+            <span>$$total</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <br />
+    <br />
+     <div id="container">
+      <table cellpadding="5" cellspacing="5">
+        <tr>
+          <td colspan="3">
+            <span style="font-weight: bold;">Method of Payment:</span> $!paymentmethod
+          </td>
+        </tr>
+
+      </table>
+    </div>
+    <div id="container">
+      <table cellpadding="10" cellspacing="10" border="0" width="100%">
+        <tr>
+
+          <td colspan="3">
+            <div style="padding-left:100px">
+              <img width="160px" src="data:image/png;base64,$seal" />
             </div>
-        </div>
+          </td>
+
+        </tr>
+        <tr>
+          <td></td>
+          <td>
+            <div style="padding-left:5px">
+              <img width="70px" src="data:image/png;base64,$sign2" />
+            </div>
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            Secretary
+          </td>
+          <td>
+            Coordinator
+          </td>
+          <td>Treasurer</td>
+        </tr>
+      </table>
     </div>
-    <div>
-        <br/>
-        <br/>
-        <div id="container">
-            <table cellpadding="5" cellspacing="5">
-                <tr>
-                    <td>
-                        <span style="font-weight: bold; color: red">No: $receiptNo</span>
-                    </td>
-                    <td width="37%">
-                        <span></span>
-                    </td>
-                    <td>
-                        <span>Date: $!receiptDate</span>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <br/>
-        <br/>
-        <div id="container">
-            <table cellpadding="5" cellspacing="5">
-                <tr>
-                    <td>
-                        <span>Received with thanks from: $!receivedfrom</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span>Address: $!address</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        #if( $rType == 0 )
-                        <span>Parish: $from</span>
-                        #elseif( $rType == 1 )
-                        <span>Organization: $from</span>
-                        #elseif( $rType == 2 )
-                        <span>Name : $from</span>
-                        #else
-                        <span></span>
-                        #end
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div id="container">
-            <table class="tableStyle">
-                <tr>
-                    <td class="thStype" width="10px;">
-                        <span>1</span>
-                    </td>
-                    <td class="thStype">
-                        <span>$!missionname</span>
-                    </td>
-                    <td class="thStype">
-                        <span>$$total</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="thStype2" colspan="2">
-                        <span>
-                            <b>TOTAL</b>
-                        </span>
-                    </td>
-                    <td class="thStype">
-                        <span>$$total</span>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <br/>
-        <br/>
-        <div id="container">
-            <table cellpadding="5" cellspacing="5" width="100%">
-                <tr>
-                    <td colspan="2">
-                        <span>Method of Payment: $!paymentmethod</span>
-                    </td>                   
-                </tr>
-                <tr class="blank_row">
-				      <td colspan="2"></td>				   
-				</tr>
-                <tr>
-                    <td>
-                        Secretary
-                    </td>
-                     <td>Treasurer</td>
-                </tr>
-                <tr>
-				    <td colspan="2">
-					    <div style="padding-left:5px">
-			       	     <img width="70px" src="data:image/png;base64,$sign2" />
-			            </div>
-                    </td>
-				</tr>
-                <tr>
-                    <td>
-                        Akash Daniel Mathew
-                    </td>
-                     <td></td>
-                </tr>
-                <tr>
-                <td colspan="2">			        
-			       <div style="padding-left:100px">
-                     <img width="160px" src="data:image/png;base64,$seal" />
-                   </div>
-                 </td>
-                </tr>
-            </table>
-        </div>
-     
-    </div>
+
+  </div>
 </body>
+
 </html>

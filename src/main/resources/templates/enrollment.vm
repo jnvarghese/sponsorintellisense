@@ -73,7 +73,7 @@
 
 <body class="bodyStyle">
   <div>
-     <div style="border:1px solid black; padding-bottom: 15px;">
+    <div style="border:1px solid black; padding-bottom: 15px;">
       <div style="padding-left:170px">
         <h2 style="padding: 0px;margin: 0px;">MAR THOMA MISSION BOARD</h2>
       </div>
@@ -101,18 +101,17 @@
         <div style="padding-bottom: 1px;">
           <div style="padding-left:20px">
             <span style="font-size: 13px;">$timeNow</span>
-            <br/>
-            <br/>
+            <br />
+            <br />
             <span style="font-size: 13px;">Dear $sponsorName,</span>
-            <br/>
-            <br/>
-            <span style="font-size: 13px;">The Mar Thoma Mission Board-Diocese of North America &amp; Europe would like to thank you for supporting the
+            <br />
+            <br />
+            <span style="font-size: 13px;">The Mar Thoma Mission Board-Diocese of North America &amp; Europe would like
+              to thank you for supporting the
               Light to Life project and actively participating by pledging to sponsor a child.</span>
-            <br/>
-            <br/>
+            <br />
+            <br />
             <span style="font-size: 13px;">The following are your sponsorship details:</span>
-            <br/>
-            <br/>
           </div>
         </div>
       </div>
@@ -150,7 +149,7 @@
             <td class="thStype">
               <span class="tdSpanStyle">$sponsorParish</span>
             </td>
-          </tr>         
+          </tr>
           <tr>
             <td class="tdHighLightStyle">
               <span class="tdSpanStyle">PHONE</span>
@@ -165,7 +164,7 @@
               <span class="tdSpanStyle">$!sponsorEmail</span>
             </td>
           </tr>
-           <tr>
+          <tr>
             <td class="tdHighLightStyle">
               <span class="tdSpanStyle">ADDRESS</span>
             </td>
@@ -175,10 +174,7 @@
           </tr>
         </table>
       </div>
-     
       #set($studentSize = $sponseeList.size())
-      
-   <br/>
       #foreach ($sponsee in $sponseeList)
       <div id="container">
         <table class="tableStyle">
@@ -227,7 +223,7 @@
               <span class="tdSpanStyle">$!sponsee.baseLanguage</span>
             </td>
             <td class="thImageStype" rowspan="6">
-              <img width="100" src="data:image/png;base64,$sponsee.profilePicture" alt="imagename" />
+              <img width="100" height="120" src="data:image/png;base64,$sponsee.profilePicture" alt="imagename" />
             </td>
           </tr>
 
@@ -266,14 +262,14 @@
             <td class="thStype" colspan="3">
               <span class="tdSpanStyle">$!sponsee.occupationOfGuardian</span>
             </td>
-          </tr>         
+          </tr>
           <tr>
             <td class="tdHighLightStyle" colspan="2">
               <span class="tdSpanStyle">PARTNER ORGANIZATION</span>
             </td>
             <td class="thStype" colspan="4">
               <span class="tdSpanStyle">$!sponsee.agencyName</span>
-            </td>         
+            </td>
           </tr>
           <tr>
             <td class="tdHighLightStyle">
@@ -284,23 +280,27 @@
             </td>
           </tr>
         </table>
-      </div>  
-       #if( $studentSize == 2 )
-           <br/>
-           <br/>
-      	#end
-      
-      #end
-      
+      </div>
       #if( $studentSize == 2 )
-           <br/>
-           <br/>
-           <br/>
-           <br/>
-            <br/>
-           <br/>
+      <br />
+      <br />
       #end
-     
+
+      #end
+
+      #if( $studentSize == 2 )
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      #end
+      #if( $studentSize ==  3)
+      <br />
+      <br />
+      #end
+
       <div id="container">
         <table class="tableStyle">
           <tr>
@@ -336,7 +336,7 @@
               <span class="tdSpanStyle">$!paymentMethod</span>
             </td>
           </tr>
-           <tr>
+          <tr>
             <td class="tdHighLightStyle">
               <span class="tdSpanStyle">FUNDS UTILIZED</span>
             </td>
@@ -352,35 +352,32 @@
           </tr>
         </table>
       </div>
-      
+
       <div id="container">
-        <table class="tableStyle">         
+        <table class="tableStyle">
           <tr>
             <td class="tdHighLightStyle" width="200px;">
               <span class="tdSpanStyle">SPONSORSHIP RENEWAL DUE</span>
             </td>
             <td class="thStype" colspan="3">
               <span class="tdSpanStyle" style="background-color: yellow;">$renewalDue</span>
-            </td>           
-          </tr>        
+            </td>
+          </tr>
         </table>
       </div>
-      
+
       <div>
         <div style="padding-bottom: 2px;">
           <div style="padding-left:20px; padding-bottom: 10px;">
-            <span style="font-size: 13px;">Once again, we really appreciate your prayers and support. Please contact the office of the Mar Thoma Mission
+            <span style="font-size: 13px;">Once again, we really appreciate your prayers and support. Please contact
+              the office of the Mar Thoma Mission
               Board if you have any questions or concerns. Please find contact information above.</span>
           </div>
           <div style="padding-left:20px">
-            <span style="font-size: 13px;">Regards,</span>
-          </div>        
-
-          <div style="padding-left:25px">
-            <img width="70px" src="data:image/png;base64,$sign2" />
+            <span style="font-size: 13px;">Sincerely,</span>
           </div>
- 		  <div style="padding-left:20px">
-            <span style="font-size: 13px;">Akash Daniel Mathew</span>
+          <div style="padding-left:20px">
+            <span style="font-size: 13px;">Mission Coordinator</span>
           </div>
           <div style="padding-left:20px">
             <span style="font-size: 13px;">Mar Thoma Mission Board</span>

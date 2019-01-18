@@ -60,7 +60,7 @@ public class UploadController {
 			try {
 				name = multipartFile.getOriginalFilename();
 				fileUpload.setFileName(multipartFile.getOriginalFilename());
-				//fileUpload.setFileData(multipartFile.getBytes());
+				fileUpload.setFileData(multipartFile.getBytes());
 				fileUpload.setReferenceId(id);
 				fileUpload.setInitiativeId(Long.valueOf(initiativeId));
 				if("sponsor".equalsIgnoreCase(type)) {

@@ -64,7 +64,7 @@ public class VelocityTemplateParser {
 		
 		context.put("address", sb.toString());
 		if(receipt.getReceiptType() == 0) {
-			context.put("from", receipt.getParishName());
+			context.put("from", receipt.getParishName() + ", "+receipt.getCity());
 		}else if(receipt.getReceiptType() == 1) {
 			context.put("from", receipt.getOrgName());
 		}else {
