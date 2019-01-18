@@ -46,6 +46,17 @@ public class SponseeReport {
 	
 	private String imageLinkRef;
 	
+	private String uploadstatus;
+	
+	
+	public String getUploadstatus() {
+		return uploadstatus;
+	}
+
+	public void setUploadstatus(String uploadstatus) {
+		this.uploadstatus = uploadstatus;
+	}
+
 	public String getAddress() {
 		return address;
 	}

@@ -60,7 +60,7 @@ public class UploadController {
 			try {
 				name = multipartFile.getOriginalFilename();
 				fileUpload.setFileName(multipartFile.getOriginalFilename());
-				fileUpload.setFileData(multipartFile.getBytes());
+				//fileUpload.setFileData(multipartFile.getBytes());
 				fileUpload.setReferenceId(id);
 				fileUpload.setInitiativeId(Long.valueOf(initiativeId));
 				if("sponsor".equalsIgnoreCase(type)) {
@@ -72,7 +72,7 @@ public class UploadController {
 				}				
 				fileUpload.setUserId(Long.valueOf(userId));	
 				fileUpload.setUploaduri("https://s3.us-east-2.amazonaws.com/datafileupload/"+multipartFile.getOriginalFilename());
-				//uploadMapper.uploadFile(fileUpload);
+				uploadMapper.uploadFile(fileUpload);
 				PutObjectResult putObjectResult = s3Wrapper.upload(multipartFile);
 				//LOGGER.debug( "Put Object Result  {} ", putObjectResult);
 				message = "You successfully uploaded " + name + "!";

@@ -122,6 +122,7 @@ public class ManageProgramController {
 		List<SponseeReport> sponseeList = sponsorMapper.listSponseesByEnrolmentId(enrollmentId);
 
 		for(SponseeReport sr : sponseeList) {
+			if("Y".equalsIgnoreCase(sr.getUploadstatus()))
 			sr.setProfilePicture(s3Wrapper.downloadProfilePicture(sr.getProjectId(), sr.getStudentId(), sr.getImageLinkRef()));
 		}
 		
