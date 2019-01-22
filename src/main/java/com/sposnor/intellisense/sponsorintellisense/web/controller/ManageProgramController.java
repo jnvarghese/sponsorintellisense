@@ -17,8 +17,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,9 +50,11 @@ import com.itextpdf.tool.xml.pipeline.html.AbstractImageProvider;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Contribution;
+import com.sposnor.intellisense.sponsorintellisense.data.model.EnrollmentSummary;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponseeReport;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReport;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorshipInfo;
+import com.sposnor.intellisense.sponsorintellisense.data.model.StudentSummary;
 import com.sposnor.intellisense.sponsorintellisense.data.model.ViewEnroll;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ManageProgramMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
@@ -194,6 +198,19 @@ public class ManageProgramController {
 	@GetMapping("/manage/view/{id}")
 	public List<SponsorshipInfo> listSponsorShipInfo(@PathVariable(value = "id") Long studentId) {
 		return manageProgramMapper.getSponsorshipInfoByStudentId(studentId);
+	}
+	
+	@GetMapping("/enrollment/viewsummary/{id}")
+	public List<EnrollmentSummary> getSummary(@PathVariable(value = "id") Long parishId) {
+		List<EnrollmentSummary> list = manageProgramMapper.getSummaryByParishId(parishId);
+		list.stream().forEach(i-> {
+			List<StudentSummary> studentlist = manageProgramMapper.getStudentByEnrollmentId(i.getEnrollmentId());
+			if(!ObjectUtils.isEmpty(studentlist)) {
+				i.setStudents(studentlist);
+				i.setNumberOfStudents(studentlist.size());
+			}
+		});
+		return list;
 	}
 
 	@GetMapping("/manage/viewcontribution/{sponsorid}/{studentid}")

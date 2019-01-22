@@ -7,8 +7,10 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.Contribution;
+import com.sposnor.intellisense.sponsorintellisense.data.model.EnrollmentSummary;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Receipt;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorshipInfo;
+import com.sposnor.intellisense.sponsorintellisense.data.model.StudentSummary;
 import com.sposnor.intellisense.sponsorintellisense.data.model.ViewEnroll;
 
 @Mapper
@@ -33,11 +35,25 @@ public interface ManageProgramMapper {
 			+ "NICKNAME sponsorNickName, P.NAME parishName, DATE_FORMAT(effectiveDate, \"%M %D %Y\") paymentDate,(CONTRIBUTIONAMOUNT + MISCAMOUNT) CONTRIBUTION, "
 			+ "EN.CREATEDDATE FROM SPONSOR SP, PARISH P, ENROLLMENT EN, USERS U, CENTER C,REGION R WHERE P.ID = SP.PARISHID "
 			+ "AND EN.CREATEDBY = U.ID AND P.CENTERID = C.ID AND C.REGIONID = R.ID "
-			+ "AND P.ID= #{id} "
+			+ "AND P.ID= #{id} AND EN.STATUS= 0 "
 			+ "AND SPONSORID = SP.ID ORDER BY sponsorName") //  EN.CREATEDDATE DESC
 	List<ViewEnroll> selectEnrollments(@Param("id") Long parishId);
 	
 	@Select("select r.id, receivedfrom,address,parish,missionname,total, paymentmethod, DATE_FORMAT(r.createddate, '%M %d %Y') createddate from enrollment ern, "
 			+ "receipt r where ern.receiptId= r.id and ern.id = #{ernId}")
 	Receipt getReceipt(@Param("ernId") Long ernId);
+	
+	@Select("SELECT S.ID sponsorId, CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',S.SPONSORCODE) sponsorCode, EN.id enrollmentId, "
+			+ "FIRSTNAME sponsorFirstName, LASTNAME sponsorLastName, MIDDLEINITIAL sponsorMi, p.name parishName, p.city parishCity, "
+			+ "NICKNAME sponsorNickName, (ROUND(contributionAmount)+ROUND(miscAmount, 2)) contribution FROM ENROLLMENT EN, "
+			+ "SPONSOR S, PARISH P, CENTER C,REGION R "
+			+ "WHERE EN.sponsorId = S.ID "
+			+ "AND S.PARISHID = P.ID  AND P.CENTERID = C.ID AND C.REGIONID = R.ID AND S.PARISHID = #{id} AND S.SPONSORSTATUS = 0")
+	List<EnrollmentSummary> getSummaryByParishId(@Param("id") Long parishId); 
+	
+	@Select(" SELECT CONCAT(A.CODE,'-',P.CODE,'-',ST.STUDENTCODE)  studentCode, SM.maxOut, DATE_FORMAT(SM.maxOut, \"%M\") maxOutMonth,"
+			+ " DATE_FORMAT(SM.maxOut, \"%Y\") maxOutYear FROM ENROLLMENT EN, student_maxout SM, STUDENT ST, PROJECT P, AGENCY A "
+			+ " WHERE EN.ID = SM.ENROLLMENTID AND SM.STUDENTID = ST.ID AND ST.PROJECTID = P.ID AND P.AGENCYID = A.ID "
+			+ "AND EN.ID = #{id} ORDER BY studentCode")
+	List<StudentSummary> getStudentByEnrollmentId(@Param("id") Long enrollmentId); 
 }

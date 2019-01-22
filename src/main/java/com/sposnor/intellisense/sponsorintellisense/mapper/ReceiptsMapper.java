@@ -40,7 +40,7 @@ public interface ReceiptsMapper {
 			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName "
 			+ "FROM receipts r left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
 			+ "initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id  "
-			+ "and date_format(str_to_date(rdate, '%m/%d/%Y'), '%Y-%m-%d') >= CURDATE() - INTERVAL #{range} DAY;")
+			+ "and date_format(str_to_date(rdate, '%m/%d/%Y'), '%Y-%m-%d') >= CURDATE() - INTERVAL #{range} DAY order by receiptId desc;")
 	List<Receipts> listByRange(@Param("range") int range);
 	
 	
