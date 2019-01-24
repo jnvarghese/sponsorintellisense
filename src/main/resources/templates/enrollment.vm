@@ -49,7 +49,7 @@
       color: #800000;
     }
 
-    #container {
+    .container {
       width: 100%;
       font-size: 0;
       margin: 15px;
@@ -115,7 +115,7 @@
           </div>
         </div>
       </div>
-      <div id="container">
+      <div class="container">
         <table class="tableStyle">
           <tr>
             <td class="thStype" colspan="4">
@@ -176,7 +176,7 @@
       </div>
       #set($studentSize = $sponseeList.size())
       #foreach ($sponsee in $sponseeList)
-      <div id="container">
+      <div class="container">
         <table class="tableStyle">
           <tr>
             <td class="thStype" colspan="7">
@@ -223,7 +223,7 @@
               <span class="tdSpanStyle">$!sponsee.baseLanguage</span>
             </td>
             <td class="thImageStype" rowspan="6">
-              <img width="100" height="120" src="data:image/png;base64,$sponsee.profilePicture" alt="imagename" />
+        	  <img width="100" height="120" src="data:image/png;base64,$sponsee.profilePicture" alt="imagename" />
             </td>
           </tr>
 
@@ -301,7 +301,7 @@
       <br />
       #end
 
-      <div id="container">
+      <div class="container">
         <table class="tableStyle">
           <tr>
             <td class="thStype" colspan="4">
@@ -353,7 +353,7 @@
         </table>
       </div>
 
-      <div id="container">
+      <div class="container">
         <table class="tableStyle">
           <tr>
             <td class="tdHighLightStyle" width="200px;">

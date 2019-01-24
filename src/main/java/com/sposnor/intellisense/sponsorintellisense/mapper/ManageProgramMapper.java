@@ -48,7 +48,7 @@ public interface ManageProgramMapper {
 			+ "NICKNAME sponsorNickName, (ROUND(contributionAmount)+ROUND(miscAmount, 2)) contribution FROM ENROLLMENT EN, "
 			+ "SPONSOR S, PARISH P, CENTER C,REGION R "
 			+ "WHERE EN.sponsorId = S.ID "
-			+ "AND S.PARISHID = P.ID  AND P.CENTERID = C.ID AND C.REGIONID = R.ID AND S.PARISHID = #{id} AND S.SPONSORSTATUS = 0")
+			+ "AND S.PARISHID = P.ID  AND P.CENTERID = C.ID AND C.REGIONID = R.ID AND S.PARISHID = #{id} AND EN.STATUS= 0 AND S.SPONSORSTATUS = 0")
 	List<EnrollmentSummary> getSummaryByParishId(@Param("id") Long parishId); 
 	
 	@Select(" SELECT CONCAT(A.CODE,'-',P.CODE,'-',ST.STUDENTCODE)  studentCode, SM.maxOut, DATE_FORMAT(SM.maxOut, \"%M\") maxOutMonth,"

@@ -134,7 +134,7 @@ public class ManageProgramController {
 
 		String coverLetter = VelocityTemplateParser.generateCoverLetter(sponsorReport, sponseeList.size());
 		String htmlstring = VelocityTemplateParser.generateHTML(getDataMap(sponsorReport, sponseeList));
-		String consolidatedData = coverLetter + htmlstring;
+		String consolidatedData = (coverLetter + htmlstring).replaceAll("&", "&amp;");
 		 //System.out.println(" consolidatedData "+consolidatedData);
 
 		ByteArrayOutputStream byteArrayPutStream = new ByteArrayOutputStream();
