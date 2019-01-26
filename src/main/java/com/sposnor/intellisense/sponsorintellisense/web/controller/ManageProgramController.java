@@ -111,7 +111,7 @@ public class ManageProgramController {
 		map.put("fundUsed", sponser.getContribution());
 		map.put("totalBalance", sponser.getMiscAmount());
 		map.put("totalSponsorshipReceived", sponser.getTotal());
-		map.put("spnStartDate", sponser.getEffectiveDate());
+		map.put("spnStartDate", sponser.getPaymentDate());
 		map.put("renewalDue", sponser.getRenewalDue());
 		map.put("sign2", sponser.getSign2());
 		map.put("sign1", sponser.getSign1());
@@ -133,7 +133,7 @@ public class ManageProgramController {
 		SponsorReport sponsorReport = studentMapper.findSponsorByEnrolmentId(enrollmentId);
 
 		String coverLetter = VelocityTemplateParser.generateCoverLetter(sponsorReport, sponseeList.size());
-		String htmlstring = VelocityTemplateParser.generateHTML(getDataMap(sponsorReport, sponseeList));
+		String htmlstring = VelocityTemplateParser.generateHTML(getDataMap(sponsorReport, sponseeList),sponseeList.size());
 		String consolidatedData = (coverLetter + htmlstring).replaceAll("&", "&amp;");
 		 //System.out.println(" consolidatedData "+consolidatedData);
 
@@ -189,9 +189,9 @@ public class ManageProgramController {
 		List<SponseeReport> sponseeList = sponsorMapper.listSponseesByEnrolmentId(new Long(9));
 		SponsorReport sponsorReport = studentMapper.findSponsorByEnrolmentId(new Long(9));
 
-		String htmlstring = VelocityTemplateParser.generateHTML(getDataMap(sponsorReport, sponseeList));
+		String htmlstring = VelocityTemplateParser.generateHTML(getDataMap(sponsorReport, sponseeList), sponseeList.size());
 		// result = writer.toString();
-
+  
 		return htmlstring;
 	}
 

@@ -82,7 +82,7 @@ public interface StudentMapper {
 			+ "CASE hasAnyCoSponser WHEN '1' THEN CONCAT(FIRSTNAME,' ','&',' ',coSponserName ) ELSE CONCAT(FIRSTNAME,' ',COALESCE(MIDDLEINITIAL, ''),' ',LASTNAME ) END sponsorName, "
 			+ "NICKNAME,  P.NAME parishName,P.CITY parishCity,C.NAME centerName, R.NAME regionName, "
 			+ "APPARTMENTNUMBER,STREET, SP.CITY sponsorCity, STATE sponsorState,POSTALCODE, SP.EMAILADDRESS emailAddress, "
-			+ "emailAddress2, phone1, phone2, DATE_FORMAT(effectiveDate, \"%M 1 %Y\") effectiveDate,  "
+			+ "emailAddress2, phone1, phone2, DATE_FORMAT(paymentDate, \"%M 1 %Y\") paymentDate,  "
 			+ "ROUND(CONTRIBUTIONAMOUNT,2) CONTRIBUTION, ROUND(MISCAMOUNT,2) MISCAMOUNT, ROUND(CONTRIBUTIONAMOUNT + MISCAMOUNT,2) TOTAL, "
 			+ "EN.CREATEDDATE FROM SPONSOR SP, PARISH P, ENROLLMENT EN , CENTER C, "
 			+ "REGION R, SPONSOR_MAXOUT SM  WHERE P.ID = SP.PARISHID AND EN.ID=SM.ENROLLMENTID AND EN.SPONSORID = SP.ID  AND P.CENTERID = C.ID AND C.REGIONID = R.ID "

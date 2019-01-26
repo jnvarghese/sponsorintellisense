@@ -120,6 +120,7 @@ public class VelocityTemplateParser {
 		
 		context.put("totalCount", size);
 		context.put("seal", sr.getSeal());
+		context.put("coverLetterHeader", sr.getCoverLetterHeader());
 		context.put("sign1", sr.getSign1());
 		context.put("waterMark", sr.getWaterMark());
 		
@@ -134,7 +135,7 @@ public class VelocityTemplateParser {
 	}
 
 	
-	public static String generateHTML( Map<String,Object> dataMap) throws Exception {
+	public static String generateHTML( Map<String,Object> dataMap, int studentSize) throws Exception {
 		final Properties props = new Properties();
 		props.setProperty("resource.loader", "class");
 		props.setProperty("class.resource.loader.class",
@@ -145,7 +146,12 @@ public class VelocityTemplateParser {
 		engine.init();
 
 		/* next, get the Template */
-		Template t = engine.getTemplate("templates/enrollment.vm");
+		Template t = null;
+		if(studentSize == 2) {
+			t = engine.getTemplate("templates/enrollment2.vm");
+		}else {
+			t = engine.getTemplate("templates/enrollment.vm");
+		}
 		/* create a context and add data */
 		context.put("timeNow", dataMap.get("timeNow"));
 		context.put("sponsorId", dataMap.get("sponsorId"));

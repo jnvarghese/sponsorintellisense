@@ -32,7 +32,7 @@ public interface ManageProgramMapper {
 	
 	@Select("SELECT EN.ID enrollmentId,  CONCAT(U.firstname,' ', U.lastname) createdBy, CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',SP.SPONSORCODE) uniqueId, "
 			+ "CASE hasAnyCoSponser WHEN '1' THEN CONCAT(SP.FIRSTNAME,' ','&',' ',coSponserName ) ELSE CONCAT(SP.FIRSTNAME,' ',COALESCE(MIDDLEINITIAL, ''),' ',SP.LASTNAME ) END sponsorName, "
-			+ "NICKNAME sponsorNickName, P.NAME parishName, DATE_FORMAT(effectiveDate, \"%M %D %Y\") paymentDate,(CONTRIBUTIONAMOUNT + MISCAMOUNT) CONTRIBUTION, "
+			+ "NICKNAME sponsorNickName, P.NAME parishName, DATE_FORMAT(paymentDate, \"%M %D %Y\") paymentDate,(CONTRIBUTIONAMOUNT + MISCAMOUNT) CONTRIBUTION, "
 			+ "EN.CREATEDDATE FROM SPONSOR SP, PARISH P, ENROLLMENT EN, USERS U, CENTER C,REGION R WHERE P.ID = SP.PARISHID "
 			+ "AND EN.CREATEDBY = U.ID AND P.CENTERID = C.ID AND C.REGIONID = R.ID "
 			+ "AND P.ID= #{id} AND EN.STATUS= 0 "

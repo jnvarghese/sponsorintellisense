@@ -4,7 +4,7 @@
 <head>
   <style>
     .bodyStyle {
-      font-family: serif;
+      font-family: Cambria;
     }
 
     #container {
@@ -29,29 +29,9 @@
 </head>
 
 <body class="bodyStyle">
-  <div>
+  <div style="padding-left:15px">
   <br/>
-    <div style="border:1px solid black; padding-bottom: 15px;">
-      <div style="padding-left:170px">
-        <h2 style="padding: 0px;margin: 0px;">MAR THOMA MISSION BOARD</h2>
-      </div>
-      <div style="padding-left:100px">
-        <h2 style="padding: 0px;margin: 0px;">DIOCESE OF NORTH AMERICA & EUROPE</h2>
-      </div>
-      <div style="padding-left:220px">
-        <p style="padding: 0px;margin: 0px; font-size: 13px;">2320 Merrick Ave, Merrick, New York - 11566</p>
-      </div>
-      <div style="padding-left:60px">
-        <span style="font-size: 12px;">
-          Phone: (516) 377-3311 Email: marthomamissionboard@gmail.com Website: www.marthomamissionnae.org</span>
-      </div>
-    </div>
-    <div style="background:rgb(230,230,230); padding-left:300px; padding-bottom:5px; padding-top:4px;">
-      <b style="color:rgb(128,0,0); font-size: 16px;">LIGHT TO LIFE </b>
-    </div>
-    <div style="padding-left:100px;">
-      <b style="color: #a31010; font-size: 14px;">'Reaching out to the unreached with the message of love through education' </b>
-    </div>
+   <img width="600" src="data:image/png;base64,$coverLetterHeader" />
   </div>
   <div class="wtrMark">
 
@@ -61,7 +41,7 @@
           <div style="padding-left:20px">
             <br/>
             <br/>
-            <span>$timeNow</span>
+            <span style="font-weight: bold;">$timeNow</span>
             <br/>
             <br/>
             <br/>
@@ -69,7 +49,8 @@
             <span>Dear $sponsorName,</span>
             <br/>
             <br/>
-            <span>Greetings from the Sinai Mar Thoma Center.</span>
+            <span style="font-weight: bold;font-style: italic;">Greetings from the Sinai Mar Thoma Center,</span>
+             <span style="font-weight: bold;"> New York </span>
             <br/>
             <br/>
               #if( $totalCount == 1 )
@@ -81,7 +62,7 @@
 			#end
             
             <span>Thank you for being part of the mission activities of our diocese. We have received your pledge to sponsor $totalCount
-              $c_word1 through the <b>Light to Life Mission</b> project. Your donation will be utilized for the overall development
+              $c_word1 through the Light to Life Mission project. Your donation will be utilized for the overall development
               of $c_word2 $c_word1 in a systematic manner.</span>
             <br/>
             <br/>
@@ -95,7 +76,7 @@
             <br/>
 
             <br/>
-            <span> Yours in His ministry, </span>
+            <span style="font-weight: bold;"> Yours in His ministry, </span>
             <br/>
             <br/>
 
@@ -120,10 +101,10 @@
           </div>
 
           <div style="padding-left:20px">
-            <span>Rt. Rev. Dr. Isaac Mar Philoxenos</span>
+            <span style="font-weight: bold;">Rt. Rev. Dr. Isaac Mar Philoxenos</span>
           </div>
           <div style="padding-left:20px">
-            <span>Diocesan Bishop </span>
+            <span style="font-weight: bold;">Diocesan Bishop </span>
           </div>
         </div>
       </div>
@@ -135,6 +116,12 @@
 		   <br/>
 		   <br/>
 		   <br/>
+    </div>
+    <div style="padding-left:60px;">
+      <b style="color: #1245BC; font-size: 11px;font-weight: bold;">Mission Activities: Mexico Mission, Native American Mission, Neighborhood Mission, India Mission, Light to Life</b>
+    </div>
+    <div style="padding-left:150px;">
+      <b style="color: #a31010; font-size: 14px;font-style: italic;">'Reaching out to the unreached with the message of love'</b>
     </div>
   </div>
  

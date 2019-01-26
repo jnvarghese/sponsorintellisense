@@ -174,7 +174,7 @@
           </tr>
         </table>
       </div>
-      #set($studentSize = $sponseeList.size())
+
       #foreach ($sponsee in $sponseeList)
       <div class="container">
         <table class="tableStyle">
@@ -281,27 +281,8 @@
           </tr>
         </table>
       </div>
-      #if( $studentSize == 2 )
-      <br />
-      <br />
-      #end
-
-      #end
-
-      #if( $studentSize == 2 )
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      #end
-      #if( $studentSize ==  3)
-      <br />
-      <br />
-      #end
-
-      <div class="container">
+	 #end
+	 <div class="container">
         <table class="tableStyle">
           <tr>
             <td class="thStype" colspan="4">
@@ -365,7 +346,8 @@
           </tr>
         </table>
       </div>
-
+		<br/>
+		<br/>
       <div>
         <div style="padding-bottom: 2px;">
           <div style="padding-left:20px; padding-bottom: 10px;">
