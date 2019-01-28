@@ -70,15 +70,16 @@ public class EnrollmentController {
 		enrollment.setReceiptId(receipt.getId());
 		
 		enrollmentMapper.insert(enrollment);
+		
 		Calendar c = Calendar.getInstance();
-		Enrollment e = enrollmentMapper.selectEnrollmentForId(enrollment.getSponsorId(), enrollment.getPaymentDate(), enrollment.getEffectiveDate());
+		//Enrollment e = enrollmentMapper.selectEnrollmentForId(enrollment.getSponsorId(), enrollment.getEffectiveDate(), enrollment.getEffectiveDate());
 		for(Sponsee sponsee:  enrollment.getSponsees()) {
-			sponsee.setEnrollmentId(e.getId());
+			sponsee.setEnrollmentId(enrollment.getId());
 			enrollmentMapper.insertSponsee(sponsee);
 			c.set(sponsee.getExpirationYear(), sponsee.getExpirationMonth() - 1, 1, 0, 0);  
 			//dateSet.add(c.getTime());	
-			maxOutMapper.insertStudentMaxOut(new StudentMaxOut(sponsee.getStudentId(), e.getId(), c.getTime()));
-			maxOutMapper.insertSponsorMaxOut(new SponsorMaxOut(enrollment.getSponsorId(), e.getId(), c.getTime()));
+			maxOutMapper.insertStudentMaxOut(new StudentMaxOut(sponsee.getStudentId(), enrollment.getId(), c.getTime()));
+			maxOutMapper.insertSponsorMaxOut(new SponsorMaxOut(enrollment.getSponsorId(), enrollment.getId(), c.getTime()));
 		}
 		
 		/*final Date maxDate = dateSet.stream()

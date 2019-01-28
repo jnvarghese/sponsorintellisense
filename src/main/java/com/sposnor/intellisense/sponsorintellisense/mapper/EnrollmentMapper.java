@@ -11,9 +11,9 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsee;
 
 @Mapper
 public interface EnrollmentMapper {
-
+    // #{paymentDate}
 	@Insert("INSERT INTO ENROLLMENT (SPONSORID, PAYMENTDATE, EFFECTIVEDATE, CONTRIBUTIONAMOUNT, MISCAMOUNT, receiptId, createdBy)"
-			+ " values  (#{sponsorId}, #{paymentDate}, #{effectiveDate}, #{contributionAmount}, #{miscAmount},#{receiptId}, #{createdBy})")
+			+ " values  (#{sponsorId}, #{effectiveDate}, #{effectiveDate}, #{contributionAmount}, #{miscAmount},#{receiptId}, #{createdBy})")
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	void insert(Enrollment enrollment);	
 	
@@ -22,6 +22,6 @@ public interface EnrollmentMapper {
 	@Options(useGeneratedKeys = true, keyProperty = "id")
 	void insertSponsee(Sponsee sponsee);
 	
-	@Select("SELECT ID FROM ENROLLMENT WHERE SPONSORID = #{sponsorId} AND PAYMENTDATE = #{paymentDate} AND EFFECTIVEDATE = #{effectiveDate} LIMIT 1")
+	@Select("SELECT ID FROM ENROLLMENT WHERE SPONSORID = #{sponsorId} AND PAYMENTDATE = #{paymentDate} AND EFFECTIVEDATE = #{effectiveDate} ORDER BY ID DESC LIMIT 1")
 	Enrollment selectEnrollmentForId(@Param("sponsorId") Long sponsorId,@Param("paymentDate") String paymentDate, @Param("effectiveDate") String effectiveDate);
 }
