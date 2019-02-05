@@ -47,7 +47,7 @@ public class EnrollmentController {
 		enrollment.setCreatedBy(userId);
 		Sponsor sponsor = sponsorMapper.findById(enrollment.getSponsorId());
 		Parish parish = parishMapper.findById(sponsor.getParishId());
-		Receipt receipt = new Receipt();
+		/*Receipt receipt = new Receipt();
 		if(null!=sponsor.getAppartmentNumber()) {
 			receipt.setAddress(sponsor.getAppartmentNumber()+" "+sponsor.getStreet()+" "+sponsor.getCity()+ " "+ sponsor.getState()+ " "+ sponsor.getPostalCode());
 		}else {
@@ -67,8 +67,10 @@ public class EnrollmentController {
 		receipt.setCreatedby(userId);
 		receiptMapper.insert(receipt);
 		
-		enrollment.setReceiptId(receipt.getId());
-		
+		enrollment.setReceiptId(receipt.getId()); */
+		double contribution = enrollment.getContributionAmount();
+		enrollment.setActualamount(contribution);
+		enrollment.setContributionAmount(contribution-enrollment.getMiscAmount());
 		enrollmentMapper.insert(enrollment);
 		
 		Calendar c = Calendar.getInstance();

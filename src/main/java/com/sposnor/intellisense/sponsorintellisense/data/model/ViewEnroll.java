@@ -20,6 +20,10 @@ public class ViewEnroll {
 	
 	private String uniqueId;
 	
+	private String updatedDate;
+	
+	private String createdDate;
+	
 	
 	public String getEffectiveDate() {
 		return effectiveDate;
@@ -91,6 +95,22 @@ public class ViewEnroll {
 
 	public void setPaymentDate(String paymentDate) {
 		this.paymentDate = paymentDate;
+	}
+
+	public String getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(String updatedDate) {
+		this.updatedDate = updatedDate;
+	}
+
+	public String getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(String createdDate) {
+		this.createdDate = createdDate;
 	}
 	
 	

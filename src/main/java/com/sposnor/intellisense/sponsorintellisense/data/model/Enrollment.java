@@ -1,6 +1,7 @@
 package com.sposnor.intellisense.sponsorintellisense.data.model;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,12 +28,23 @@ public class Enrollment  implements Serializable {
 	
 	private double miscAmount;
 	
+	private double actualamount;
+	
 	private Long sponsorId;
 	
 	private Long receiptId;
 	
 	private Long createdBy;
 	
+	
+	public double getActualamount() {
+		return actualamount;
+	}
+
+	public void setActualamount(double actualamount) {
+		this.actualamount = actualamount;
+	}
+
 	public Long getCreatedBy() {
 		return createdBy;
 	}
@@ -106,8 +118,15 @@ public class Enrollment  implements Serializable {
 		return createdDate;
 	}
 
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
+	public void setCreatedDate(Date createdDate) throws ParseException {
+		java.util.Date dt = new java.util.Date();
+
+		java.text.SimpleDateFormat sdf = 
+		     new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+		String currentTime = sdf.format(dt);
+		
+		this.createdDate = sdf.parse(currentTime);
 	}
 
 	public Date getUpdatedDate() {
