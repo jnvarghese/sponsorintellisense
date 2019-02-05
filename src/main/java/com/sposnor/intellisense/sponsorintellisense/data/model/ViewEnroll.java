@@ -14,10 +14,20 @@ public class ViewEnroll {
 	
 	private String paymentDate;
 	
+	private String effectiveDate;
+	
 	private String createdBy;
 	
 	private String uniqueId;
 	
+	
+	public String getEffectiveDate() {
+		return effectiveDate;
+	}
+
+	public void setEffectiveDate(String effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
 
 	public String getCreatedBy() {
 		return createdBy;
