@@ -61,6 +61,9 @@ public interface SponsorMapper {
 			before = false, resultType= Long.class)
 	void insert(Sponsor sponsor);
 	
+	@Select("SELECT S.ID FROM SPONSOR S WHERE SPONSORSTATUS = 0 AND parishId=#{parishid} AND sponsorCode= #{code}")
+	List<Sponsor> searchByCode(@Param("code") String code, @Param("parishid") Long parishId);
+	
 	@Update(UPDATE_SPONSOR)	
 	void update(Sponsor sponsor);
 	

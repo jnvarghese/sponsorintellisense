@@ -18,7 +18,7 @@ public interface OrganizationMapper {
 	Organization findById(@Param("id") Long id);
 	
 	
-	@Select("select * from organization where status = 1")
+	@Select("select * from organization where status = 0")
 	List<Organization> list();
 	
 	@Insert("insert into organization (code, name, status, createdBy, createdDate) values (#{code}, #{name}, #{status}, #{createdBy}, #{createdDate})")

@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,13 +43,18 @@ public class SponsorController {
 	}
 	
 	@PostMapping("/add")
-	public Sponsor createSponsor(@RequestHeader Long userId, @Valid @RequestBody Sponsor sponsor) {		
+	public ResponseEntity<Sponsor> createSponsor(@RequestHeader Long userId, @Valid @RequestBody Sponsor sponsor) {	
+		List<Sponsor> sponsors = sponsorMapper.searchByCode(sponsor.getSponsorCode(), sponsor.getParishId());
+		if(!sponsors.isEmpty()) {
+			LOGGER.warn("Sponsor code already existing, "+ sponsor.getSponsorCode());
+			return new ResponseEntity<Sponsor>(sponsor, HttpStatus.BAD_REQUEST);
+		}
 		sponsor.setCreatedBy(userId);
 		if(!StringUtils.isEmpty(sponsor.getCoSponserName())) {
 			sponsor.setHasAnyCoSponser(true);
 		}
 		sponsorMapper.insert(sponsor);	    
-	    return sponsor;
+	    return new ResponseEntity<Sponsor>(sponsor, HttpStatus.OK);
 	}
 	
 	@GetMapping("/find/{id}")
