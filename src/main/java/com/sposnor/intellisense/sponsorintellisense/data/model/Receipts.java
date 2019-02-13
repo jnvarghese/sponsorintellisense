@@ -62,9 +62,20 @@ public class Receipts {
 	
 	private String parishName;
 	
+	private String parishCity;
+	
 	private String initiativeName;
 
 	
+	
+	public String getParishCity() {
+		return parishCity;
+	}
+
+	public void setParishCity(String parishCity) {
+		this.parishCity = parishCity;
+	}
+
 	public int getReceiptType() {
 		return receiptType;
 	}

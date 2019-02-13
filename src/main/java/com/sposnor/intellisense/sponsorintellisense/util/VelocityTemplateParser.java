@@ -2,7 +2,9 @@ package com.sposnor.intellisense.sponsorintellisense.util;
 
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -13,6 +15,8 @@ import org.apache.velocity.tools.generic.DateTool;
 import org.apache.velocity.tools.generic.NumberTool;
 import org.springframework.util.StringUtils;
 
+import com.sposnor.intellisense.sponsorintellisense.data.model.EnrollmentSummary;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Parish;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Receipts;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReport;
 
@@ -44,7 +48,11 @@ public class VelocityTemplateParser {
 		if(!StringUtils.isEmpty(receipt.getFullName())) {
 			context.put("receivedfrom", receipt.getFullName());
 		}else {
-			context.put("receivedfrom", receipt.getFirstName() +" "+ receipt.getLastName());
+			StringBuilder nameBuilder = new StringBuilder();
+			nameBuilder.append(receipt.getFirstName());
+			nameBuilder.append(receipt.getMiddleName());
+			nameBuilder.append(receipt.getLastName());
+			context.put("receivedfrom", nameBuilder.toString());
 		}
 		if(!StringUtils.isEmpty(receipt.getStreetAddress())) {
 			sb.append(receipt.getStreetAddress());
@@ -64,7 +72,7 @@ public class VelocityTemplateParser {
 		
 		context.put("address", sb.toString());
 		if(receipt.getReceiptType() == 0) {
-			context.put("from", receipt.getParishName() + ", "+receipt.getCity());
+			context.put("from", receipt.getParishName() + ", "+receipt.getParishCity());
 		}else if(receipt.getReceiptType() == 1) {
 			context.put("from", receipt.getOrgName());
 		}else {
@@ -96,6 +104,46 @@ public class VelocityTemplateParser {
 		return writer.toString();
 	}
 	
+	public static String generateSummary(List<EnrollmentSummary> enrollmentlist, Parish p) throws Exception {
+		final Properties props = new Properties();
+		props.setProperty("resource.loader", "class");
+		props.setProperty("class.resource.loader.class",
+				"org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
+
+		String[] monthName = {"January", "February",
+                "March", "April", "May", "June", "July",
+                "August", "September", "October", "November",
+                "December"};
+
+        Calendar cal = Calendar.getInstance();
+        String month = monthName[cal.get(Calendar.MONTH)];
+        
+		final VelocityEngine engine = new VelocityEngine(props);
+		final VelocityContext context = new VelocityContext();
+		engine.init();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("MMMM dd yyyy");
+		Date date = new Date();
+		String time = sdf.format(date);
+		
+		/* next, get the Template */
+		Template t = engine.getTemplate("templates/summary.vm");
+		/* create a context and add data */
+		context.put("timeNow", time);
+		context.put("parishName", p.getName());
+		context.put("parishCity", p.getCity());
+		context.put("currentMonth", month);
+		context.put("currentYear", cal.get(Calendar.YEAR));
+		context.put("sponsorList", enrollmentlist);
+		
+		context.put("number", new NumberTool());
+		context.put("date", new DateTool());
+
+		StringWriter writer = new StringWriter();
+		t.merge(context, writer);
+
+		return writer.toString();
+	}
 	public static String generateCoverLetter(SponsorReport sr, int size) throws Exception {
 		final Properties props = new Properties();
 		props.setProperty("resource.loader", "class");

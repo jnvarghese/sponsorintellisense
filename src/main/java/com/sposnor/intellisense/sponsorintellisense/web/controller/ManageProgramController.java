@@ -20,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,12 +50,14 @@ import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Contribution;
 import com.sposnor.intellisense.sponsorintellisense.data.model.EnrollmentSummary;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Parish;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponseeReport;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReport;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorshipInfo;
 import com.sposnor.intellisense.sponsorintellisense.data.model.StudentSummary;
 import com.sposnor.intellisense.sponsorintellisense.data.model.ViewEnroll;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ManageProgramMapper;
+import com.sposnor.intellisense.sponsorintellisense.mapper.ParishMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.StudentMapper;
 import com.sposnor.intellisense.sponsorintellisense.s3.S3Wrapper;
@@ -67,6 +68,9 @@ import com.sposnor.intellisense.sponsorintellisense.util.VelocityTemplateParser;
 public class ManageProgramController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ManageProgramController.class);
+	
+	@Autowired
+	private ParishMapper parishMapper;
 	
 	@Autowired
 	private ManageProgramMapper manageProgramMapper;
@@ -194,11 +198,75 @@ public class ManageProgramController {
   
 		return htmlstring;
 	}
-
+	
+	
 	@GetMapping("/manage/view/{id}")
 	public List<SponsorshipInfo> listSponsorShipInfo(@PathVariable(value = "id") Long studentId) {
 		return manageProgramMapper.getSponsorshipInfoByStudentId(studentId);
 	}
+	
+	@RequestMapping(value = "/enrollment/summarypdf/{id}", method = RequestMethod.GET, produces = "application/pdf")
+	ResponseEntity<byte[]> generateSummaryPdf(@PathVariable(value = "id") Long parishId) throws Exception {
+		
+		Parish parish = parishMapper.findById(parishId);
+		
+	    List<EnrollmentSummary> list = manageProgramMapper.getSummaryByParishId(parishId);
+		list.stream().forEach(i-> {
+			List<StudentSummary> studentlist = manageProgramMapper.getStudentByEnrollmentId(i.getEnrollmentId());
+			if(!ObjectUtils.isEmpty(studentlist)) {
+				i.setStudents(studentlist);
+				i.setNumberOfStudents(studentlist.size());
+			}
+		});
+	          
+		String summary = VelocityTemplateParser.generateSummary(list, parish);
+	
+		ByteArrayOutputStream byteArrayPutStream = new ByteArrayOutputStream();
+		byte[] pdfBytes = byteArrayPutStream.toByteArray();
+
+		// step 1
+		Document document = new Document();
+		// step 2
+
+		PdfWriter writer = PdfWriter.getInstance(document, byteArrayPutStream);
+		// TableHeader event = new TableHeader();
+		// writer.setPageEvent(event);
+		// step 3
+		document.open();
+		// step 4
+
+		// CSS
+		CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
+
+		// HTML
+		HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
+		htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
+		htmlContext.setImageProvider(new Base64ImageProvider());
+
+		// Pipelines
+		PdfWriterPipeline pdf = new PdfWriterPipeline(document, writer);
+		HtmlPipeline html = new HtmlPipeline(htmlContext, pdf);
+		CssResolverPipeline css = new CssResolverPipeline(cssResolver, html);
+
+		// XML Worker
+		XMLWorker worker = new XMLWorker(css, true);
+		XMLParser p = new XMLParser(worker);
+		p.parse(new ByteArrayInputStream(summary.getBytes()));
+
+		// step 5
+		document.close();
+
+		pdfBytes = byteArrayPutStream.toByteArray();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.parseMediaType("application/pdf"));
+		String filename = "output.pdf";
+		headers.setContentDispositionFormData(filename, filename);
+		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+		ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfBytes, headers, HttpStatus.OK);
+		return response;
+	}
+
 	
 	@GetMapping("/enrollment/viewsummary/{id}")
 	public List<EnrollmentSummary> getSummary(@PathVariable(value = "id") Long parishId) {

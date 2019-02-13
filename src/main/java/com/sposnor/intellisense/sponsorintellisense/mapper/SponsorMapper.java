@@ -26,7 +26,7 @@ public interface SponsorMapper {
 			+ "FIRSTNAME, LASTNAME, MIDDLEINITIAL, NICKNAME,street, s.city, STATE,postalCode, parishId "
 			+ "FROM SPONSOR S, PARISH P, CENTER C,REGION R WHERE S.PARISHID = P.ID "
 			+ "AND P.CENTERID = C.ID AND C.REGIONID = R.ID "
-			+ "AND S.PARISHID = #{id} AND S.SPONSORSTATUS = 0";
+			+ "AND S.PARISHID = #{id} AND S.SPONSORSTATUS = 0 order by sponsorCode";
 	
 	public static final String INSERT_SPONSOR = "INSERT INTO SPONSOR(parishId, firstName, lastName, middleInitial, nickName, dayOfBirth, "
 			+ "monthOfBirth, sponsorStatus, emailAddress, appartmentNumber, street, city, state, postalCode, hasAnyCoSponser, "

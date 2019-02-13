@@ -25,7 +25,7 @@ public class EnrollmentSummary {
 	
 	private String parishCity;
 	
-	private float contribution;
+	private double contribution;
 	
 	private int numberOfStudents;
 	
@@ -121,11 +121,11 @@ public class EnrollmentSummary {
 		this.parishCity = parishCity;
 	}
 
-	public float getContribution() {
+	public double getContribution() {
 		return contribution;
 	}
 
-	public void setContribution(float contribution) {
+	public void setContribution(double contribution) {
 		this.contribution = contribution;
 	}
 

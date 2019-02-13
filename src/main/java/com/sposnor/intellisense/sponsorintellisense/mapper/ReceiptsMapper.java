@@ -59,7 +59,7 @@ public interface ReceiptsMapper {
 	void update(Receipts r);
 
 	@Select("SELECT receiptId, rdate, receiptType,referenceId,transaction, r.firstName, r.middleName, r.lastName,  fullName, amount, "
-			+ "org.name orgName, p.name parishName, r.streetAddress, r.city, r.state, r.zipCode, "
+			+ "org.name orgName, p.name parishName, p.city parishCity, r.streetAddress, r.city, r.state, r.zipCode, "
 			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName "
 			+ "FROM receipts r left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
 			+ "initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id  and receiptId = #{receiptId}")
