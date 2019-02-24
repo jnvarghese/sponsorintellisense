@@ -36,7 +36,7 @@ public interface ReceiptsMapper {
 			+ "WHERE receiptId = #{receiptId}")
 	List<Receipts> listByParishId(@Param("parishId") Long parishId);*/
 	
-	@Select("SELECT receiptId, rdate, receiptType,referenceId, fullName, amount, org.name orgName, p.name parishName, "
+	@Select("SELECT receiptId, rdate, receiptType,referenceId, r.firstName, r.middleName, r.lastName, amount, org.name orgName, p.name parishName, "
 			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName "
 			+ "FROM receipts r left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
 			+ "initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id  "

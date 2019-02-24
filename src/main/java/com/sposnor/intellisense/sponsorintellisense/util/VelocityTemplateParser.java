@@ -50,8 +50,9 @@ public class VelocityTemplateParser {
 		}else {
 			StringBuilder nameBuilder = new StringBuilder();
 			nameBuilder.append(receipt.getFirstName());
-			nameBuilder.append(receipt.getMiddleName());
-			nameBuilder.append(receipt.getLastName());
+			if(!StringUtils.isEmpty(receipt.getMiddleName()))
+				nameBuilder.append(" "+receipt.getMiddleName());
+			nameBuilder.append(" "+receipt.getLastName());
 			context.put("receivedfrom", nameBuilder.toString());
 		}
 		if(!StringUtils.isEmpty(receipt.getStreetAddress())) {
