@@ -33,6 +33,13 @@ public interface StudentMapper {
 			+ " projectid IN ( #{id} ) AND S.STATUS = 0  ORDER BY studentCode")
 	List<Student> listByProjectId(@Param("id") Long id);
 	
+	@Select("SELECT MX.ENROLLMENTID, S.ID, S.STUDENTNAME, S.GENDER, S.GRADE, MAX(MAXOUT) MAXOUT, PRJ.NAME PROJECTNAME, PRJ.CODE PROJECTCODE, ACY.NAME AGENCYNAME, "
+			+ "ACY.CODE AGENCYCODE FROM STUDENT S LEFT JOIN STUDENT_MAXOUT MX ON S.ID = MX.STUDENTID, PROJECT PRJ, AGENCY ACY "
+			+ "WHERE S.PROJECTID = PRJ.ID AND PRJ.AGENCYID = ACY.ID AND MX.ENROLLMENTID=  #{id} "
+			+ "AND S.STATUS = 0 GROUP BY S.ID, S.STUDENTNAME ORDER BY S.STUDENTNAME")
+	List<Student> listByEnrollmentId(@Param("id") Long id);
+	
+	
 	@Select("select (CASE WHEN max(seq_val) IS NULL THEN 1000 ELSE max(seq_val) END) sequence from student_sequence where projectId=#{id}")
 	Sequence getSequenceByProjectId(@Param("id") Long id);
 	
@@ -61,6 +68,7 @@ public interface StudentMapper {
 	@Select("SELECT ID, STUDENTNAME, studentCode FROM STUDENT WHERE STATUS = 0 AND FIRSTNAME LIKE #{name} ")
 	List<Student> searchByName(@Param("name") String name);
 	
+	// 
 	@Select("SELECT S.ID, S.STUDENTNAME, S.GENDER, S.GRADE, MAX(MAXOUT) MAXOUT "
 			+ "FROM STUDENT S LEFT JOIN STUDENT_MAXOUT MX ON S.ID = MX.STUDENTID, PARISH_PROJECT PP "
 			+ "WHERE S.PROJECTID = PP.PROJECTID AND PP.PROJECTID = #{projectId} "
@@ -70,6 +78,15 @@ public interface StudentMapper {
 			@Param("name") String name,
 			@Param("projectId") Long projectId,
 			@Param("effectiveDate") String effectiveDate
+			);
+	
+	@Select("SELECT S.ID, S.STUDENTNAME, S.GENDER, S.GRADE FROM STUDENT S LEFT JOIN SPONSEE SE ON S.ID = SE.STUDENTID, "
+			+ "PARISH_PROJECT PP WHERE S.PROJECTID = PP.PROJECTID  AND PP.PARISHID = #{parishId} "
+			+ "AND PP.PROJECTID = #{projectId} AND SE.expirationMonth IS NULL "
+			+ "AND S.STATUS = 0 ORDER BY S.STUDENTNAME")
+	List<Student> findUnEnrolledStudents(
+			@Param("parishId") Long parishId,
+			@Param("projectId") Long projectId
 			);
 	
 	@Select("SELECT S.ID, STUDENTNAME, studentCode FROM STUDENT S "

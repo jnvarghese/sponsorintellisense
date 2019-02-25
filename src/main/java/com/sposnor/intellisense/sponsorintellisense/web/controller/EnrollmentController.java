@@ -1,9 +1,21 @@
 package com.sposnor.intellisense.sponsorintellisense.web.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -11,17 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.Enrollment;
-import com.sposnor.intellisense.sponsorintellisense.data.model.Parish;
-import com.sposnor.intellisense.sponsorintellisense.data.model.Receipt;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsee;
-import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsor;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorMaxOut;
 import com.sposnor.intellisense.sponsorintellisense.data.model.StudentMaxOut;
 import com.sposnor.intellisense.sponsorintellisense.mapper.EnrollmentMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.MaxOutMapper;
-import com.sposnor.intellisense.sponsorintellisense.mapper.ParishMapper;
-import com.sposnor.intellisense.sponsorintellisense.mapper.ReceiptMapper;
-import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
 
 @RestController
 @RequestMapping("/api")
@@ -31,64 +37,105 @@ public class EnrollmentController {
 	private EnrollmentMapper enrollmentMapper;
 	
 	@Autowired
-	private ParishMapper parishMapper;
-	
-	@Autowired
-	private ReceiptMapper receiptMapper;
-	
-	@Autowired
-	private SponsorMapper sponsorMapper;
-	
-	@Autowired
 	private MaxOutMapper maxOutMapper;
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(EnrollmentController.class);
+	
 	@PostMapping("/enroll")
-	public ResponseEntity<String> createStudent(@RequestHeader(value="userId") Long userId, @RequestBody Enrollment enrollment) {
+	public ResponseEntity<String> createStudent(@RequestHeader(value="userId") int userId, @RequestBody Enrollment enrollment) {
 		enrollment.setCreatedBy(userId);
-		Sponsor sponsor = sponsorMapper.findById(enrollment.getSponsorId());
-		Parish parish = parishMapper.findById(sponsor.getParishId());
-		/*Receipt receipt = new Receipt();
-		if(null!=sponsor.getAppartmentNumber()) {
-			receipt.setAddress(sponsor.getAppartmentNumber()+" "+sponsor.getStreet()+" "+sponsor.getCity()+ " "+ sponsor.getState()+ " "+ sponsor.getPostalCode());
+		if(StringUtils.isEmpty(enrollment.getEnrollmentId())) {
+			LOGGER.debug("Creating new enrollment");
+			createNewEnrollment(enrollment);
 		}else {
-			receipt.setAddress(sponsor.getStreet()+" "+sponsor.getCity()+ " "+ sponsor.getState()+ " "+ sponsor.getPostalCode());
-		}		
-		receipt.setCreatedby(2L);
-		receipt.setMissionname("Light To Life");
-		receipt.setParish(parish.getName() + "-"+ parish.getCity());
-		receipt.setPaymentmethod("Online");
-		if(sponsor.isHasAnyCoSponser()) {
-			receipt.setReceivedfrom(sponsor.getFirstName()+ " & "+ sponsor.getCoSponserName());
-		}else {
-			receipt.setReceivedfrom(sponsor.getFirstName()+ " "+ sponsor.getLastName());
+			LOGGER.debug("Updating new enrollment");
+			duplicateEnrollment(enrollment, userId);
 		}
-		
-		receipt.setTotal(String.valueOf(enrollment.getContributionAmount()));
-		receipt.setCreatedby(userId);
-		receiptMapper.insert(receipt);
-		
-		enrollment.setReceiptId(receipt.getId()); */
+
+	    return ResponseEntity.ok().body("Success");
+	}
+	DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+	private void createNewEnrollment(Enrollment enrollment) {
 		double contribution = enrollment.getContributionAmount();
 		enrollment.setActualamount(contribution);
 		enrollment.setContributionAmount(contribution-enrollment.getMiscAmount());
 		enrollmentMapper.insert(enrollment);
-		
-		Calendar c = Calendar.getInstance();
-		//Enrollment e = enrollmentMapper.selectEnrollmentForId(enrollment.getSponsorId(), enrollment.getEffectiveDate(), enrollment.getEffectiveDate());
+		List<Date> dates = new ArrayList<Date>();
+		Calendar c = null;
 		for(Sponsee sponsee:  enrollment.getSponsees()) {
+			c = Calendar.getInstance();
 			sponsee.setEnrollmentId(enrollment.getId());
 			enrollmentMapper.insertSponsee(sponsee);
+			System.out.println(" before " + dateFormat.format(c.getTime())); 
 			c.set(sponsee.getExpirationYear(), sponsee.getExpirationMonth() - 1, 1, 0, 0);  
-			//dateSet.add(c.getTime());	
+			System.out.println(" after " + dateFormat.format(c.getTime())); 
+			dates.add(c.getTime());
 			maxOutMapper.insertStudentMaxOut(new StudentMaxOut(sponsee.getStudentId(), enrollment.getId(), c.getTime()));
-			maxOutMapper.insertSponsorMaxOut(new SponsorMaxOut(enrollment.getSponsorId(), enrollment.getId(), c.getTime()));
 		}
+		Date maxDate = dates.stream().map(date -> date).max(Date::compareTo).get();
+		System.out.println(" max  " + dateFormat.format(maxDate.getTime())); 
+		maxOutMapper.insertSponsorMaxOut(new SponsorMaxOut(enrollment.getSponsorId(), enrollment.getId(), maxDate));
+	}
+	
+	private void disableEnrollment(Enrollment en, List<Sponsee> sponsees, List<SponsorMaxOut> sponsorMaxOuts, List<StudentMaxOut> studentMaxOuts, int userId) {
 		
-		/*final Date maxDate = dateSet.stream()
-		            .max(Date::compareTo)
-		            .get();		*/
+
+		List<Long> sponseeIds = sponsees.stream().map(sponsee -> sponsee.getId()).collect(Collectors.toList());
+		List<Integer> spMaxOutIds = sponsorMaxOuts.stream().map(sp -> sp.getId()).collect(Collectors.toList());
+		List<Integer> stMaxOutIds = studentMaxOuts.stream().map(st -> st.getId()).collect(Collectors.toList());
+
+		enrollmentMapper.updateEnrollmentStatus(en.getId(), userId);
+		if(!CollectionUtils.isEmpty(sponseeIds))
+			enrollmentMapper.updateSponseeStatus(sponseeIds);
+		if(!CollectionUtils.isEmpty(spMaxOutIds))
+			maxOutMapper.updateSponsorMaxOutStatus(spMaxOutIds);
+		if(!CollectionUtils.isEmpty(stMaxOutIds))
+			maxOutMapper.updateStudentMaxOutStatus(stMaxOutIds);
+	}
+	
+	private void duplicateEnrollment(Enrollment enrollment, int userId) {
+		Long enrollmentId = enrollment.getEnrollmentId();
+		Long sponsorId = enrollment.getSponsorId();
+		Enrollment dbEnrollment =  enrollmentMapper.findEnrollment(enrollmentId);
+		List<Sponsee> sponsees = enrollmentMapper.findSponseesByEnrollmentId(enrollmentId);
+		List<SponsorMaxOut> sponsorMaxOuts = maxOutMapper.findSponsorMaxOut(sponsorId, enrollmentId);
 		
-	    return ResponseEntity.ok().body("Success");
+		List<Long> studentIds = sponsees.stream().map(sponsee -> sponsee.getStudentId()).collect(Collectors.toList());
+		List<StudentMaxOut> studentMaxOuts = maxOutMapper.findStudentMaxOut(studentIds, enrollmentId);
+		
+		disableEnrollment(dbEnrollment, sponsees, sponsorMaxOuts, studentMaxOuts, userId); // set the status to 1 for enr, sponsee and maxouts
+		modifyEnrollment(enrollment, sponsees, studentMaxOuts);  // build up new enrollment entity with exiting and new/ modified students
+		
+		createNewEnrollment(enrollment);
+		
+	}
+	
+	private void modifyEnrollment(Enrollment enrollment, List<Sponsee> dbSponsees, List<StudentMaxOut> dbStudentMaxOuts) {
+		
+		Set<Sponsee> sponseesTodb = new HashSet<Sponsee>();
+		List<StudentMaxOut> studentMaxoutTodb = new ArrayList<StudentMaxOut>();
+		List<SponsorMaxOut> sponsorMaxoutTodb = new ArrayList<SponsorMaxOut>();
+		
+		sponseesTodb.addAll(enrollment.getSponsees()); // get all enrollment students to the list
+		Calendar c = Calendar.getInstance();
+		
+		for(Sponsee enSponsee: enrollment.getSponsees()) {
+			c.set(enSponsee.getExpirationYear(), enSponsee.getExpirationMonth() - 1, 1, 0, 0); 
+			for(Sponsee dbSponsee: dbSponsees) {
+				if(!dbSponsee.getStudentId().equals(enSponsee.getStudentId())) { // check the incoming student matches the db students
+					sponseesTodb.add(dbSponsee);  // add the db students to the list in case they are not present in the incoming list
+				}
+			}
+			studentMaxoutTodb.add(new StudentMaxOut(enSponsee.getStudentId(), enrollment.getId(), c.getTime()));
+			
+			for(StudentMaxOut dbStudentMaxOut: dbStudentMaxOuts) {
+				if(!dbStudentMaxOut.getStudentId().equals(enSponsee.getStudentId())) {
+					sponsorMaxoutTodb.add(new SponsorMaxOut(enrollment.getSponsorId(), enrollment.getId(), dbStudentMaxOut.getMaxOut()));
+				}
+			}
+			sponsorMaxoutTodb.add(new SponsorMaxOut(enrollment.getSponsorId(), enrollment.getId(), c.getTime()));
+		}
+		enrollment.setSponsees(sponseesTodb);
 	}
 	
 }

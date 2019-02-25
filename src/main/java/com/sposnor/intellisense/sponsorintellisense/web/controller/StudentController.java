@@ -54,6 +54,11 @@ public class StudentController {
 	    return ResponseEntity.ok().body(sequence);
 	}
 	
+	@GetMapping("/list/byenrollmentid/{id}")
+	public List<Student> getStudentsByEnrollmentId(@PathVariable(value = "id") Long enrollmentId) {
+		return studentMapper.listByEnrollmentId(enrollmentId);
+	}
+	
 	@GetMapping("/list/byproject/{id}")
 	public List<Student> getAllStudentsByProjectId(@PathVariable(value = "id") Long projectId) {
 		return studentMapper.listByProjectId(projectId);
@@ -108,6 +113,7 @@ public class StudentController {
 	    return studentToModify;
 	}
 	
+	@Deprecated
 	@GetMapping("/search/{name}/{projectId}/{month}/{date}/{year}")
 	public ResponseEntity<List<Student>> getStudentByName(
 			@PathVariable(value = "name") String name,
@@ -123,6 +129,19 @@ public class StudentController {
 	    for( Student student: students) {
 	    	student.setGender(student.getGender().equals("M") ? "Male" : student.getGender().equals("F") ? "Female" : student.getGender().equals("O") ? "Other" : "");
 	    }
+		if(students == null) {
+	        return ResponseEntity.notFound().build();
+	    }
+	    return ResponseEntity.ok().body(students);
+	}
+	
+	@GetMapping("/list/unenrolled/{parishId}/{projectId}")
+	public ResponseEntity<List<Student>> getUnEnrolledStudents(
+			@PathVariable(value = "parishId") Long parishId,
+			@PathVariable(value = "projectId") Long projectId
+			) {
+
+		List<Student> students = studentMapper.findUnEnrolledStudents(parishId, projectId);
 		if(students == null) {
 	        return ResponseEntity.notFound().build();
 	    }

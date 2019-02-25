@@ -4,29 +4,27 @@ import java.io.Serializable;
 import java.text.ParseException;
 import java.util.Date;
 
-import org.hibernate.validator.constraints.NotBlank;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Student implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(Student.class);
+	
 	private Long id;	
 	private Long projectId;	
+	private String projectCode;
 	private String projectName;	
 	private Long agencyId;	
+	private String agencyCode;
 	private String agencyName;
-	@NotBlank
 	private String studentName;
-	
-	//@NotBlank
 	private String studentCode;
-	
-	@NotBlank
 	private String gender;
-	@NotBlank
 	private String dateOfBirth;
 	private String address;
-	@NotBlank
 	private String status;	
 	private String hobbies;
 	private String contributions;
@@ -35,32 +33,37 @@ public class Student implements Serializable {
 	private byte[] profilePicture;
 	private boolean softlocked;	
 	private Date maxOut;
-	
 	private String grade;
 	private String favColor;
 	private String favGame;
 	private String nameOfGuardian;
 	private String occupationOfGuardian;
 	private String baseLanguage;
-	
 	private String imageLinkRef;
 	private boolean hasImageUploaded;
-	
 	// 1 for present 0 for null.
 	private int imagePresent;
-	
 	private Date createdDate;
 	private Date updatedDate;
 	private int expirationMonth;
 	private int expirationYear;
-	
 	private Long createdBy;
-	
 	private Long updatedBy;	
-	
 	private String uploadstatus;
 	
 	
+	public String getProjectCode() {
+		return projectCode;
+	}
+	public void setProjectCode(String projectCode) {
+		this.projectCode = projectCode;
+	}
+	public String getAgencyCode() {
+		return agencyCode;
+	}
+	public void setAgencyCode(String agencyCode) {
+		this.agencyCode = agencyCode;
+	}
 	public boolean isHasImageUploaded() {
 		return hasImageUploaded;
 	}
@@ -133,6 +136,7 @@ public class Student implements Serializable {
 	}
 	public void setGender(String gender) {
 		this.gender = gender;
+		
 	}
 	public String getDateOfBirth() {
 		return dateOfBirth;

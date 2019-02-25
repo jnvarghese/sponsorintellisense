@@ -47,8 +47,62 @@ public class Sponsor implements Serializable {
 	
 	private String phone2;
 	
+	private Long enrollmentId;
+	private int noOfStudents;
+	private int expirationMonth;
+	private int expirationYear;
+	private Date effectiveDate;
 	
+	private double miscAmount;
 	
+	public double getMiscAmount() {
+		return miscAmount;
+	}
+
+	public void setMiscAmount(double miscAmount) {
+		this.miscAmount = miscAmount;
+	}
+
+	public Long getEnrollmentId() {
+		return enrollmentId;
+	}
+
+	public void setEnrollmentId(Long enrollmentId) {
+		this.enrollmentId = enrollmentId;
+	}
+
+	public int getNoOfStudents() {
+		return noOfStudents;
+	}
+
+	public void setNoOfStudents(int noOfStudents) {
+		this.noOfStudents = noOfStudents;
+	}
+
+	public int getExpirationMonth() {
+		return expirationMonth;
+	}
+
+	public void setExpirationMonth(int expirationMonth) {
+		this.expirationMonth = expirationMonth;
+	}
+
+	public int getExpirationYear() {
+		return expirationYear;
+	}
+
+	public void setExpirationYear(int expirationYear) {
+		this.expirationYear = expirationYear;
+	}
+
+	public Date getEffectiveDate() {
+		return effectiveDate;
+	}
+
+	public void setEffectiveDate(Date effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
+
 	public String getPhone1() {
 		return phone1;
 	}

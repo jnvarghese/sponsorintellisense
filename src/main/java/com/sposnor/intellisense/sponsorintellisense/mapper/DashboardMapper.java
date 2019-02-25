@@ -27,7 +27,7 @@ public interface DashboardMapper {
 	int getCountOfActiveSponsor();
 	
 	@Select("SELECT COUNT(ENROLLMENTID) enrollmentCount FROM STUDENT_MAXOUT SM , ENROLLMENT E "
-			+ "WHERE SM.ENROLLMENTID = E.ID AND DATE(MAXOUT) > CURDATE() AND STATUS <> 1")
+			+ "WHERE SM.ENROLLMENTID = E.ID AND DATE(MAXOUT) > CURDATE() AND E.STATUS = 0")
 	int getCountOfActiveEnrollments();
 	
 	@Select(SELECT_FOR_EXPIRED + " AND MAXOUT < NOW() "+SELECT_ORDER_BY)

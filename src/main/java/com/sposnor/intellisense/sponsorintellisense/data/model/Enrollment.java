@@ -30,12 +30,15 @@ public class Enrollment  implements Serializable {
 	
 	private double actualamount;
 	
+	private Long enrollmentId;
+	
 	private Long sponsorId;
 	
 	private Long receiptId;
 	
-	private Long createdBy;
+	private int createdBy;
 	
+	private int updatedBy;
 	
 	public double getActualamount() {
 		return actualamount;
@@ -45,18 +48,37 @@ public class Enrollment  implements Serializable {
 		this.actualamount = actualamount;
 	}
 
-	public Long getCreatedBy() {
+	public int getCreatedBy() {
 		return createdBy;
 	}
 
-	public void setCreatedBy(Long createdBy) {
+	public void setCreatedBy(int createdBy) {
 		this.createdBy = createdBy;
+	}
+
+
+	public int getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(int updatedBy) {
+		this.updatedBy = updatedBy;
 	}
 
 
 	private Date createdDate;
 
 	private Date updatedDate;
+
+	
+	
+	public Long getEnrollmentId() {
+		return enrollmentId;
+	}
+
+	public void setEnrollmentId(Long enrollmentId) {
+		this.enrollmentId = enrollmentId;
+	}
 
 	public Long getId() {
 		return id;
