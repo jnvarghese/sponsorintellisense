@@ -47,7 +47,7 @@ public class Sponsor implements Serializable {
 	
 	private String phone2;
 	
-	private Long enrollmentId;
+	private Long entId;
 	private int noOfStudents;
 	private int expirationMonth;
 	private int expirationYear;
@@ -63,12 +63,13 @@ public class Sponsor implements Serializable {
 		this.miscAmount = miscAmount;
 	}
 
-	public Long getEnrollmentId() {
-		return enrollmentId;
+
+	public Long getEntId() {
+		return entId;
 	}
 
-	public void setEnrollmentId(Long enrollmentId) {
-		this.enrollmentId = enrollmentId;
+	public void setEntId(Long entId) {
+		this.entId = entId;
 	}
 
 	public int getNoOfStudents() {
