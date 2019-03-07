@@ -44,7 +44,7 @@ public class EnrollmentController {
 	@PostMapping("/enroll")
 	public ResponseEntity<String> createStudent(@RequestHeader(value="userId") int userId, @RequestBody Enrollment enrollment) {
 		enrollment.setCreatedBy(userId);
-		if(StringUtils.isEmpty(enrollment.getEnrollmentId())) {
+		if(enrollment.getEnrollmentId() == 0) {
 			LOGGER.debug("Creating new enrollment");
 			createNewEnrollment(enrollment);
 		}else {
