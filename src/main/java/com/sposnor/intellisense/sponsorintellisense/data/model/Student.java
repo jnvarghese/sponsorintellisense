@@ -32,7 +32,7 @@ public class Student implements Serializable {
 	private String recentAchivements;
 	private byte[] profilePicture;
 	private boolean softlocked;	
-	private Date maxOut;
+	private String maxOut;
 	private String grade;
 	private String favColor;
 	private String favGame;
@@ -226,10 +226,10 @@ public class Student implements Serializable {
 		this.expirationYear = expirationYear;
 	}
 	
-	public Date getMaxOut() {
+	public String getMaxOut() {
 		return maxOut;
 	}
-	public void setMaxOut(Date maxOut) {
+	public void setMaxOut(String maxOut) {
 		this.maxOut = maxOut;
 	}
 	
