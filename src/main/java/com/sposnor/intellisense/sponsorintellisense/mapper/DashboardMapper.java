@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.MaxOutOverview;
+import com.sposnor.intellisense.sponsorintellisense.data.model.graph.GraphData;
+import com.sposnor.intellisense.sponsorintellisense.data.model.graph.Receipt;
 
 @Mapper
 public interface DashboardMapper {
@@ -38,4 +40,31 @@ public interface DashboardMapper {
 	
 	@Select(SELECT_FOR_EXPIRED + " AND MAXOUT BETWEEN DATE_ADD(NOW(), INTERVAL 1 MONTH) AND  DATE_ADD(NOW(), INTERVAL 2 MONTH) "+SELECT_ORDER_BY)
 	List<MaxOutOverview> getMaxOutInTwoMonth();
+	
+	@Select("SELECT COUNT(*) YAXIS, DATE_FORMAT(EFFECTIVEDATE, \"%M %Y\") XAXIS FROM ENROLLMENT WHERE STATUS=0 GROUP BY XAXIS ORDER BY EFFECTIVEDATE")
+	List<GraphData> getEnrollmentEffectiveDataElement();
+	
+	@Select("SELECT COUNT(*) YAXIS, DATE_FORMAT(MAXOUT, \"%M %Y\") XAXIS FROM SPONSOR_MAXOUT, ENROLLMENT EN WHERE "
+			+ "ENROLLMENTID = EN.ID AND EN.STATUS=0 GROUP BY XAXIS ORDER BY MAXOUT")
+	List<GraphData> getEnrollmentExiprationDataElement();
+	
+	@Select("SELECT COUNT(*) YAXIS, CONCAT(R.NAME,'-',COUNT(*)) XAXIS FROM SPONSOR SP, PARISH P , CENTER C, REGION R "
+			+ "WHERE SP.PARISHID = P.ID AND P.CENTERID = C.ID AND C.REGIONID=R.ID AND SP.SPONSORSTATUS = 0 GROUP BY R.NAME")
+	List<GraphData> getSponsorsByRegion();
+	
+	@Select("SELECT COUNT(*) YAXIS, CONCAT(R.NAME,' ',C.NAME, '-',COUNT(*)) XAXIS FROM SPONSOR SP, PARISH P , CENTER C, REGION R "
+			+ "WHERE SP.PARISHID = P.ID AND P.CENTERID = C.ID AND C.REGIONID=R.ID AND SP.SPONSORSTATUS = 0 GROUP BY R.NAME, C.NAME")
+	List<GraphData> getSponsorsByCenter();
+	
+	@Select("SELECT COUNT(*) TOTAL,INITIATIVEID,TYPE, DATE_FORMAT(STR_TO_DATE(RDATE, '%m/%d/%Y'), '%M %Y') RECEIPTDATE "
+			+ "FROM RECEIPTS WHERE INITIATIVEID IS NOT NULL GROUP BY RECEIPTDATE")
+	List<Receipt> getReceipts();
+	
+	@Select("SELECT COUNT(*) YAXIS, DATE_FORMAT(CREATEDDATE, \"%M %Y\") XAXIS  FROM SPONSOR WHERE SPONSORSTATUS=0 GROUP BY XAXIS ORDER BY CREATEDDATE")
+	List<GraphData> getSponsors();
+	
+	@Select("SELECT SUM(CONTRIBUTIONAMOUNT+MISCAMOUNT) YAXIS, CONCAT(P.NAME,'- ',P.CITY) XAXIS, COUNT(SP.ID) XAXIS2 "
+			+ "FROM ENROLLMENT EN, SPONSOR SP, PARISH P WHERE EN.SPONSORID = SP.ID AND SP.PARISHID = P.ID  "
+			+ "AND SP.SPONSORSTATUS= 0 AND EN.STATUS =0 GROUP BY P.ID ORDER BY YAXIS DESC")
+	List<GraphData> getContributionsAndSponsorCount();
 }

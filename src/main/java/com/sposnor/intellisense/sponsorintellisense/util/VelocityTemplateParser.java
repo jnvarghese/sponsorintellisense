@@ -77,7 +77,7 @@ public class VelocityTemplateParser {
 		}else if(receipt.getReceiptType() == 1) {
 			context.put("from", receipt.getOrgName());
 		}else {
-			context.put("from", receipt.getFirstName() +" "+ receipt.getLastName());
+			context.put("from", receipt.getParishName() + ", "+receipt.getParishCity()); // what if an individual comes without parish
 		}
 		context.put("missionname", receipt.getInitiativeName());
 		

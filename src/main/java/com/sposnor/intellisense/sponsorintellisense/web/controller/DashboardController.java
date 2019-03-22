@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,6 +12,8 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.Center;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Dashboard;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Initiative;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Region;
+import com.sposnor.intellisense.sponsorintellisense.data.model.graph.GraphData;
+import com.sposnor.intellisense.sponsorintellisense.data.model.graph.Receipt;
 import com.sposnor.intellisense.sponsorintellisense.mapper.DashboardMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.InitMapper;
 
@@ -52,6 +55,40 @@ public class DashboardController {
 	@GetMapping("/dashboard/center")
 	public List<Center> getCenters() {
 		return initMapper.getCenters();
+	}
+	
+	@GetMapping("/dashboard/effectivedataset")
+	public List<GraphData> getEnrollmentEffectiveElements() {
+		return dashboardMapper.getEnrollmentEffectiveDataElement();
+	}
+	
+	@GetMapping("/dashboard/exipationdataset")
+	public List<GraphData> getEnrollmentExpirationElements() {
+		return dashboardMapper.getEnrollmentExiprationDataElement();
+	}
+	
+	@GetMapping("/dashboard/sponsors/{by}")
+	public List<GraphData> getEnrollmentExpirationElements(@PathVariable(value = "by") String by) {
+		if("region".equalsIgnoreCase(by)) {
+			return dashboardMapper.getSponsorsByRegion();
+		}else {
+			return dashboardMapper.getSponsorsByCenter();
+		}
+	}
+	
+	@GetMapping("/dashboard/receipts")
+	public List<Receipt> getReceipts() {
+		return dashboardMapper.getReceipts();
+	}
+	
+	@GetMapping("/dashboard/sponsors")
+	public List<GraphData> getSponsors() {
+		return dashboardMapper.getSponsors();
+	}
+	
+	@GetMapping("/dashboard/contributionsandsponsorcount")
+	public List<GraphData> getContributionsAndSponsorCount() {
+		return dashboardMapper.getContributionsAndSponsorCount();
 	}
 	
 }
