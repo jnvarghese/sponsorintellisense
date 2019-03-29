@@ -58,6 +58,29 @@ public class SponsorReport {
 	
 	private String renewalDue;
 	
+	
+	private String netContribution;
+	
+	private String netTotal;
+	
+	
+	
+	public String getNetContribution() {
+		return netContribution;
+	}
+
+	public void setNetContribution(String netContribution) {
+		this.netContribution = netContribution;
+	}
+
+	public String getNetTotal() {
+		return netTotal;
+	}
+
+	public void setNetTotal(String netTotal) {
+		this.netTotal = netTotal;
+	}
+
 	public String getCoverLetterHeader() {
 		return coverLetterHeader+coverletterHeader2+coverLetterHeader3+coverLetterHeader4;
 	}

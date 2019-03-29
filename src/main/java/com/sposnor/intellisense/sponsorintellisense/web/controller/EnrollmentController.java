@@ -15,7 +15,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -105,10 +104,21 @@ public class EnrollmentController {
 		
 		disableEnrollment(dbEnrollment, sponsees, sponsorMaxOuts, studentMaxOuts, userId); // set the status to 1 for enr, sponsee and maxouts
 		modifyEnrollment(enrollment, sponsees, studentMaxOuts);  // build up new enrollment entity with exiting and new/ modified students
-		
+		setNetAmountForActiveEnrollment(enrollment, dbEnrollment);
 		createNewEnrollment(enrollment);
 		
 	}
+	
+	private void setNetAmountForActiveEnrollment(Enrollment newEnrollment, Enrollment existingEnrollment) {
+		if(existingEnrollment.getNetAmount() > 0) {
+			newEnrollment.setNetAmount(newEnrollment.getActualamount()+existingEnrollment.getNetAmount());
+		} else if(existingEnrollment.getActualamount() > 0) {
+			newEnrollment.setNetAmount(newEnrollment.getActualamount()+existingEnrollment.getActualamount());
+		} else {
+			newEnrollment.setNetAmount(newEnrollment.getActualamount()+existingEnrollment.getContributionAmount()+existingEnrollment.getMiscAmount());
+		}
+	}
+		
 	
 	private void modifyEnrollment(Enrollment enrollment, List<Sponsee> dbSponsees, List<StudentMaxOut> dbStudentMaxOuts) {
 		

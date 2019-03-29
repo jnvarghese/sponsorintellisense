@@ -10,8 +10,8 @@ import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sequence;
-import com.sposnor.intellisense.sponsorintellisense.data.model.SponseeReport;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsor;
+import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReport;
 
 @Mapper
 //@CacheNamespace(implementation=org.mybatis.caches.ehcache.EhcacheCache.class)
@@ -83,12 +83,17 @@ public interface SponsorMapper {
 	@Select(SEARCH_BY_NAME)
 	List<Sponsor> searchByName(@Param("name") String name);
 //	/profilePicture
-	@Select("SELECT CONCAT(A.CODE,'-',P.CODE,'-',ST.STUDENTCODE) UNIQUEID, STUDENTNAME,ST.ID studentId, uploadstatus, P.ID projectId, imageLinkRef,  "
-			+ "DATE_FORMAT(str_to_date(DATEOFBIRTH, '%m/%d/%Y'), '%M %d %Y') DATEOFBIRTH, GENDER, GRADE,FAVCOLOR,FAVGAME,NAMEOFGUARDIAN,OCCUPATIONOFGUARDIAN,BASELANGUAGE,"
-			+ " HOBBIES hobby, A.NAME AGENCYNAME, P.NAME PROJECTNAME, P.ADDRESS ADDRESS FROM ENROLLMENT EN, SPONSEE SPE, "
-			+ "STUDENT ST, PROJECT P, AGENCY A WHERE EN.ID = SPE.ENROLLMENTID AND SPE.STUDENTID = ST.ID "
-			+ "AND ST.PROJECTID = P.ID AND P.AGENCYID = A.ID AND EN.ID = #{id}  ORDER BY UNIQUEID ")
-	List<SponseeReport> listSponseesByEnrolmentId(@Param("id") Long id);
+	
+	@Select("SELECT EN.ID, DATE_FORMAT(SM.maxOut, '%M %Y') renewalDue, CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',SP.SPONSORCODE) UNIQUEID, "
+			+ "CASE hasAnyCoSponser WHEN '1' THEN CONCAT(FIRSTNAME,' ','&',' ',coSponserName ) ELSE CONCAT(FIRSTNAME,' ',COALESCE(MIDDLEINITIAL, ''),' ',LASTNAME ) END sponsorName, "
+			+ "NICKNAME,  P.NAME parishName,P.CITY parishCity,C.NAME centerName, R.NAME regionName, "
+			+ "APPARTMENTNUMBER,STREET, SP.CITY sponsorCity, STATE sponsorState,POSTALCODE, SP.EMAILADDRESS emailAddress, "
+			+ "emailAddress2, phone1, phone2, DATE_FORMAT(paymentDate, \"%M 1 %Y\") paymentDate,  "
+			+ "ROUND(CONTRIBUTIONAMOUNT,2) CONTRIBUTION, ROUND(MISCAMOUNT,2) MISCAMOUNT, ROUND(CONTRIBUTIONAMOUNT + MISCAMOUNT,2) TOTAL, "
+			+ "ROUND(NETAMOUNT,2) NETCONTRIBUTION, ROUND(NETAMOUNT + MISCAMOUNT,2) NETTOTAL, EN.CREATEDDATE FROM SPONSOR SP, PARISH P, ENROLLMENT EN , CENTER C, "
+			+ "REGION R, SPONSOR_MAXOUT SM  WHERE P.ID = SP.PARISHID AND EN.ID=SM.ENROLLMENTID AND EN.SPONSORID = SP.ID  AND P.CENTERID = C.ID AND C.REGIONID = R.ID "
+			+ "AND EN.ID = #{id}  GROUP BY en.id")
+	SponsorReport findSponsorByEnrolmentId(@Param("id") Long id);
 }
 //@Options(flushCache=true)
 //@Options(useGeneratedKeys = true, keyProperty = "id", flushCache=true)

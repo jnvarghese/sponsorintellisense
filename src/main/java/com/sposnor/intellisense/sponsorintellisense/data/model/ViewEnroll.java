@@ -12,6 +12,10 @@ public class ViewEnroll {
 	
 	private float contribution;
 	
+	private float netContribution;
+	
+	private String renewed;
+	
 	private String paymentDate;
 	
 	private String effectiveDate;
@@ -25,6 +29,23 @@ public class ViewEnroll {
 	private String createdDate;
 	
 	
+	
+	public float getNetContribution() {
+		return netContribution;
+	}
+
+	public void setNetContribution(float netContribution) {
+		this.netContribution = netContribution;
+	}
+
+	public String getRenewed() {
+		return renewed;
+	}
+
+	public void setRenewed(String renewed) {
+		this.renewed = renewed;
+	}
+
 	public String getEffectiveDate() {
 		return effectiveDate;
 	}

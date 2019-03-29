@@ -112,9 +112,15 @@ public class ManageProgramController {
 		map.put("sponsorEmail", sponser.getEmailAddress() == null ? "N/A" : sponser.getEmailAddress());
 		map.put("sponseeList", sponseeList);
 		map.put("totalChildrenSposored", sponseeList.size());
-		map.put("fundUsed", sponser.getContribution());
+		
+		if(sponser.getNetContribution().equals("0.00")) {
+			map.put("fundUsed", sponser.getContribution());
+			map.put("totalSponsorshipReceived", sponser.getTotal());
+		}else {
+			map.put("fundUsed", sponser.getNetContribution());
+			map.put("totalSponsorshipReceived", sponser.getNetTotal());
+		}
 		map.put("totalBalance", sponser.getMiscAmount());
-		map.put("totalSponsorshipReceived", sponser.getTotal());
 		map.put("spnStartDate", sponser.getPaymentDate());
 		map.put("renewalDue", sponser.getRenewalDue());
 		map.put("sign2", sponser.getSign2());
@@ -122,19 +128,19 @@ public class ManageProgramController {
 		map.put("waterMark", sponser.getWaterMark());
 
 		return map;
-	}
+	} 
 
 	@RequestMapping(value = "/enrollment/generatereport/{enrollmentId}", method = RequestMethod.GET, produces = "application/pdf")
 	ResponseEntity<byte[]> generatePdf(@PathVariable(value = "enrollmentId") Long enrollmentId) throws Exception {
 
-		List<SponseeReport> sponseeList = sponsorMapper.listSponseesByEnrolmentId(enrollmentId);
-
+		List<SponseeReport> sponseeList = studentMapper.listSponseesByEnrolmentId(enrollmentId);
+ 
 		for(SponseeReport sr : sponseeList) {
-			if("Y".equalsIgnoreCase(sr.getUploadstatus()))
-			sr.setProfilePicture(s3Wrapper.downloadProfilePicture(sr.getProjectId(), sr.getStudentId(), sr.getImageLinkRef()));
+			//if("Y".equalsIgnoreCase(sr.getUploadstatus()))
+		//	sr.setProfilePicture(s3Wrapper.downloadProfilePicture(sr.getProjectId(), sr.getStudentId(), sr.getImageLinkRef()));
 		}
 		
-		SponsorReport sponsorReport = studentMapper.findSponsorByEnrolmentId(enrollmentId);
+		SponsorReport sponsorReport = sponsorMapper.findSponsorByEnrolmentId(enrollmentId);
 
 		String coverLetter = VelocityTemplateParser.generateCoverLetter(sponsorReport, sponseeList.size());
 		String htmlstring = VelocityTemplateParser.generateHTML(getDataMap(sponsorReport, sponseeList),sponseeList.size());
@@ -190,8 +196,8 @@ public class ManageProgramController {
 	@RequestMapping("/exampleVelocity/{enrollmentId}")
 	String home(@PathVariable(value = "enrollmentId") Long enrollmentId) throws Exception {
 
-		List<SponseeReport> sponseeList = sponsorMapper.listSponseesByEnrolmentId(new Long(9));
-		SponsorReport sponsorReport = studentMapper.findSponsorByEnrolmentId(new Long(9));
+		List<SponseeReport> sponseeList = studentMapper.listSponseesByEnrolmentId(new Long(9));
+		SponsorReport sponsorReport = sponsorMapper.findSponsorByEnrolmentId(new Long(9));
 
 		String htmlstring = VelocityTemplateParser.generateHTML(getDataMap(sponsorReport, sponseeList), sponseeList.size());
 		// result = writer.toString();

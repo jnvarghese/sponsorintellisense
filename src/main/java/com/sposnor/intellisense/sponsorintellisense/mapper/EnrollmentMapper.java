@@ -50,7 +50,7 @@ public interface EnrollmentMapper {
 	@Select("SELECT * FROM ENROLLMENT WHERE ID = #{id} AND STATUS =0 ")
 	Enrollment findEnrollment(@Param("id") Long enrollmentId);
 	
-	@Update("UPDATE ENROLLMENT SET STATUS = 1, updatedBy= #{updatedBy} WHERE id=#{id}")
+	@Update("UPDATE ENROLLMENT SET STATUS = 1, RENEWED= 'Y', updatedBy= #{updatedBy} WHERE id=#{id}")
 	void updateEnrollmentStatus(@Param("id") Long enrollmentId, @Param("updatedBy") int updatedBy);
 	
 	

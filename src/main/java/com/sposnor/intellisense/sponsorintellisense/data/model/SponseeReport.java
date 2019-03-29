@@ -1,16 +1,17 @@
 package com.sposnor.intellisense.sponsorintellisense.data.model;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Base64;
-
-//import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 
 public class SponseeReport {
 
+	private String startingDate;
+	
+	private String renewalDue;
+	
 	private String uniqueId;
 	
-	private String studentName;
+	private String studentName; 
 	
 	private String dateOfBirth;
 	
@@ -49,6 +50,22 @@ public class SponseeReport {
 	private String uploadstatus;
 	
 	
+	public String getStartingDate() {
+		return startingDate;
+	}
+
+	public void setStartingDate(String startingDate) {
+		this.startingDate = startingDate;
+	}
+
+	public String getRenewalDue() {
+		return renewalDue;
+	}
+
+	public void setRenewalDue(String renewalDue) {
+		this.renewalDue = renewalDue;
+	}
+
 	public String getUploadstatus() {
 		return uploadstatus;
 	}

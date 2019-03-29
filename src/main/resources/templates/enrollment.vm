@@ -50,6 +50,7 @@
     }
 
     .container {
+   	  border:0px solid black;
       width: 100%;
       font-size: 0;
       margin: 15px;
@@ -279,6 +280,14 @@
               <span class="tdSpanStyle">$!sponsee.projectName - $!sponsee.address</span>
             </td>
           </tr>
+          <tr>
+            <td class="tdHighLightStyle">
+              <span class="tdSpanStyle">RENEWAL DATE</span>
+            </td>
+            <td class="thStype" colspan="5">
+              <span class="tdSpanStyle" style="background-color: yellow;">$!sponsee.renewalDue</span>
+            </td>
+          </tr>
         </table>
       </div>
       #if( $studentSize == 2 )
@@ -297,8 +306,6 @@
       <br />
       #end
       #if( $studentSize ==  3)
-      <br />
-      <br />
       #end
 
       <div class="container">
@@ -352,26 +359,11 @@
           </tr>
         </table>
       </div>
-
-      <div class="container">
-        <table class="tableStyle">
-          <tr>
-            <td class="tdHighLightStyle" width="200px;">
-              <span class="tdSpanStyle">SPONSORSHIP RENEWAL DUE</span>
-            </td>
-            <td class="thStype" colspan="3">
-              <span class="tdSpanStyle" style="background-color: yellow;">$renewalDue</span>
-            </td>
-          </tr>
-        </table>
-      </div>
-
-      <div>
-        <div style="padding-bottom: 2px;">
-          <div style="padding-left:20px; padding-bottom: 10px;">
+      <div> 
+        <div style="padding-bottom: 1px;border:0px solid black;">
+          <div style="padding-left:20px; padding-bottom: 10px;border:0px solid black;">
             <span style="font-size: 13px;">Once again, we really appreciate your prayers and support. Please contact
-              the office of the Mar Thoma Mission
-              Board if you have any questions or concerns. Please find contact information above.</span>
+              the office of the Mar Thoma Mission Board if you have any questions or concerns. Please find contact information above.</span>
           </div>
           <div style="padding-left:20px">
             <span style="font-size: 13px;">Sincerely,</span>

@@ -30,6 +30,8 @@ public class Enrollment  implements Serializable {
 	
 	private double actualamount;
 	
+	private double netAmount;
+	
 	private Long enrollmentId;
 	
 	private Long sponsorId;
@@ -40,6 +42,16 @@ public class Enrollment  implements Serializable {
 	
 	private int updatedBy;
 	
+	
+	
+	public double getNetAmount() {
+		return netAmount;
+	}
+
+	public void setNetAmount(double netAmount) {
+		this.netAmount = netAmount;
+	}
+
 	public double getActualamount() {
 		return actualamount;
 	}
