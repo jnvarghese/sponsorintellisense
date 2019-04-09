@@ -136,8 +136,8 @@ public class ManageProgramController {
 		List<SponseeReport> sponseeList = studentMapper.listSponseesByEnrolmentId(enrollmentId);
  
 		for(SponseeReport sr : sponseeList) {
-			//if("Y".equalsIgnoreCase(sr.getUploadstatus()))
-		//	sr.setProfilePicture(s3Wrapper.downloadProfilePicture(sr.getProjectId(), sr.getStudentId(), sr.getImageLinkRef()));
+			if("Y".equalsIgnoreCase(sr.getUploadstatus()))
+			sr.setProfilePicture(s3Wrapper.downloadProfilePicture(sr.getProjectId(), sr.getStudentId(), sr.getImageLinkRef()));
 		}
 		
 		SponsorReport sponsorReport = sponsorMapper.findSponsorByEnrolmentId(enrollmentId);

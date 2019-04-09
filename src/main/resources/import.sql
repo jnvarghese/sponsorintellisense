@@ -209,7 +209,7 @@ BEGIN
   SET nLast_val = (SELECT seq_val FROM sponsor_sequence WHERE parishId = sParishId);
   IF nLast_val IS NULL THEN
 	IF sSponsorCode IS NULL THEN
-		SET nLast_val = 5001;
+		SET nLast_val = 1001;
 	ELSE
 		SET nLast_val = sSponsorCode;
 	END IF;
