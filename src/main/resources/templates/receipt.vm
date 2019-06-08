@@ -11,7 +11,7 @@
       width: 100%;
       font-size: 0;
       margin: 15px;
-      padding-left: 80px;
+      padding-left: 90px;
       padding-right: 50px;
       padding-bottom: 20px;
     }
@@ -60,24 +60,31 @@
 </head>
 
 <body class="bodyStyle">
-  <div>
+  <div style="border: thin solid black">
     <div style="float: left;padding-left:85px;">
-      <img width="90" src="data:image/png;base64,$waterMark" alt="imagename" />
+      <img width="100" src="data:image/png;base64,$waterMark" alt="imagename" />
     </div>
-    <div style="float: right; width: 90%">
+    <div style="float: right; width: 97%">
       <div style="padding: 0px;margin: 0px;">
-        <div style="padding-left: 18px">
+        <div  style="padding-left: 26px">
           <h2 style="padding: 0px;margin: 0px;">MAR THOMA MISSION BOARD</h2>
         </div>
-        <div style="padding-left:28px">
+         <div style="padding-left:54px">
+           <span style="font-size: 15px;">Diocese of North America & Europe</span>
+        </div>
+        
+        <div style="padding-left:36px">
           <p style="padding: 0px;margin: 0px; font-size: 14px;">2320 Merrick Ave, Merrick, New York - 11566</p>
         </div>
-        <div style="padding-left: -8px">
-          <span style="font-size: 13px;">
-            Phone: (516) 377-3311 Email: marthomamissionboard@gmail.com</span>
+        <div style="padding-left: -6px">
+          <span style="font-size: 13px;"><strong>Phone: </strong> </span>
+          <span style="font-size: 13px;">(516) 377-3311 </span>
+           <span style="font-size: 13px;"><strong>Email: </strong></span>
+            <span style="font-size: 13px;">marthomamissionboard@gmail.com</span>
         </div>
-        <div style="padding-left: 40px">
-          <span style="font-size: 14px;">Website: www.marthomamissionnae.org</span>
+        <div style="padding-left: 48px">
+          <span style="font-size: 13px;"><strong>Website: </strong> </span>
+          <span style="font-size: 13px;">www.marthomamissionnae.org</span>
         </div>
       </div>
     </div>
@@ -95,7 +102,7 @@
             <span></span>
           </td>
           <td>
-            <span>Date: $!receiptDate</span>
+            <span><strong>Date:</strong></span><span>$!receiptDate</span>
           </td>
         </tr>
       </table>
@@ -196,6 +203,24 @@
           <td>Treasurer</td>
         </tr>
       </table>
+    </div>
+    <div id="container">
+      <table border="0" width="100%">
+        <tr>
+
+          <td style="text-align:center;">
+            <span style="font-size:9.5;font-weight: bold;">Mar Thoma Mission Board - Diocese of North America & Europe is a 501 (c) (3) not-for-profit tax exempt organization.</span>
+          </td>
+
+        </tr>
+        <tr>
+
+          <td style="text-align:center;">
+            <span style="font-size:10;font-weight: bold;">Tax Identification Number: 81-5479018. Donors can deduct contributions under IRC Section 170.</span>
+          </td>
+
+        </tr>
+       </table>
     </div>
 
   </div>
