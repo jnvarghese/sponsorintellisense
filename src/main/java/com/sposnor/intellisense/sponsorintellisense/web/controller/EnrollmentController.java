@@ -43,6 +43,7 @@ public class EnrollmentController {
 	@PostMapping("/enroll")
 	public ResponseEntity<String> createStudent(@RequestHeader(value="userId") int userId, @RequestBody Enrollment enrollment) {
 		enrollment.setCreatedBy(userId);
+		LOGGER.debug("Enrollment Id is " + enrollment.getEnrollmentId());
 		if(enrollment.getEnrollmentId() == 0) {
 			LOGGER.debug("Creating new enrollment");
 			createNewEnrollment(enrollment);
@@ -61,6 +62,7 @@ public class EnrollmentController {
 		enrollmentMapper.insert(enrollment);
 		List<Date> dates = new ArrayList<Date>();
 		Calendar c = null;
+		LOGGER.debug("Total number of sponsors adding to the enrollment, "+ enrollment.getSponsees()); 
 		for(Sponsee sponsee:  enrollment.getSponsees()) {
 			c = Calendar.getInstance();
 			sponsee.setEnrollmentId(enrollment.getId());
@@ -119,17 +121,31 @@ public class EnrollmentController {
 		}
 	}
 		
-	
+	/**
+	 * 
+	 * @param enrollment
+	 * @param dbSponsees is enrollmentMapper.findSponseesByEnrollmentId(enrollmentId)
+	 * @param dbStudentMaxOuts is maxOutMapper.findStudentMaxOut(studentIds, enrollmentId) 
+	 */
 	private void modifyEnrollment(Enrollment enrollment, List<Sponsee> dbSponsees, List<StudentMaxOut> dbStudentMaxOuts) {
 		
+		Set<Sponsee> payloadSponsees = enrollment.getSponsees();
 		Set<Sponsee> sponseesTodb = new HashSet<Sponsee>();
-		List<StudentMaxOut> studentMaxoutTodb = new ArrayList<StudentMaxOut>();
-		List<SponsorMaxOut> sponsorMaxoutTodb = new ArrayList<SponsorMaxOut>();
+		//List<StudentMaxOut> studentMaxoutTodb = new ArrayList<StudentMaxOut>();
+		//List<SponsorMaxOut> sponsorMaxoutTodb = new ArrayList<SponsorMaxOut>();
+		LOGGER.debug("Database Sponsees Size "+ dbSponsees.size());
+		sponseesTodb.addAll(payloadSponsees); // get all enrollment students to the list
+		LOGGER.debug("SponseesTodb size after adding from the payload enrollment "+ payloadSponsees.size());
+		//Calendar c = Calendar.getInstance();
 		
-		sponseesTodb.addAll(enrollment.getSponsees()); // get all enrollment students to the list
-		Calendar c = Calendar.getInstance();
-		
-		for(Sponsee enSponsee: enrollment.getSponsees()) {
+		List<Long> payloadStudentIds = payloadSponsees.stream().map(sponsee -> sponsee.getStudentId()).collect(Collectors.toList());
+		for(Sponsee dbSponsee: dbSponsees) {
+			if(!payloadStudentIds.contains(dbSponsee.getStudentId())) { // check the incoming student matches the db students
+				sponseesTodb.add(dbSponsee);  // add the db students to the list in case they are not present in the incoming list
+			}
+		}
+		/*
+		for(Sponsee enSponsee: payloadSponsees) {
 			c.set(enSponsee.getExpirationYear(), enSponsee.getExpirationMonth() - 1, 1, 0, 0); 
 			for(Sponsee dbSponsee: dbSponsees) {
 				if(!dbSponsee.getStudentId().equals(enSponsee.getStudentId())) { // check the incoming student matches the db students
@@ -144,8 +160,11 @@ public class EnrollmentController {
 				}
 			}
 			sponsorMaxoutTodb.add(new SponsorMaxOut(enrollment.getSponsorId(), enrollment.getId(), c.getTime()));
-		}
+			
+		} */
+		LOGGER.debug("Enrollment sponsees size before adding the sponseesTodb "+ payloadSponsees.size());
 		enrollment.setSponsees(sponseesTodb);
+		LOGGER.debug("Enrollment sponsees size after adding the sponseesTodb "+ enrollment.getSponsees().size());
 	}
 	
 }
