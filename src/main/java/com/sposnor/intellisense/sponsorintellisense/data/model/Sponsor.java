@@ -51,7 +51,7 @@ public class Sponsor implements Serializable {
 	private int noOfStudents;
 	private int expirationMonth;
 	private int expirationYear;
-	private Date effectiveDate;
+	private String effectiveDate;
 	
 	private double miscAmount;
 	
@@ -96,11 +96,11 @@ public class Sponsor implements Serializable {
 		this.expirationYear = expirationYear;
 	}
 
-	public Date getEffectiveDate() {
+	public String getEffectiveDate() {
 		return effectiveDate;
 	}
 
-	public void setEffectiveDate(Date effectiveDate) {
+	public void setEffectiveDate(String effectiveDate) {
 		this.effectiveDate = effectiveDate;
 	}
 
