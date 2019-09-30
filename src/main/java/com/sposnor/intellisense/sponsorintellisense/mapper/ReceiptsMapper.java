@@ -9,8 +9,8 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
-import com.sposnor.intellisense.sponsorintellisense.data.model.Receipt;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Receipts;
+import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReceipts;
 
 @Mapper
 public interface ReceiptsMapper {
@@ -36,11 +36,11 @@ public interface ReceiptsMapper {
 			+ "WHERE receiptId = #{receiptId}")
 	List<Receipts> listByParishId(@Param("parishId") Long parishId);*/
 	
-	@Select("SELECT receiptId, rdate, receiptType,referenceId, r.firstName, r.middleName, r.lastName, amount, org.name orgName, p.name parishName, "
-			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName "
-			+ "FROM receipts r left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
+	@Select("SELECT r.receiptId, rdate, receiptType,referenceId, r.firstName, r.middleName, r.lastName, amount, org.name orgName, p.name parishName, "
+			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName, sr.sponsorId "
+			+ "FROM sponsor_receipts sr right JOIN receipts r ON r.receiptId = sr.receiptId left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
 			+ "initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id  "
-			+ "and date_format(str_to_date(rdate, '%m/%d/%Y'), '%Y-%m-%d') >= CURDATE() - INTERVAL #{range} DAY order by receiptId desc;")
+			+ "and date_format(str_to_date(rdate, '%m/%d/%Y'), '%Y-%m-%d') >= CURDATE() - INTERVAL #{range} DAY order by r.receiptId desc;")
 	List<Receipts> listByRange(@Param("range") int range);
 	
 	
@@ -64,4 +64,8 @@ public interface ReceiptsMapper {
 			+ "FROM receipts r left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
 			+ "initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id  and receiptId = #{receiptId}")
 	Receipts getReceipt(@Param("receiptId") Long rId);
+	
+	@Insert("INSERT INTO sponsor_receipts(sponsorId, receiptId) values (#{sponsorId}, #{receiptId})")
+	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id", before = false, resultType= Long.class)
+	void insertSponsorReceipts(SponsorReceipts sr);
 }

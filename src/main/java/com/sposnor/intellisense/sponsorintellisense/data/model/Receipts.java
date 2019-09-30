@@ -6,6 +6,8 @@ public class Receipts {
 	
 	private Long receiptId;
 	
+	private Long sponsorId;
+	
 	private String rdate;
 	
 	private String firstName;
@@ -65,9 +67,15 @@ public class Receipts {
 	private String parishCity;
 	
 	private String initiativeName;
+	
+	public Long getSponsorId() {
+		return sponsorId;
+	}
 
-	
-	
+	public void setSponsorId(Long sponsorId) {
+		this.sponsorId = sponsorId;
+	}
+
 	public String getParishCity() {
 		return parishCity;
 	}

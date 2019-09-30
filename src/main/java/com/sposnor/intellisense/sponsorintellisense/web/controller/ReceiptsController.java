@@ -40,6 +40,7 @@ import com.itextpdf.tool.xml.pipeline.html.AbstractImageProvider;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Receipts;
+import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReceipts;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ReceiptsMapper;
 import com.sposnor.intellisense.sponsorintellisense.util.VelocityTemplateParser;
 
@@ -79,6 +80,8 @@ public class ReceiptsController {
 	public void createReceipts(@RequestHeader Long userId, @Valid @RequestBody Receipts r) {
 		r.setCreatedby(userId);
 		receiptsMapper.insert(r);
+		if(null != r.getSponsorId())
+			receiptsMapper.insertSponsorReceipts(new SponsorReceipts(r.getSponsorId(), r.getReceiptId()));
 	}
 	
 	@PutMapping("/modify/{id}")

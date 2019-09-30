@@ -105,6 +105,11 @@ public class AdminController {
 	public List<Parish> getParishes() {
 		return parishMapper.list();
 	}
+	
+	@GetMapping("/parishes/search/{terms}")
+	public List<Parish> search(@PathVariable(value = "terms") String terms) {
+		return parishMapper.search(terms);
+	}
 
 	@PostMapping("/parishes/add")
 	public Parish createParish(@RequestHeader Long userId, @RequestBody Parish parish) {	

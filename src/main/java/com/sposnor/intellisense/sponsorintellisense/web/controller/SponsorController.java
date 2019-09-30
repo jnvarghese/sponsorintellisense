@@ -53,13 +53,22 @@ public class SponsorController {
 		if(!StringUtils.isEmpty(sponsor.getCoSponserName())) {
 			sponsor.setHasAnyCoSponser(true);
 		}
-		sponsorMapper.insert(sponsor);	    
+		sponsorMapper.insert(sponsor);	
 	    return new ResponseEntity<Sponsor>(sponsor, HttpStatus.OK);
 	}
 	
 	@GetMapping("/find/{id}")
 	public ResponseEntity<Sponsor> getSponsorById(@PathVariable(value = "id") Long sponsorId) {
 		Sponsor sponsor = sponsorMapper.findById(sponsorId);
+	    if(sponsor == null) {
+	        return ResponseEntity.notFound().build();
+	    }
+	    return ResponseEntity.ok().body(sponsor);
+	}
+	
+	@GetMapping("/find/{parishId}/{sponsorCode}")
+	public ResponseEntity<Sponsor> getSponsorByParishIdAndSponsorCode(@PathVariable(value = "parishId") Long parishId, @PathVariable(value = "sponsorCode") String sponsorCode) {
+		Sponsor sponsor = sponsorMapper.getSponsorByParishIdAndSponsorCode(parishId, sponsorCode);
 	    if(sponsor == null) {
 	        return ResponseEntity.notFound().build();
 	    }
