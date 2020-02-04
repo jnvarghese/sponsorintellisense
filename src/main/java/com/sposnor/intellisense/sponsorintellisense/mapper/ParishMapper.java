@@ -28,15 +28,15 @@ public interface ParishMapper {
 			+ "REGION R, CENTER C WHERE P.CENTERID = C.ID AND C.REGIONID = R.ID AND P.STATUS= 1 ORDER BY P.NAME, P.CITY;")
 	List<Parish> list();
 	
-	@Select("SELECT P.ID, P.CODE, P.NAME, P.CITY, P.CENTERID, P.STATUS, R.NAME REGIONNAME, C.NAME CENTERNAME FROM PARISH P, "
-			+ "REGION R, CENTER C WHERE P.CENTERID = C.ID AND C.REGIONID = R.ID AND P.STATUS= 1 AND P.NAME LIKE  CONCAT(#{terms}, '%') ORDER BY P.NAME, P.CITY;")
+	@Select("SELECT P.ID, P.CODE, P.NAME, P.CITY, P.CENTERID, P.STATUS, R.NAME REGIONNAME, C.NAME CENTERNAME, promoterEmail FROM PARISH P, "
+			+ "REGION R, CENTER C WHERE P.CENTERID = C.ID AND C.REGIONID = R.ID AND P.STATUS= 1 AND P.NAME LIKE  CONCAT('%', #{terms}, '%') ORDER BY P.NAME, P.CITY;")
 	List<Parish> search(@Param("terms") String terms);
 	
-	@Insert("insert into parish (code, name, status, city, centerId, createdBy, createdDate) values (#{code}, #{name}, #{status}, #{city}, #{centerId} , #{createdBy}, #{createdDate})")
+	@Insert("insert into parish (code, name, status, city, centerId, promoterEmail, createdBy, createdDate) values (#{code}, #{name}, #{status}, #{city}, #{centerId} , #{promoterEmail}, #{createdBy}, #{createdDate})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id",
 			before = false, resultType= Long.class)
 	void insert(Parish parish) throws java.sql.SQLIntegrityConstraintViolationException;
 	
-	@Update("update parish set code= #{code}, name= #{name}, status= #{status}, city = #{city}, centerId = #{centerId}, updatedBy= #{updatedBy} where id = #{id}")	
+	@Update("update parish set code= #{code}, name= #{name}, status= #{status}, city = #{city}, centerId = #{centerId}, promoterEmail= #{promoterEmail}, updatedBy= #{updatedBy} where id = #{id}")	
 	void update(Parish parish);
 }

@@ -24,8 +24,11 @@ public interface ManageProgramMapper {
 	List<SponsorshipInfo> getSponsorshipInfoByStudentId(@Param("studentId") Long studentId);	
 	
 	@Select("SELECT DATE_FORMAT(PAYMENTDATE, \"%M %Y\") paymentDate, DATE_FORMAT(maxOut, \"%M %Y\") maxOut, "
-			+ "CONTRIBUTIONAMOUNT contriAmount, MISCAMOUNT miscAmount "
-			+ "FROM SPONSEE SP, ENROLLMENT EN , STUDENT_MAXOUT STM WHERE  EN.ID = SP.ENROLLMENTID AND EN.ID = STM.ENROLLMENTID "
+			+ "CONTRIBUTIONAMOUNT contriAmount, MISCAMOUNT miscAmount, SP_CNT.noOfKids noOfKids, SP_CNT.STUDENTNAME, SP_CNT.NAME projectName "
+			+ "FROM SPONSEE SP, ENROLLMENT EN , STUDENT_MAXOUT STM, "
+			+ "(SELECT COUNT(SP.ID) NOOFKIDS,SP.ENROLLMENTID, ST.STUDENTNAME, P.NAME FROM SPONSEE SP, ENROLLMENT EN, STUDENT ST, PROJECT P "
+			+ "WHERE SP.ENROLLMENTID=EN.ID AND EN.SPONSORID=#{sponsorId} AND SP.STATUS=0 AND SP.studentId= ST.id AND ST.projectId=P.id) SP_CNT "
+			+ "WHERE  EN.ID = SP.ENROLLMENTID AND EN.ID = STM.ENROLLMENTID AND EN.ID = STM.ENROLLMENTID "
 			+ "AND STM.STUDENTID = SP.STUDENTID AND SP.STUDENTID= #{studentId} AND EN.SPONSORID= #{sponsorId}")
 	List<Contribution> getSponsorshipContribution(@Param("studentId") Long studentId, @Param("sponsorId") Long sponsorId);	
 	

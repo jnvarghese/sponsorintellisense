@@ -40,8 +40,10 @@ import com.itextpdf.tool.xml.pipeline.html.AbstractImageProvider;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Receipts;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsor;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReceipts;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ReceiptsMapper;
+import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
 import com.sposnor.intellisense.sponsorintellisense.util.VelocityTemplateParser;
 
 @RestController
@@ -53,6 +55,9 @@ public class ReceiptsController {
 	
 	@Autowired
 	private ReceiptsMapper receiptsMapper;
+	
+	@Autowired
+	private SponsorMapper sponsorMapper;
 	
 	@GetMapping("/list")
 	public List<Receipts> list() {
@@ -77,11 +82,32 @@ public class ReceiptsController {
 	}
 	
 	@PostMapping("/add")
-	public void createReceipts(@RequestHeader Long userId, @Valid @RequestBody Receipts r) {
+	public ResponseEntity<Receipts> createReceipts(@RequestHeader Long userId, @Valid @RequestBody Receipts r) {
 		r.setCreatedby(userId);
 		receiptsMapper.insert(r);
-		if(null != r.getSponsorId())
+		if(null != r.getSponsorId()) {
 			receiptsMapper.insertSponsorReceipts(new SponsorReceipts(r.getSponsorId(), r.getReceiptId()));
+		} else if(null == r.getSponsorId() && r.getReceiptType() == 2) {
+			Sponsor sponsor = new Sponsor();
+			sponsor.setCreatedBy(userId);
+			sponsor.setParishId(r.getReferenceId());
+			sponsor.setFirstName(r.getFirstName());
+			sponsor.setMiddleInitial(r.getMiddleName());
+			sponsor.setLastName(r.getLastName());
+			sponsor.setPhone1(r.getPhone1());
+			sponsor.setStreet(r.getStreetAddress());
+			sponsor.setCity(r.getCity());
+			sponsor.setState(r.getState());
+			sponsor.setPostalCode(r.getZipCode());
+			sponsor.setEmailAddress(r.getEmail1());	
+			sponsor.setSponsorCode(String.valueOf(sponsorMapper.getSequenceByParishId(r.getReferenceId()).getSequence()));
+			sponsorMapper.insert(sponsor);
+			receiptsMapper.insertSponsorReceipts(new SponsorReceipts(sponsor.getId(), r.getReceiptId()));
+			r.setSponsorId(sponsor.getId());
+		} else {
+			LOGGER.info("Ignoring the sponsor receipts fure to un matching criteria");
+		}
+		return new ResponseEntity<Receipts>(r, HttpStatus.OK);
 	}
 	
 	@PutMapping("/modify/{id}")

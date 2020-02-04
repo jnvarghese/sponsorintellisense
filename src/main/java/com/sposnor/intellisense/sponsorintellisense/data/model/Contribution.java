@@ -9,6 +9,20 @@ public class Contribution {
 	private float contriAmount;
 	
 	private float miscAmount;
+	
+	private int noOfKids;
+	
+	private String studentName;
+	
+	private String projectName;
+	
+	public int getNoOfKids() {
+		return noOfKids;
+	}
+
+	public void setNoOfKids(int noOfKids) {
+		this.noOfKids = noOfKids;
+	}
 
 	public String getPaymentDate() {
 		return paymentDate;
@@ -40,6 +54,22 @@ public class Contribution {
 
 	public void setMiscAmount(float miscAmount) {
 		this.miscAmount = miscAmount;
+	}
+
+	public String getStudentName() {
+		return studentName;
+	}
+
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
+	}
+
+	public String getProjectName() {
+		return projectName;
+	}
+
+	public void setProjectName(String projectName) {
+		this.projectName = projectName;
 	}
 	
 	

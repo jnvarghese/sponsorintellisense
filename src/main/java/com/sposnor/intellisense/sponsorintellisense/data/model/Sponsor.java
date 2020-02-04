@@ -55,6 +55,8 @@ public class Sponsor implements Serializable {
 	
 	private double miscAmount;
 	
+	private String promoterEmail;
+	
 	public double getMiscAmount() {
 		return miscAmount;
 	}
@@ -328,6 +330,14 @@ public class Sponsor implements Serializable {
 		this.nickName = nickName;
 	}
 
+	public String getPromoterEmail() {
+		return promoterEmail;
+	}
+
+	public void setPromoterEmail(String promoterEmail) {
+		this.promoterEmail = promoterEmail;
+	}
+
 	@Override
 	public String toString() {
 		return "Sponsor [id=" + id + ", firstName=" + firstName + ", middleInitial=" + middleInitial + ", lastName="
@@ -338,8 +348,12 @@ public class Sponsor implements Serializable {
 				+ ", coSponserName=" + coSponserName + ", parishId=" + parishId + ", parishName=" + parishName
 				+ ", parishCity=" + parishCity + ", centerId=" + centerId + ", createdDate=" + createdDate
 				+ ", updatedDate=" + updatedDate + ", createdBy=" + createdBy + ", updatedBy=" + updatedBy + ", phone1="
-				+ phone1 + ", phone2=" + phone2 + "]";
+				+ phone1 + ", phone2=" + phone2 + ", entId=" + entId + ", noOfStudents=" + noOfStudents
+				+ ", expirationMonth=" + expirationMonth + ", expirationYear=" + expirationYear + ", effectiveDate="
+				+ effectiveDate + ", miscAmount=" + miscAmount + ", promoterEmail=" + promoterEmail + "]";
 	}
+
+	
 	
 	
 	

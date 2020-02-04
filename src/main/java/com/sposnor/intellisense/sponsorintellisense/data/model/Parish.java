@@ -34,6 +34,9 @@ public class Parish implements Serializable {
 	@NotBlank
 	private String status;
 	
+	@NotBlank
+	private String promoterEmail;
+	
 	private String regionName;
 	
 	private String centerName;
@@ -172,13 +175,25 @@ public class Parish implements Serializable {
 		this.updatedDate = updatedDate;
 	}
 
+	
+	public String getPromoterEmail() {
+		return promoterEmail;
+	}
+
+	public void setPromoterEmail(String promoterEmail) {
+		this.promoterEmail = promoterEmail;
+	}
+
 	@Override
 	public String toString() {
 		return "Parish [id=" + id + ", code=" + code + ", centerId=" + centerId + ", name=" + name + ", city=" + city
-				+ ", status=" + status + ", regionName=" + regionName + ", centerName=" + centerName + ", sponsors="
-				+ sponsors + ", projects=" + projects + ", createdDate=" + createdDate + ", updatedDate=" + updatedDate
-				+ ", createdBy=" + createdBy + ", updatedBy=" + updatedBy + "]";
+				+ ", status=" + status + ", promoterEmail=" + promoterEmail + ", regionName=" + regionName
+				+ ", centerName=" + centerName + ", sponsors=" + sponsors + ", projects=" + projects + ", createdDate="
+				+ createdDate + ", updatedDate=" + updatedDate + ", createdBy=" + createdBy + ", updatedBy=" + updatedBy
+				+ "]";
 	}
+
+
 
 
 	

@@ -101,7 +101,7 @@ public class ManageProgramController {
 		map.put("sponsorParish", sponser.getParishName() + " - " + sponser.getParishCity());
 		map.put("sponsorParishRegion", sponser.getRegionName() + " - " + sponser.getCenterName());
 		if (null != sponser.getAppartmentNumber()) {
-			map.put("sponsorAddress", sponser.getAppartmentNumber() + ", " + sponser.getStreet() + ", "
+			map.put("sponsorAddress", sponser.getAppartmentNumber() + " " + sponser.getStreet() + ", "
 					+ sponser.getSponsorCity() + ", " + sponser.getSponsorState() + " - " + sponser.getPostalCode());
 		} else {
 			map.put("sponsorAddress", sponser.getStreet() + ", " + sponser.getSponsorCity() + ", "

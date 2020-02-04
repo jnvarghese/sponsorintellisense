@@ -22,6 +22,10 @@ public interface SponsorMapper {
 	public static final String SELECT_ALL_ACTIVE_SPONSORS = "SELECT S.ID, FIRSTNAME, LASTNAME, MIDDLEINITIAL, NICKNAME, STATE,"
 			+ "sponsorCode, P.NAME parishName, P.CITY PARISHCITY FROM SPONSOR S LEFT JOIN PARISH P ON S.PARISHID = P.ID WHERE S.SPONSORSTATUS = 0";
 	
+	public static final String SELECT_ALL_ACTIVE_SPONSORS_BY_FN_LN_PARISH_ID = "SELECT S.ID, FIRSTNAME, LASTNAME, MIDDLEINITIAL, STREET,S.CITY, STATE,POSTALCODE, SPONSORCODE,EMAILADDRESS,PHONE1,PHONE2, P.PROMOTEREMAIL promoterEmail " + 
+			"FROM SPONSOR S, PARISH P WHERE S.PARISHID =P.ID AND S.SPONSORSTATUS = 0 AND PARISHID= #{id} "
+			+ " AND FIRSTNAME LIKE CONCAT(#{firstName}, '%') AND LASTNAME LIKE CONCAT(#{lastName}, '%')";
+
 	/*
 	public static final String SELECT_ALL_ACTIVE_SPONSORS_BY_PARISHID = "SELECT S.ID, CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',S.SPONSORCODE) sponsorCode, "
 			+ "FIRSTNAME, LASTNAME, MIDDLEINITIAL, NICKNAME,street, s.city, STATE,postalCode, parishId "
@@ -62,6 +66,9 @@ public interface SponsorMapper {
 	@Select(SELECT_ALL_ACTIVE_SPONSORS)
 	List<Sponsor> list();
 	
+	@Select(SELECT_ALL_ACTIVE_SPONSORS_BY_FN_LN_PARISH_ID)
+	List<Sponsor> list2(@Param("firstName") String firstName, @Param("lastName") String lastName, @Param("id") Long id);
+	
 	@Select(SELECT_ALL_ACTIVE_SPONSORS_BY_PARISHID)
 	List<Sponsor> listSponsorsByParishId(@Param("id") Long id);
 	
@@ -79,7 +86,7 @@ public interface SponsorMapper {
 	@Update("UPDATE SPONSOR SET contributionMaxOut= #{contributionMaxOut} WHERE ID= #{id}")
 	void updateMaxOut(Sponsor sponsor);
 	
-	@Select("SELECT id,firstname, middleInitial, lastName,street,city,state,postalCode,emailAddress,phone1  FROM SPONSOR s WHERE s.parishid=#{parishid} AND s.sponsorCode = #{code}")
+	@Select("SELECT id,firstname, middleInitial, lastName,street,city,state,postalCode,emailAddress, emailAddress2,phone1,phone2 FROM SPONSOR s WHERE s.parishid=#{parishid} AND s.sponsorCode = #{code}")
 	Sponsor getSponsorByParishIdAndSponsorCode(@Param("parishid") Long parishId, @Param("code") String spondorCode);
 	
 	@Select(SEARCH_BY_NAME)

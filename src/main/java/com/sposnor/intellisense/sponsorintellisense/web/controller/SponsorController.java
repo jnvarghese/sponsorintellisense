@@ -37,6 +37,13 @@ public class SponsorController {
 		return sponsorMapper.list();
 	}
 	
+	@GetMapping("/list/{firstName}/{lastName}/{id}")
+	public List<Sponsor> getAllSponsors(@PathVariable(value = "firstName") String firstName, 
+			@PathVariable(value = "lastName") String lastName,
+			@PathVariable(value= "id") Long parishId) {
+		return sponsorMapper.list2(firstName, lastName, parishId);
+	}
+	
 	@GetMapping("/listbyparish/{id}")
 	public List<Sponsor> getAllSponsorsByParishId(@PathVariable(value = "id") Long parishId) {
 		return sponsorMapper.listSponsorsByParishId(parishId);
