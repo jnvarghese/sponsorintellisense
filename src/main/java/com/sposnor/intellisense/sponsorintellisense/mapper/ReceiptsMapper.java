@@ -14,7 +14,8 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReceipts;
 
 @Mapper
 public interface ReceiptsMapper {
-
+	
+	
 	@Insert("insert into receipts (rdate, firstName, middleName, lastName, fullName, transaction, amount,"
 			+ "initiativeId, streetAddress, city, state, zipCode, receiptType, referenceId, email1, email2, phone1, phone2, type, status, createdby) "
 			+ "values (#{rdate}, #{firstName}, #{middleName}, #{lastName}, #{fullName}, #{transaction}, #{amount},"
@@ -38,9 +39,9 @@ public interface ReceiptsMapper {
 	
 	@Select("SELECT r.receiptId, rdate, receiptType,referenceId, r.firstName, r.middleName, r.lastName, r.amount, org.name orgName, p.name parishName, "
 			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName, sr.sponsorId "
-			+ "FROM sponsor_receipts sr right JOIN receipts r ON r.receiptId = sr.receiptId left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
+			+ "FROM sponsor_receipts sr right JOIN receipts r ON r.receiptId = sr.receiptId and sr.STATUS<>1 left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
 			+ "initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id  "
-			+ "and date_format(str_to_date(rdate, '%m/%d/%Y'), '%Y-%m-%d') >= CURDATE() - INTERVAL #{range} DAY order by r.receiptId desc;")
+			+ "and date_format(str_to_date(rdate, '%m/%d/%Y'), '%Y-%m-%d') >= CURDATE() - INTERVAL #{range} DAY GROUP BY r.receiptId order by r.receiptId desc;")
 	List<Receipts> listByRange(@Param("range") int range);
 	
 	
@@ -68,4 +69,13 @@ public interface ReceiptsMapper {
 	@Insert("INSERT INTO sponsor_receipts(sponsorId, receiptId, amount, createdBy) values (#{sponsorId}, #{receiptId}, #{amount}, #{createdBy})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id", before = false, resultType= Long.class)
 	void insertSponsorReceipts(SponsorReceipts sr);
+	
+	@Select("SELECT sponsorId, receiptId from sponsor_receipts where id=#{id} and status <> 1")
+	SponsorReceipts getSponsorReceipt(@Param("id") Long id);
+	
+	@Select("SELECT id, sponsorId, receiptId,amount from sponsor_receipts where receiptId=#{receiptId} and status <> 1")
+	List<SponsorReceipts> listByReceiptId(@Param("receiptId") Long receiptId);
+	
+	@Update("UPDATE sponsor_receipts SET status= 1,updatedBy = #{userId}, updatedDate=#{currentTime}  WHERE id=#{id}")	
+	void deleteSponsorReceipts(@Param("id") Long id, @Param("userId") Long userId, @Param("currentTime") String currentTime);
 }

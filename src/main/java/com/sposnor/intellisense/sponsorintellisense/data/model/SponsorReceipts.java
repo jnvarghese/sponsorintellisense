@@ -21,8 +21,18 @@ public class SponsorReceipts implements Serializable {
 	
 	private Long createdBy;
 	
+	private Long updatedBy;
 	
 	
+	
+	public Long getUpdatedBy() {
+		return updatedBy;
+	}
+
+	public void setUpdatedBy(Long updatedBy) {
+		this.updatedBy = updatedBy;
+	}
+
 	public Long getCreatedBy() {
 		return createdBy;
 	}
@@ -71,6 +81,9 @@ public class SponsorReceipts implements Serializable {
 		this.status = status;
 	}
 
+	public SponsorReceipts() {
+		// TODO Auto-generated constructor stub
+	}
 	public SponsorReceipts(Long sponsorId, Long receiptId, Long createdBy) {
 		super();
 		this.sponsorId = sponsorId;

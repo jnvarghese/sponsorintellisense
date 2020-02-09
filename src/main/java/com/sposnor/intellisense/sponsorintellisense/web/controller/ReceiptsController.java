@@ -50,7 +50,9 @@ import com.sposnor.intellisense.sponsorintellisense.util.VelocityTemplateParser;
 @RequestMapping("/api/receipts")
 public class ReceiptsController {
 
-	
+	java.text.SimpleDateFormat MYSQL_DATE_FORMAT = 
+		     new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(ReceiptsController.class);
 	
 	@Autowired
@@ -81,11 +83,33 @@ public class ReceiptsController {
 		return receiptsMapper.findById(receiptId);	
 	}
 	
-	@PostMapping("/addSponsor") 
-	public ResponseEntity<SponsorReceipts> addSponsorToReceipt(@RequestHeader Long userId, @Valid @RequestBody Receipts r) {
+	@GetMapping("/listbyreceiptid/{id}")
+	public ResponseEntity<List<SponsorReceipts>> listByReceiptId(@PathVariable(value = "id") Long receiptId) {
+		List<SponsorReceipts> lists = receiptsMapper.listByReceiptId(receiptId);
+		return new ResponseEntity<List<SponsorReceipts>>(lists, HttpStatus.OK);
+	}
+	
+	@PostMapping("/addSponsorReceipt") 
+	public ResponseEntity<SponsorReceipts> addSponsorToReceipt(@RequestHeader Long userId, @Valid @RequestBody SponsorReceipts r) {
 		SponsorReceipts sr = new SponsorReceipts(r.getSponsorId(), r.getReceiptId(), r.getAmount(), userId);
 		receiptsMapper.insertSponsorReceipts(sr);
 		return new ResponseEntity<SponsorReceipts>(sr, HttpStatus.OK);
+	}
+	
+	@PutMapping("/modifySponsorReceipt")
+	public ResponseEntity<SponsorReceipts> updateReceipts(@RequestHeader Long userId, @Valid @RequestBody SponsorReceipts requestPayload) {		
+		String currentTime = MYSQL_DATE_FORMAT.format(new java.util.Date());
+		SponsorReceipts sponsorReceipts= receiptsMapper.getSponsorReceipt(requestPayload.getId());
+		receiptsMapper.deleteSponsorReceipts(requestPayload.getId(), userId, currentTime);
+		SponsorReceipts sr = new SponsorReceipts(sponsorReceipts.getSponsorId(), sponsorReceipts.getReceiptId(), requestPayload.getAmount(), userId);
+		receiptsMapper.insertSponsorReceipts(sr);
+		return new ResponseEntity<SponsorReceipts>(sr, HttpStatus.OK);
+	}
+	
+	@PutMapping("/deleteSponsorReceipt/{id}")
+	public void deleteReceipts(@RequestHeader Long userId, @PathVariable(value = "id") Long id) {	
+		String currentTime = MYSQL_DATE_FORMAT.format(new java.util.Date());
+		receiptsMapper.deleteSponsorReceipts(id, userId,  currentTime);
 	}
 	
 	@PostMapping("/add")
