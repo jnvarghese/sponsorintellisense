@@ -81,12 +81,19 @@ public class ReceiptsController {
 		return receiptsMapper.findById(receiptId);	
 	}
 	
+	@PostMapping("/addSponsor") 
+	public ResponseEntity<SponsorReceipts> addSponsorToReceipt(@RequestHeader Long userId, @Valid @RequestBody Receipts r) {
+		SponsorReceipts sr = new SponsorReceipts(r.getSponsorId(), r.getReceiptId(), r.getAmount(), userId);
+		receiptsMapper.insertSponsorReceipts(sr);
+		return new ResponseEntity<SponsorReceipts>(sr, HttpStatus.OK);
+	}
+	
 	@PostMapping("/add")
 	public ResponseEntity<Receipts> createReceipts(@RequestHeader Long userId, @Valid @RequestBody Receipts r) {
 		r.setCreatedby(userId);
 		receiptsMapper.insert(r);
 		if(null != r.getSponsorId()) {
-			receiptsMapper.insertSponsorReceipts(new SponsorReceipts(r.getSponsorId(), r.getReceiptId()));
+			receiptsMapper.insertSponsorReceipts(new SponsorReceipts(r.getSponsorId(), r.getReceiptId(), userId));
 		} else if(null == r.getSponsorId() && r.getReceiptType() == 2) {
 			Sponsor sponsor = new Sponsor();
 			sponsor.setCreatedBy(userId);
@@ -102,7 +109,7 @@ public class ReceiptsController {
 			sponsor.setEmailAddress(r.getEmail1());	
 			sponsor.setSponsorCode(String.valueOf(sponsorMapper.getSequenceByParishId(r.getReferenceId()).getSequence()));
 			sponsorMapper.insert(sponsor);
-			receiptsMapper.insertSponsorReceipts(new SponsorReceipts(sponsor.getId(), r.getReceiptId()));
+			receiptsMapper.insertSponsorReceipts(new SponsorReceipts(sponsor.getId(), r.getReceiptId(), userId));
 			r.setSponsorId(sponsor.getId());
 		} else {
 			LOGGER.info("Ignoring the sponsor receipts fure to un matching criteria");

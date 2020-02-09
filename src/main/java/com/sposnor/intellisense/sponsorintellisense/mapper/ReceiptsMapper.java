@@ -36,7 +36,7 @@ public interface ReceiptsMapper {
 			+ "WHERE receiptId = #{receiptId}")
 	List<Receipts> listByParishId(@Param("parishId") Long parishId);*/
 	
-	@Select("SELECT r.receiptId, rdate, receiptType,referenceId, r.firstName, r.middleName, r.lastName, amount, org.name orgName, p.name parishName, "
+	@Select("SELECT r.receiptId, rdate, receiptType,referenceId, r.firstName, r.middleName, r.lastName, r.amount, org.name orgName, p.name parishName, "
 			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName, sr.sponsorId "
 			+ "FROM sponsor_receipts sr right JOIN receipts r ON r.receiptId = sr.receiptId left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
 			+ "initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id  "
@@ -65,7 +65,7 @@ public interface ReceiptsMapper {
 			+ "initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id  and receiptId = #{receiptId}")
 	Receipts getReceipt(@Param("receiptId") Long rId);
 	
-	@Insert("INSERT INTO sponsor_receipts(sponsorId, receiptId) values (#{sponsorId}, #{receiptId})")
+	@Insert("INSERT INTO sponsor_receipts(sponsorId, receiptId, amount, createdBy) values (#{sponsorId}, #{receiptId}, #{amount}, #{createdBy})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id", before = false, resultType= Long.class)
 	void insertSponsorReceipts(SponsorReceipts sr);
 }
