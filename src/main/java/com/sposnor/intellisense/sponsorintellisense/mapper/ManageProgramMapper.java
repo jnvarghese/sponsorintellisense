@@ -33,7 +33,7 @@ public interface ManageProgramMapper {
 	List<Contribution> getSponsorshipContribution(@Param("studentId") Long studentId, @Param("sponsorId") Long sponsorId);	
 	
 	
-	@Select("SELECT EN.ID enrollmentId,  CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',SP.SPONSORCODE) uniqueId, netAmount NETCONTRIBUTION, renewed,"
+	@Select("SELECT EN.ID enrollmentId, sp.id sponsorId,  CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',SP.SPONSORCODE) uniqueId, netAmount NETCONTRIBUTION, renewed,"
 			+ " CASE hasAnyCoSponser WHEN '1' THEN CONCAT(SP.FIRSTNAME,' ','&',' ',coSponserName ) ELSE CONCAT(SP.FIRSTNAME,' ',COALESCE(MIDDLEINITIAL, ''),' ',SP.LASTNAME ) END sponsorName, "
 			+ " NICKNAME sponsorNickName, P.NAME parishName, DATE_FORMAT(paymentDate, \"%M %D %Y\") paymentDate,"
 			+ " DATE_FORMAT(effectiveDate, \"%M %D %Y\") effectiveDate, (CONTRIBUTIONAMOUNT + MISCAMOUNT) CONTRIBUTION, "

@@ -78,4 +78,11 @@ public interface ReceiptsMapper {
 	
 	@Update("UPDATE sponsor_receipts SET status= 1,updatedBy = #{userId}, updatedDate=#{currentTime}  WHERE id=#{id}")	
 	void deleteSponsorReceipts(@Param("id") Long id, @Param("userId") Long userId, @Param("currentTime") String currentTime);
+	
+	@Select(" SELECT SR.SPONSORID, SUM(CASE WHEN SR.AMOUNT = 0 THEN R.AMOUNT ELSE 0 END) AS RECEIPTAMOUNT," + 
+			" SUM(SR.AMOUNT) SPONSORRECEIPTAMOUNT" + 
+			" FROM SPONSOR_RECEIPTS SR LEFT JOIN RECEIPTS R ON R.RECEIPTID=SR.RECEIPTID,  SPONSOR S" + 
+			" WHERE  SR.`STATUS` <> 1   AND R.REFERENCEID = #{parishId} AND SR.SPONSORID = S.ID" + 
+			" GROUP BY SR.SPONSORID  ORDER BY SR.SPONSORID, R.RECEIPTID;")
+	List<SponsorReceipts> getContributionsByParishId(@Param("parishId") Long parishId);
 }

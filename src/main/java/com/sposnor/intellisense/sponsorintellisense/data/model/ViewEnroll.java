@@ -4,15 +4,19 @@ public class ViewEnroll {
 
 	private Long enrollmentId;
 	
+	private Long sponsorId;
+	
 	private String sponsorName;
 	
 	private String sponsorNickName;
 	
 	private String parishName;
 	
-	private float contribution;
+	private double contribution;
 	
-	private float netContribution;
+	private double netIndividualContribution;
+	
+	private double netParishContribution;
 	
 	private String renewed;
 	
@@ -30,12 +34,12 @@ public class ViewEnroll {
 	
 	
 	
-	public float getNetContribution() {
-		return netContribution;
+	public Long getSponsorId() {
+		return sponsorId;
 	}
 
-	public void setNetContribution(float netContribution) {
-		this.netContribution = netContribution;
+	public void setSponsorId(Long sponsorId) {
+		this.sponsorId = sponsorId;
 	}
 
 	public String getRenewed() {
@@ -102,14 +106,6 @@ public class ViewEnroll {
 		this.parishName = parishName;
 	}
 
-	public float getContribution() {
-		return contribution;
-	}
-
-	public void setContribution(float contribution) {
-		this.contribution = contribution;
-	}
-
 	public String getPaymentDate() {
 		return paymentDate;
 	}
@@ -133,6 +129,38 @@ public class ViewEnroll {
 	public void setCreatedDate(String createdDate) {
 		this.createdDate = createdDate;
 	}
+
+	public double getContribution() {
+		return contribution;
+	}
+
+	public void setContribution(double contribution) {
+		this.contribution = contribution;
+	}
+
+	public double getNetIndividualContribution() {
+		return netIndividualContribution;
+	}
+
+	public void setNetIndividualContribution(double netIndividualContribution) {
+		this.netIndividualContribution = netIndividualContribution;
+	}
+
+	public double getNetParishContribution() {
+		return netParishContribution;
+	}
+
+	public void setNetParishContribution(double netParishContribution) {
+		this.netParishContribution = netParishContribution;
+	}
+
+	@Override
+	public String toString() {
+		return "ViewEnroll [enrollmentId=" + enrollmentId + ", sponsorId=" + sponsorId +  ", contribution "
+				+ contribution + ", netIndividualContribution=" + netIndividualContribution + ", netParishContribution="
+				+ netParishContribution + "]";
+	}
+	
 	
 	
 }

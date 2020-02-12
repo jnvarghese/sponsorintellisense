@@ -23,8 +23,28 @@ public class SponsorReceipts implements Serializable {
 	
 	private Long updatedBy;
 	
+	private double receiptAmount;
+	
+	private double sponsorReceiptAmount;
 	
 	
+	
+	public double getReceiptAmount() {
+		return receiptAmount;
+	}
+
+	public void setReceiptAmount(double receiptAmount) {
+		this.receiptAmount = receiptAmount;
+	}
+
+	public double getSponsorReceiptAmount() {
+		return sponsorReceiptAmount;
+	}
+
+	public void setSponsorReceiptAmount(double sponsorReceiptAmount) {
+		this.sponsorReceiptAmount = sponsorReceiptAmount;
+	}
+
 	public Long getUpdatedBy() {
 		return updatedBy;
 	}
@@ -97,6 +117,11 @@ public class SponsorReceipts implements Serializable {
 		this.receiptId = receiptId;
 		this.amount = amount;
 		this.createdBy = createdBy;
+	}
+
+	@Override
+	public String toString() {
+		return "SponsorReceipts [sponsorId=" + sponsorId + "]";
 	}
 	
 	

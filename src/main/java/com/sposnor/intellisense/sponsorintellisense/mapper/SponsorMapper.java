@@ -86,7 +86,7 @@ public interface SponsorMapper {
 	@Update("UPDATE SPONSOR SET contributionMaxOut= #{contributionMaxOut} WHERE ID= #{id}")
 	void updateMaxOut(Sponsor sponsor);
 	
-	@Select("SELECT id,firstname, middleInitial, lastName,street,city,state,postalCode,emailAddress, emailAddress2,phone1,phone2 FROM SPONSOR s WHERE s.parishid=#{parishid} AND s.sponsorCode = #{code}")
+	@Select("SELECT id,firstname, sponsorcode, middleInitial, lastName,street,city,state,postalCode,emailAddress, emailAddress2,phone1,phone2 FROM SPONSOR s WHERE s.parishid=#{parishid} AND s.sponsorCode = #{code}")
 	Sponsor getSponsorByParishIdAndSponsorCode(@Param("parishid") Long parishId, @Param("code") String spondorCode);
 	
 	@Select(SEARCH_BY_NAME)

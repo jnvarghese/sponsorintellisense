@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,12 +53,14 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.Contribution;
 import com.sposnor.intellisense.sponsorintellisense.data.model.EnrollmentSummary;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Parish;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponseeReport;
+import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReceipts;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReport;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorshipInfo;
 import com.sposnor.intellisense.sponsorintellisense.data.model.StudentSummary;
 import com.sposnor.intellisense.sponsorintellisense.data.model.ViewEnroll;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ManageProgramMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ParishMapper;
+import com.sposnor.intellisense.sponsorintellisense.mapper.ReceiptsMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.StudentMapper;
 import com.sposnor.intellisense.sponsorintellisense.s3.S3Wrapper;
@@ -73,6 +76,9 @@ public class ManageProgramController {
 	private ParishMapper parishMapper;
 	
 	@Autowired
+	private ReceiptsMapper receiptsMapper;
+	
+	@Autowired
 	private ManageProgramMapper manageProgramMapper;
 
 	@Autowired
@@ -86,7 +92,18 @@ public class ManageProgramController {
 
 	@GetMapping("/view/enrollment/{id}")
 	public List<ViewEnroll> listEnrollments(@PathVariable(value = "id") Long parishId) {
-		return manageProgramMapper.selectEnrollments(parishId);
+		List<ViewEnroll> enrollments = manageProgramMapper.selectEnrollments(parishId);
+		List<SponsorReceipts> contributions = receiptsMapper.getContributionsByParishId(parishId);
+		// pair each id with its marks
+		Map<Long, Double> individualReceiptMap = contributions.stream().collect(Collectors.toMap(SponsorReceipts::getSponsorId, SponsorReceipts::getReceiptAmount));
+		// go through list of `ObjectOne`s and lookup marks in the index
+		enrollments.forEach(o1 -> o1.setNetIndividualContribution(individualReceiptMap.containsKey(o1.getSponsorId()) ? individualReceiptMap.get(o1.getSponsorId()) : 0.00));
+		
+		Map<Long, Double> parishReceiptMap = contributions.stream().collect(Collectors.toMap(SponsorReceipts::getSponsorId, SponsorReceipts::getSponsorReceiptAmount));
+		// go through list of `ObjectOne`s and lookup marks in the index
+		enrollments.forEach(o1 -> o1.setNetParishContribution(parishReceiptMap.containsKey(o1.getSponsorId()) ? parishReceiptMap.get(o1.getSponsorId()) : 0.00));
+		
+		return enrollments;
 	}
 
 	private Map<String, Object> getDataMap(SponsorReport sponser, List<SponseeReport> sponseeList) {

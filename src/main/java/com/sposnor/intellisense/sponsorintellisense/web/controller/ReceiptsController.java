@@ -112,13 +112,31 @@ public class ReceiptsController {
 		receiptsMapper.deleteSponsorReceipts(id, userId,  currentTime);
 	}
 	
+	private Receipts getSponsorAddedToReceipt(Receipts receipts) {
+		Sponsor sponsor = sponsorMapper.findById(receipts.getSponsorId());
+		receipts.setFirstName(sponsor.getFirstName());
+		receipts.setLastName(sponsor.getLastName());
+		receipts.setMiddleName(sponsor.getMiddleInitial());
+		receipts.setFullName(sponsor.getFirstName()+ " "+sponsor.getLastName());
+		receipts.setStreetAddress(sponsor.getStreet());
+		receipts.setCity(sponsor.getCity());
+		receipts.setState(sponsor.getState());
+		receipts.setZipCode(sponsor.getPostalCode());
+		receipts.setEmail1(sponsor.getEmailAddress());
+		receipts.setPhone1(sponsor.getPhone1());
+		return receipts;
+	}
+	
 	@PostMapping("/add")
 	public ResponseEntity<Receipts> createReceipts(@RequestHeader Long userId, @Valid @RequestBody Receipts r) {
 		r.setCreatedby(userId);
-		receiptsMapper.insert(r);
 		if(null != r.getSponsorId()) {
+			LOGGER.info("receipt getSponsorId is not null");
+			this.getSponsorAddedToReceipt(r);
+			receiptsMapper.insert(r);
 			receiptsMapper.insertSponsorReceipts(new SponsorReceipts(r.getSponsorId(), r.getReceiptId(), userId));
 		} else if(null == r.getSponsorId() && r.getReceiptType() == 2) {
+			LOGGER.info("receipt getSponsorId is null and receiptType is 2");
 			Sponsor sponsor = new Sponsor();
 			sponsor.setCreatedBy(userId);
 			sponsor.setParishId(r.getReferenceId());
@@ -132,11 +150,15 @@ public class ReceiptsController {
 			sponsor.setPostalCode(r.getZipCode());
 			sponsor.setEmailAddress(r.getEmail1());	
 			sponsor.setSponsorCode(String.valueOf(sponsorMapper.getSequenceByParishId(r.getReferenceId()).getSequence()));
+			receiptsMapper.insert(r);
 			sponsorMapper.insert(sponsor);
 			receiptsMapper.insertSponsorReceipts(new SponsorReceipts(sponsor.getId(), r.getReceiptId(), userId));
 			r.setSponsorId(sponsor.getId());
 		} else {
-			LOGGER.info("Ignoring the sponsor receipts fure to un matching criteria");
+			LOGGER.info("ELSE ---");
+			if(null != r.getSponsorId())
+				this.getSponsorAddedToReceipt(r);
+			receiptsMapper.insert(r);
 		}
 		return new ResponseEntity<Receipts>(r, HttpStatus.OK);
 	}

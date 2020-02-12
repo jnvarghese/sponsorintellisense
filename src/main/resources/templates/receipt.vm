@@ -113,7 +113,12 @@
       <table cellpadding="5" cellspacing="5">
         <tr>
           <td>
-            <span style="font-weight: bold;">Received with thanks from:</span> $!receivedfrom
+            <span style="font-weight: bold;">Received with thanks from:</span>
+            #if( $rType == 0 || $rType == 1)
+             $!from
+            #else
+           	 $!receivedfrom
+            #end
           </td>
         </tr>
         <tr>
@@ -128,7 +133,7 @@
             #elseif( $rType == 1 )
             <span style="font-weight: bold;">Organization:</span> $from
             #elseif( $rType == 2 )
-            <span style="font-weight: bold;">Name :</span> $from
+            <span style="font-weight: bold;">Parish:</span> $from
             #else
             <span></span>
             #end
