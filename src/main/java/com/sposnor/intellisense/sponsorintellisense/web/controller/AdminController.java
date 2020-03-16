@@ -233,4 +233,9 @@ public class AdminController {
 		organizationMapper.update(orgn);
 		return orgn;
 	}
+	
+	@GetMapping("/parishes/cities")
+	public List<String> cities() {
+		return parishMapper.getParishCities();
+	}
 }

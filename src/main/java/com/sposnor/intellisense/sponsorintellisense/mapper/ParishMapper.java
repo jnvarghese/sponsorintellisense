@@ -32,6 +32,9 @@ public interface ParishMapper {
 			+ "REGION R, CENTER C WHERE P.CENTERID = C.ID AND C.REGIONID = R.ID AND P.STATUS= 1 AND P.NAME LIKE  CONCAT('%', #{terms}, '%') ORDER BY P.NAME, P.CITY;")
 	List<Parish> search(@Param("terms") String terms);
 	
+	@Select("SELECT P.ID FROM PARISH P WHERE P.CITY = #{city};")
+	List<Parish> searchByCity(@Param("city") String city);
+	
 	@Insert("insert into parish (code, name, status, city, centerId, promoterEmail, createdBy, createdDate) values (#{code}, #{name}, #{status}, #{city}, #{centerId} , #{promoterEmail}, #{createdBy}, #{createdDate})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id",
 			before = false, resultType= Long.class)
@@ -39,4 +42,7 @@ public interface ParishMapper {
 	
 	@Update("update parish set code= #{code}, name= #{name}, status= #{status}, city = #{city}, centerId = #{centerId}, promoterEmail= #{promoterEmail}, updatedBy= #{updatedBy} where id = #{id}")	
 	void update(Parish parish);
+	
+	@Select("SELECT DISTINCT CITY FROM parish ORDER BY CITY")
+	List<String> getParishCities();
 }

@@ -8,6 +8,8 @@ public class Receipts {
 	
 	private Long sponsorId;
 	
+	private String sponsorCode;
+	
 	private String rdate;
 	
 	private String firstName;
@@ -68,6 +70,14 @@ public class Receipts {
 	
 	private String initiativeName;
 	
+	public String getSponsorCode() {
+		return sponsorCode;
+	}
+
+	public void setSponsorCode(String sponsorCode) {
+		this.sponsorCode = sponsorCode;
+	}
+
 	public Long getSponsorId() {
 		return sponsorId;
 	}

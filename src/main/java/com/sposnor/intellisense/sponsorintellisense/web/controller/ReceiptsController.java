@@ -149,11 +149,12 @@ public class ReceiptsController {
 			sponsor.setState(r.getState());
 			sponsor.setPostalCode(r.getZipCode());
 			sponsor.setEmailAddress(r.getEmail1());	
-			sponsor.setSponsorCode(String.valueOf(sponsorMapper.getSequenceByParishId(r.getReferenceId()).getSequence()));
+			sponsor.setSponsorCode(String.valueOf(sponsorMapper.getSequenceByParishId(r.getReferenceId()).getSequence()+1));
 			receiptsMapper.insert(r);
 			sponsorMapper.insert(sponsor);
 			receiptsMapper.insertSponsorReceipts(new SponsorReceipts(sponsor.getId(), r.getReceiptId(), userId));
 			r.setSponsorId(sponsor.getId());
+			r.setSponsorCode(sponsor.getSponsorCode());
 		} else {
 			LOGGER.info("ELSE ---");
 			if(null != r.getSponsorId())

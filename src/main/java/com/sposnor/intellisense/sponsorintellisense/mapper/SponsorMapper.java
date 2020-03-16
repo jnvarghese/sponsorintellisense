@@ -103,6 +103,23 @@ public interface SponsorMapper {
 			+ "REGION R, SPONSOR_MAXOUT SM  WHERE P.ID = SP.PARISHID AND EN.ID=SM.ENROLLMENTID AND EN.SPONSORID = SP.ID  AND P.CENTERID = C.ID AND C.REGIONID = R.ID "
 			+ "AND EN.ID = #{id}  GROUP BY en.id")
 	SponsorReport findSponsorByEnrolmentId(@Param("id") Long id);
+	
+	@Select({"<script>",
+        "SELECT S.ID, PARISHID,FIRSTNAME, LASTNAME, SPONSORCODE, S.STREET, S.CITY, S.STATE, S.POSTALCODE, P.NAME parishName,P.CITY parishCity, "
+        + "EMAILADDRESS,PHONE1,PHONE2, P.PROMOTEREMAIL promoterEmail FROM SPONSOR S, PARISH P "
+        + "WHERE S.PARISHID=P.ID AND SPONSORCODE LIKE CONCAT(#{sponsorCode}, '%') AND FIRSTNAME LIKE CONCAT(#{firstName}, '%') "
+        + "AND LASTNAME LIKE CONCAT(#{lastName}, '%') AND S.postalCode LIKE CONCAT(#{zipCode}, '%') AND S.PARISHID IN ", 
+          "<foreach item='pid' index='index' collection='parishIds'",
+            "open='(' separator=',' close=')'>",
+            "#{pid}",
+          "</foreach>",
+        "</script>"})
+	List<Sponsor> searchSponsor(
+			@Param("parishIds") Long[] parishIds, 
+			@Param("zipCode") String zipCode, 
+			@Param("sponsorCode") String sponsorCode,
+			@Param("firstName") String firstName,
+			@Param("lastName") String lastName);
 }
 //@Options(flushCache=true)
 //@Options(useGeneratedKeys = true, keyProperty = "id", flushCache=true)

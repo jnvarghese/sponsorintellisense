@@ -1,6 +1,7 @@
 package com.sposnor.intellisense.sponsorintellisense.web.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -19,8 +20,11 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sposnor.intellisense.sponsorintellisense.data.model.Parish;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sequence;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsor;
+import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorSearch;
+import com.sposnor.intellisense.sponsorintellisense.mapper.ParishMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
 
 @RestController
@@ -32,6 +36,9 @@ public class SponsorController {
 	@Autowired
 	private SponsorMapper sponsorMapper;
 	
+	@Autowired
+	private ParishMapper parishMapper;
+	
 	@GetMapping("/list")
 	public List<Sponsor> getAllSponsors() {
 		return sponsorMapper.list();
@@ -42,6 +49,16 @@ public class SponsorController {
 			@PathVariable(value = "lastName") String lastName,
 			@PathVariable(value= "id") Long parishId) {
 		return sponsorMapper.list2(firstName, lastName, parishId);
+	}
+	
+	@PostMapping("/searchsponsor")
+	public ResponseEntity<List<Sponsor>> search(@RequestHeader Long userId, @RequestBody SponsorSearch search) {	
+		 List<Parish> parishes = parishMapper.searchByCity(search.getCity());
+		 Long[] ids = parishes.stream().map(parish -> parish.getId()).toArray(Long[]::new);
+        System.out.println(" ---- > "+ids);
+		 List<Sponsor> sponsors = sponsorMapper.searchSponsor(ids, search.getZipCode(), search.getSponsorCode(), 
+				 search.getFirstName(), search.getLastName());
+		 return new ResponseEntity<List<Sponsor>>(sponsors, HttpStatus.OK);
 	}
 	
 	@GetMapping("/listbyparish/{id}")
