@@ -1,19 +1,34 @@
 package com.sposnor.intellisense.sponsorintellisense.data.model;
 
-import org.hibernate.validator.constraints.NotBlank;
-
 public class Initiative {
 
+	private Long initiativeId;
+	
 	private Long id;
-
-	@NotBlank
-	private String code;
-
-	@NotBlank
+	
 	private String name;
+	
+	private String code;
+	
+	private Long parentId;
 
-	@NotBlank
-	private String active;
+	private String initiativeName;
+
+	public Long getInitiativeId() {
+		return initiativeId;
+	}
+
+	public void setInitiativeId(Long initiativeId) {
+		this.initiativeId = initiativeId;
+	}
+
+	public String getInitiativeName() {
+		return initiativeName;
+	}
+
+	public void setInitiativeName(String initiativeName) {
+		this.initiativeName = initiativeName;
+	}
 
 	public Long getId() {
 		return id;
@@ -21,14 +36,6 @@ public class Initiative {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
 	}
 
 	public String getName() {
@@ -39,12 +46,20 @@ public class Initiative {
 		this.name = name;
 	}
 
-	public String getActive() {
-		return active;
+	public String getCode() {
+		return code;
 	}
 
-	public void setActive(String active) {
-		this.active = active;
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public Long getParentId() {
+		return parentId;
+	}
+
+	public void setParentId(Long parentId) {
+		this.parentId = parentId;
 	}
 	
 }

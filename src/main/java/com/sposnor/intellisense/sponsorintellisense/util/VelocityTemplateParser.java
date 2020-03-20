@@ -80,6 +80,7 @@ public class VelocityTemplateParser {
 			context.put("from", receipt.getParishName() + ", "+receipt.getParishCity()); // what if an individual comes without parish
 		}
 		context.put("missionname", receipt.getInitiativeName());
+		context.put("submissionname", receipt.getSubInitiativeName());
 		
 		if(String.valueOf(receipt.getAmount()).contains(".")) {
 			String[] totalSplit= String.valueOf(receipt.getAmount()).split("\\.");

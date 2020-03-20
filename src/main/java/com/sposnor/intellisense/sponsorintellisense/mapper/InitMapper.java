@@ -23,7 +23,12 @@ public interface InitMapper {
 	@Select("SELECT C.ID, C.CODE, C.NAME, C.REGIONID FROM CENTER C, REGION R WHERE C.STATUS = 1 AND C.REGIONID = R.ID AND R.ID = #{regionId}")
 	List<Center> getCenterByRegionId(@Param("regionId")  Long regionId);
 	
-	@Select("select * from initiative where active= 'Y'")
+	@Select("SELECT CASE WHEN CHILD.NAME IS NULL THEN PARENT.NAME ELSE CONCAT(PARENT.NAME, ' - ',CHILD.NAME) END initiativeName, "
+			+ "CASE WHEN CHILD.ID IS NULL THEN PARENT.ID ELSE CHILD.ID END AS INITIATIVEID FROM INITIATIVE AS PARENT "
+			+ "LEFT JOIN INITIATIVE AS CHILD ON CHILD.PARENTID = PARENT.ID WHERE PARENT.PARENTID= 0  ORDER BY initiativeName")
 	List<Initiative> getInitiatives();
+	
+	@Select("SELECT id, name, code, parentId from initiative where id= #{id}")
+	Initiative getInitiativeById(@Param("id")  Long id);
 	
 }

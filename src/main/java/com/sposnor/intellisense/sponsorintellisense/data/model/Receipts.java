@@ -24,7 +24,11 @@ public class Receipts {
 	
 	private double amount;
 	
+	private String amountInWords;
+	
 	private Long initiativeId;
+	
+	private Long subInitiativeId;
 	
 	private String initiative;
 	
@@ -70,6 +74,43 @@ public class Receipts {
 	
 	private String initiativeName;
 	
+	private String subInitiativeName;
+	
+	private String coSponsor;
+	
+	
+	public String getCoSponsor() {
+		return coSponsor;
+	}
+
+	public void setCoSponsor(String coSponsor) {
+		this.coSponsor = coSponsor;
+	}
+
+	public String getSubInitiativeName() {
+		return subInitiativeName;
+	}
+
+	public void setSubInitiativeName(String subInitiativeName) {
+		this.subInitiativeName = subInitiativeName;
+	}
+
+	public Long getSubInitiativeId() {
+		return subInitiativeId;
+	}
+
+	public void setSubInitiativeId(Long subInitiativeId) {
+		this.subInitiativeId = subInitiativeId;
+	}
+
+	public String getAmountInWords() {
+		return amountInWords;
+	}
+
+	public void setAmountInWords(String amountInWords) {
+		this.amountInWords = amountInWords;
+	}
+
 	public String getSponsorCode() {
 		return sponsorCode;
 	}

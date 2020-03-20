@@ -148,7 +148,8 @@
             <span>1</span>
           </td>
           <td class="thStype">
-            <span>$!missionname</span>
+            <span>$!submissionname</span>
+	        <span>$!missionname</span>
           </td>
           <td class="thStype">
             <span>$$total</span>

@@ -39,9 +39,11 @@ import com.itextpdf.tool.xml.pipeline.end.PdfWriterPipeline;
 import com.itextpdf.tool.xml.pipeline.html.AbstractImageProvider;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Initiative;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Receipts;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsor;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReceipts;
+import com.sposnor.intellisense.sponsorintellisense.mapper.InitMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ReceiptsMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
 import com.sposnor.intellisense.sponsorintellisense.util.VelocityTemplateParser;
@@ -59,9 +61,13 @@ public class ReceiptsController {
 	private ReceiptsMapper receiptsMapper;
 	
 	@Autowired
+	private InitMapper initMapper;
+	
+	@Autowired
 	private SponsorMapper sponsorMapper;
 	
 	@GetMapping("/list")
+	@Deprecated
 	public List<Receipts> list() {
 		LOGGER.debug(" Listing Receipts");
 		return receiptsMapper.list();
@@ -149,6 +155,7 @@ public class ReceiptsController {
 			sponsor.setState(r.getState());
 			sponsor.setPostalCode(r.getZipCode());
 			sponsor.setEmailAddress(r.getEmail1());	
+			sponsor.setCoSponserName(r.getCoSponsor());
 			sponsor.setSponsorCode(String.valueOf(sponsorMapper.getSequenceByParishId(r.getReferenceId()).getSequence()+1));
 			receiptsMapper.insert(r);
 			sponsorMapper.insert(sponsor);
@@ -174,6 +181,15 @@ public class ReceiptsController {
 	ResponseEntity<byte[]> generatereceipt(@PathVariable(value = "id") Long receiptId) throws Exception {
 
 		Receipts receipt = receiptsMapper.getReceipt(receiptId);
+		Initiative subInitiative;
+		Initiative initiative = initMapper.getInitiativeById(receipt.getInitiativeId());
+		receipt.setInitiativeName(initiative.getName());
+		
+		subInitiative = initMapper.getInitiativeById(initiative.getParentId());
+		if(null != subInitiative)	
+			receipt.setSubInitiativeName(subInitiative.getName());
+		
+		
 		String receiptHtml = VelocityTemplateParser.generateReceipt(receipt);
 
 		// System.out.println(receipt);
