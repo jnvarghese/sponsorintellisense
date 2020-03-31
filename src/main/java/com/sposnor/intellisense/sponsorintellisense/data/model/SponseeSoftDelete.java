@@ -1,44 +1,29 @@
 package com.sposnor.intellisense.sponsorintellisense.data.model;
 
-import java.io.Serializable;
-import java.text.ParseException;
 import java.util.Date;
 
-import org.hibernate.validator.constraints.NotBlank;
-
-public class Sponsee implements Serializable {
+public class SponseeSoftDelete{
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
 	private Long id;
 	
 	private Long enrollmentId;
 	
-	@NotBlank
 	private int expirationMonth;
 	
-	@NotBlank
 	private int expirationYear;
 	
 	private Long studentId;
 	
+	private Long createdBy;
+	
 	private Date createdDate;
 
-	private Date updatedDate;
-	
-	public Sponsee() {
-		// TODO Auto-generated constructor stub
+	public Long getCreatedBy() {
+		return createdBy;
 	}
-	
-	public Sponsee(Long enrollmentId, int expirationMonth, int expirationYear, Long studentId) {
-		super();
-		this.enrollmentId = enrollmentId;
-		this.expirationMonth = expirationMonth;
-		this.expirationYear = expirationYear;
-		this.studentId = studentId;
+
+	public void setCreatedBy(Long createdBy) {
+		this.createdBy = createdBy;
 	}
 
 	public Long getEnrollmentId() {
@@ -85,6 +70,34 @@ public class Sponsee implements Serializable {
 		return createdDate;
 	}
 
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	@Override
+	public String toString() {
+		return "SponseeSoftDelete [id=" + id + ", enrollmentId=" + enrollmentId + ", expirationMonth=" + expirationMonth
+				+ ", expirationYear=" + expirationYear + ", studentId=" + studentId + ", createdBy=" + createdBy
+				+ ", createdDate=" + createdDate + "]";
+	}
+
+	public SponseeSoftDelete(Long id, Long enrollmentId, int expirationMonth, int expirationYear, Long studentId,
+			Long createdBy) {
+		super();
+		this.id = id;
+		this.enrollmentId = enrollmentId;
+		this.expirationMonth = expirationMonth;
+		this.expirationYear = expirationYear;
+		this.studentId = studentId;
+		this.createdBy = createdBy;
+	}
+
+	
+	/*
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
 	public void setCreatedDate(Date createdDate) throws ParseException {
 		java.util.Date dt = new java.util.Date();
 
@@ -95,20 +108,7 @@ public class Sponsee implements Serializable {
 		
 		this.createdDate = sdf.parse(currentTime);
 	}
-
-	public Date getUpdatedDate() {
-		return updatedDate;
-	}
-
-	public void setUpdatedDate(Date updatedDate) {
-		this.updatedDate = updatedDate;
-	}
-
-	@Override
-	public String toString() {
-		return "Sponsee [id=" + id + ", enrollmentId=" + enrollmentId + ", expirationMonth=" + expirationMonth
-				+ ", expirationYear=" + expirationYear + ", studentId=" + studentId  + "]";
-	}
+*/
 	
 	
 }

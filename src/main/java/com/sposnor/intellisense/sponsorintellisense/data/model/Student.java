@@ -50,8 +50,14 @@ public class Student implements Serializable {
 	private Long createdBy;
 	private Long updatedBy;	
 	private String uploadstatus;
+	private String studentUniqueCode;
 	
-	
+	public String getStudentUniqueCode() {
+		return studentUniqueCode;
+	}
+	public void setStudentUniqueCode(String studentUniqueCode) {
+		this.studentUniqueCode = studentUniqueCode;
+	}
 	public String getProjectCode() {
 		return projectCode;
 	}

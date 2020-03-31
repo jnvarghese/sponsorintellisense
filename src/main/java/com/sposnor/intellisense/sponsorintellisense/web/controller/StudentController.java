@@ -2,11 +2,15 @@ package com.sposnor.intellisense.sponsorintellisense.web.controller;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.apache.commons.collections.map.HashedMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +29,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.model.PutObjectResult;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sequence;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsee;
+import com.sposnor.intellisense.sponsorintellisense.data.model.SponseeSoftDelete;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Student;
+import com.sposnor.intellisense.sponsorintellisense.data.model.StudentMaxOut;
+import com.sposnor.intellisense.sponsorintellisense.data.model.StudentStatus;
+import com.sposnor.intellisense.sponsorintellisense.data.model.StudentSummary;
+import com.sposnor.intellisense.sponsorintellisense.data.model.SwapStudent;
 import com.sposnor.intellisense.sponsorintellisense.mapper.StudentMapper;
 import com.sposnor.intellisense.sponsorintellisense.s3.S3Wrapper;
 
@@ -64,12 +74,96 @@ public class StudentController {
 		return studentMapper.listByProjectId(projectId);
 	}
 	
+	@GetMapping("/active/inactive")
+	public List<StudentSummary> getActiveInactiveStudent(){
+		return studentMapper.getActiveInactiveStudent();
+	}
+	
+	@GetMapping("/summary/project/{id}")
+	public Map getStudentSummaryByProjectId(@PathVariable(value = "id") Long projectId) {
+		Map responseMap = new HashedMap();
+		List<Student> activeStudents= studentMapper.listByProjectIdAndStatus(projectId, 0); // 0 is active
+		List<Student> inActiveStudents= studentMapper.listByProjectIdAndStatus(projectId, 1); // 1 is inactive
+		List<StudentSummary> summaries = studentMapper.summaryByProjectId(projectId);
+		
+		List<Long> summaryStudentIds = summaries.stream().map( ss -> ss.getStudentId()).collect(Collectors.toList()); 
+		
+		List<StudentStatus> stStatus = new ArrayList<StudentStatus>();
+		
+		stStatus.add(new StudentStatus("Active", activeStudents.size()));
+		stStatus.add(new StudentStatus("In Active", inActiveStudents.size()));
+		
+		List<Student> unAssignedStudents = activeStudents.stream()
+				.filter(atStu -> !summaryStudentIds.contains(atStu.getId()))
+				.collect(Collectors.toList());
+		
+		List<StudentSummary> activeActiveStudents = summaries.stream()
+				.filter(ss -> !ss.getDays().contains("-"))
+				.collect(Collectors.toList());
+		
+		List<Student> inActiveActiveStudents = inActiveStudents.stream()
+				.filter(inactive -> summaryStudentIds.contains(inactive.getId()))
+				.collect(Collectors.toList());
+		
+		List<StudentSummary> activeInActiveStudents = summaries.stream()
+				.filter(ss -> ss.getDays().contains("-"))
+				.collect(Collectors.toList());
+		
+		List<StudentStatus> activeStudentsSummary = new ArrayList<StudentStatus>();
+		
+		activeStudentsSummary.add(new StudentStatus("Un Assigned", unAssignedStudents.size()));
+		activeStudentsSummary.add(new StudentStatus("Active Active", activeActiveStudents.size()));
+		activeStudentsSummary.add(new StudentStatus("Active InActive", activeInActiveStudents.size()));
+		responseMap.put("activeStudentsSummary", activeStudentsSummary);
+		
+		responseMap.put("activeInactiveSummary", stStatus);
+		
+		responseMap.put("summary", new StudentStatus(
+				unAssignedStudents.size(), 
+				activeActiveStudents.size(), 
+				activeInActiveStudents.size(),
+				inActiveActiveStudents.size(),
+				0));
+		
+		responseMap.put("activeActiveStudents", activeActiveStudents);
+		
+		responseMap.put("activeInActiveStudents", activeInActiveStudents);
+		
+		return responseMap;
+	}
+	
+	@GetMapping("/enrollment/sponsor/{id}")
+	public List<StudentSummary> getEnrollmentBySponsorId(@PathVariable(value = "id") Long sponsorId) {
+		return studentMapper.getEnrollmentBySponsorId(sponsorId);
+	}
+	
+	
 	@PostMapping("/add")
 	public Student createStudent(@RequestHeader Long userId, @RequestBody Student note) {
 		note.setCreatedBy(userId);
 		studentMapper.insert(note);	    
 	    return note;
 	}	
+	
+	@PostMapping("/swap")
+	public void swapStudent(@RequestHeader Long userId, @RequestBody SwapStudent swap) {
+		Sponsee sponsee = studentMapper.findSponsee(swap.getSourceStudent(), swap.getEnrollentId());
+		if(null != sponsee.getId()) {
+			studentMapper.insertSponseeSoftDelete(new SponseeSoftDelete(
+					sponsee.getId(), sponsee.getEnrollmentId(), sponsee.getExpirationMonth(), sponsee.getExpirationYear(), 
+					sponsee.getStudentId(), userId));
+			studentMapper.deleteSponsee(sponsee.getId());
+			//enrollmentId, int expirationMonth, int expirationYear, Long studentId
+			studentMapper.insertSponsee(new Sponsee(sponsee.getEnrollmentId(),sponsee.getExpirationMonth(), 
+										sponsee.getExpirationYear(),swap.getTargetStudent()));
+		}
+		StudentMaxOut stuMaxOut = studentMapper.findStudentMaxOut(swap.getSourceStudent(), swap.getEnrollentId());
+		if(null != stuMaxOut) {
+			studentMapper.updateStudentMaxOut(stuMaxOut.getId());
+			studentMapper.insertStudentMaxOut(new StudentMaxOut(swap.getTargetStudent(), stuMaxOut.getEnrollmentId(), stuMaxOut.getMaxOut() ));
+		}
+	}	
+	
 	@PostMapping("/image/{id}")
 	public ResponseEntity<String> uploadImage(
 			@RequestParam(value = "userId", required=false, defaultValue = "default") String userId,
@@ -151,8 +245,22 @@ public class StudentController {
 	@GetMapping("/search/{name}")
 	public List<Student> getStudentsByName(
 			@PathVariable(value = "name") String name){
-		return studentMapper.listMatchingStudentsByName(name+"%");
+		return studentMapper.search(name);
 	}
+	
+	@GetMapping("/search/byparish/{parishId}")
+	public List<Student> getUnEnrolledStudentsByProjectId(
+			@PathVariable(value = "parishId") Long parishId){
+		return studentMapper.findUnEnrolledStudentsByParish(parishId);
+	}
+	
+	@GetMapping("/search/{name}/{parishId}")
+	public List<Student> getUnEnrolledStudents(
+			@PathVariable(value = "parishId") Long parishId,
+			@PathVariable(value = "name") String name){
+		return studentMapper.findUnEnrolledStudentsByParishAndName(parishId, name);
+	}
+	
 	
 	
 }

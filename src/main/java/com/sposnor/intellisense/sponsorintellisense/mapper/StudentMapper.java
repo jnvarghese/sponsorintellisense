@@ -10,8 +10,13 @@ import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sequence;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsee;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponseeReport;
+import com.sposnor.intellisense.sponsorintellisense.data.model.SponseeSoftDelete;
+import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorMaxOut;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Student;
+import com.sposnor.intellisense.sponsorintellisense.data.model.StudentMaxOut;
+import com.sposnor.intellisense.sponsorintellisense.data.model.StudentSummary;
 
 @Mapper
 public interface StudentMapper {
@@ -33,6 +38,26 @@ public interface StudentMapper {
 			+ " projectid IN ( #{id} ) AND S.STATUS = 0  ORDER BY studentCode")
 	List<Student> listByProjectId(@Param("id") Long id);
 	
+	@Select("SELECT S.ID FROM STUDENT S LEFT JOIN PROJECT P ON S.PROJECTID = P.ID WHERE  projectid IN ( #{id} ) AND S.STATUS = #{status}")
+	List<Student> listByProjectIdAndStatus(@Param("id") Long id, @Param("status") int status);
+	
+	@Select("SELECT S.ID STUDENTID,S.STUDENTNAME, S.STUDENTCODE, GENDER, GRADE, NAMEOFGUARDIAN, OCCUPATIONOFGUARDIAN, DATEOFBIRTH, "
+			+ "SM.MAXOUT,DATEDIFF(SM.MAXOUT, NOW()) AS DAYS, SP.FIRSTNAME SPONSORFIRSTNAME, SP.MIDDLEINITIAL SPONSORMIDDLEINITIAL, "
+			+ "SP.LASTNAME SPONSORLASTNAME,SP.SPONSORCODE,PR.NAME PARISHNAME,PR.CITY PARISHCITY FROM STUDENT S , PROJECT P, "
+			+ "STUDENT_MAXOUT SM, ENROLLMENT E, SPONSOR SP, PARISH PR WHERE PROJECTID IN (#{id}) AND S.PROJECTID = P.ID AND "
+			+ "S.ID=SM.STUDENTID AND SP.PARISHID=PR.ID AND E.SPONSORID =SP.ID AND E.ID =SM.ENROLLMENTID AND S.STATUS=0 AND "
+			+ "E.STATUS=0 GROUP BY S.ID ORDER BY SM.MAXOUT, NAMEOFGUARDIAN")
+	List<StudentSummary> summaryByProjectId(@Param("id") Long id);
+	
+    @Select("SELECT E.ID enrollmentId, A.ID AGENCYID, A.NAME AGENCYNAME, PROJECTID,SP.PARISHID PARISHID,P.NAME PROJECTNAME, S.ID STUDENTID,S.STUDENTNAME, CONCAT(A.CODE,'-',P.CODE,'-',S.STUDENTCODE) UNIQUEID, "
+    		+ "GENDER, GRADE, NAMEOFGUARDIAN, OCCUPATIONOFGUARDIAN, DATEOFBIRTH, SM.MAXOUT,DATEDIFF(SM.MAXOUT, NOW()) AS DAYS, "
+    		+ "SP.FIRSTNAME SPONSORFIRSTNAME, SP.MIDDLEINITIAL SPONSORMIDDLEINITIAL, SP.LASTNAME SPONSORLASTNAME,SP.SPONSORCODE, "
+    		+ "SP.ID SPONSORID,PR.NAME PARISHNAME,PR.CITY PARISHCITY FROM STUDENT S , PROJECT P, AGENCY A, STUDENT_MAXOUT SM, "
+    		+ "ENROLLMENT E, SPONSOR SP, PARISH PR WHERE  S.PROJECTID = P.ID AND S.ID=SM.STUDENTID AND SP.PARISHID=PR.ID "
+    		+ "AND E.SPONSORID =SP.ID AND P.AGENCYID =A.ID AND SM.STATUS = 0 AND E.ID =SM.ENROLLMENTID AND S.STATUS=1 AND E.STATUS=0 "
+    		+ "ORDER BY A.NAME, P.NAME, STUDENTNAME")
+	List<StudentSummary> getActiveInactiveStudent();
+    
 	@Select("SELECT MX.ENROLLMENTID, S.ID, S.STUDENTNAME, S.GENDER, S.GRADE, DATE_FORMAT(MAXOUT,'%m/%d/%Y') MAXOUT, PRJ.NAME PROJECTNAME, PRJ.CODE PROJECTCODE, ACY.NAME AGENCYNAME, "
 			+ "ACY.CODE AGENCYCODE FROM STUDENT S LEFT JOIN STUDENT_MAXOUT MX ON S.ID = MX.STUDENTID, PROJECT PRJ, AGENCY ACY "
 			+ "WHERE S.PROJECTID = PRJ.ID AND PRJ.AGENCYID = ACY.ID AND MX.ENROLLMENTID=  #{id} "
@@ -89,6 +114,16 @@ public interface StudentMapper {
 			@Param("projectId") Long projectId
 			);
 	
+	@Select("SELECT S.ID, S.STUDENTCODE, S.STUDENTNAME, S.GENDER, S.GRADE FROM STUDENT S LEFT JOIN SPONSEE SE ON S.ID = SE.STUDENTID, "
+			+ "PARISH_PROJECT PP WHERE S.PROJECTID = PP.PROJECTID and parishId=#{parishId} AND SE.expirationMonth IS NULL AND STUDENTNAME "
+			+ "LIKE CONCAT(#{name}, '%') AND S.STATUS = 0 AND PP.STATUS=0  GROUP BY s.id ORDER BY S.STUDENTNAME")
+	List<Student> findUnEnrolledStudentsByParishAndName(@Param("parishId") Long parishId,@Param("name") String name);
+	
+	@Select("SELECT S.ID, S.STUDENTCODE, S.STUDENTNAME, S.GENDER, S.GRADE, P.NAME projectName FROM STUDENT S LEFT JOIN SPONSEE SE ON S.ID = SE.STUDENTID, "
+			+ "PARISH_PROJECT PP, PROJECT P WHERE S.PROJECTID = PP.PROJECTID AND PP.PROJECTID= P.ID and PP.PARISHID=#{parishId} AND SE.expirationMonth IS NULL "
+			+ "AND S.STATUS = 0 AND PP.STATUS=0  GROUP BY s.id ORDER BY P.NAME, S.STUDENTNAME")
+	List<Student> findUnEnrolledStudentsByParish(@Param("parishId") Long parishId);
+	
 	@Select("SELECT S.ID, STUDENTNAME, studentCode FROM STUDENT S "
 			+ "LEFT JOIN SPONSEE SE ON S.ID = SE.STUDENTID "
 			+ "WHERE S.STATUS = 0 AND STUDENTNAME LIKE #{name}  GROUP BY S.ID, STUDENTNAME, studentCode")
@@ -103,4 +138,40 @@ public interface StudentMapper {
 			+ " AND ST.ID = SMAX.STUDENTID AND EN.ID = SMAX.ENROLLMENTID AND ST.PROJECTID = P.ID AND P.AGENCYID = A.ID"
 			+ " AND EN.ID = #{id} ORDER BY SMAX.maxOut ")
 	List<SponseeReport> listSponseesByEnrolmentId(@Param("id") Long id);
+
+	@Select("SELECT CONCAT(A.CODE,'-',P.CODE,'-',ST.STUDENTCODE) STUDENTUNIQUECODE,STUDENTNAME,ST.ID,P.ID PROJECTID, GENDER, "
+			+ "GRADE,A.NAME AGENCYNAME,P.NAME PROJECTNAME FROM STUDENT ST,SPONSEE SP, PROJECT P, AGENCY A WHERE ST.PROJECTID = P.ID "
+			+ "AND P.AGENCYID = A.ID AND ST.ID = SP.STUDENTID AND ST.STATUS = 0 AND STUDENTNAME LIKE CONCAT(#{name}, '%') "
+			+ "GROUP BY STUDENTNAME")
+	List<Student> search(@Param("name") String name);
+	
+	@Select("SELECT E.ID ENROLLMENTID, E.EFFECTIVEDATE,E.ACTUALAMOUNT,E.CONTRIBUTIONAMOUNT,E.MISCAMOUNT, "
+			+ "CONCAT(U.FIRSTNAME,' ', U.LASTNAME) CREATEDBY,E.CREATEDDATE,SM.STUDENTID,SM.MAXOUT,SP.ID SPONSEEID,SM.ID STUMAXOUTID, "
+			+ "ST.STUDENTNAME, ST.STUDENTCODE FROM ENROLLMENT E, SPONSEE SP, STUDENT_MAXOUT SM , STUDENT ST, USERS U "
+			+ "WHERE E.ID=SP.ENROLLMENTID AND E.ID = SM.ENROLLMENTID AND SP.STUDENTID=ST.ID AND SP.STUDENTID = SM.STUDENTID "
+			+ "AND E.CREATEDBY = U.ID AND SPONSORID=#{sponsorId} AND E.STATUS=0")
+	List<StudentSummary> getEnrollmentBySponsorId(@Param("sponsorId") Long sponsorId);
+	
+	@Select("SELECT * from sponsee where studentId= #{studentId} and enrollmentId=#{enrollmentId}")
+	Sponsee findSponsee(@Param("studentId") Long studentId, @Param("enrollmentId") Long enrollmentId);
+	
+	@Insert("INSERT INTO sponsee_softdelete (id, enrollmentId, expirationMonth, expirationYear, studentId, createdBy, createdDate) "
+			+ "VALUES (#{id}, #{enrollmentId}, #{expirationMonth}, #{expirationYear}, #{studentId}, #{createdBy}, #{createdDate})")
+	void insertSponseeSoftDelete(SponseeSoftDelete sp);
+	
+	@Select("delete from sponsee where id= #{id}")
+	void deleteSponsee(@Param("id") Long id);
+	
+	@Insert("INSERT INTO SPONSEE (ENROLLMENTID, EXPIRATIONMONTH, EXPIRATIONYEAR, STUDENTID) values (#{enrollmentId}, #{expirationMonth}, #{expirationYear}, #{studentId})")
+	@SelectKey(statement="SELECT LAST_INSERT_ID()",  keyProperty="id", before = false, resultType= Long.class)
+	long insertSponsee(Sponsee sponsee);
+	
+	@Select("SELECT * from student_maxout where studentId= #{studentId} and enrollmentId=#{enrollmentId}")
+	StudentMaxOut findStudentMaxOut(@Param("studentId") Long studentId, @Param("enrollmentId") Long enrollmentId);
+	
+	@Update("UPDATE student_maxout SET status= 1 WHERE id=#{id}")	
+	void updateStudentMaxOut(@Param("id") int id);
+	
+	@Insert("insert into student_maxout (studentId, enrollmentId, maxOut) values (#{studentId}, #{enrollmentId}, #{maxOut})")
+	void insertStudentMaxOut(StudentMaxOut e);
 }
