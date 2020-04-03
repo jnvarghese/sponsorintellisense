@@ -1,6 +1,7 @@
 package com.sposnor.intellisense.sponsorintellisense.web.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Parish;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sequence;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsor;
+import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReceipts;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorSearch;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ParishMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
@@ -55,15 +57,27 @@ public class SponsorController {
 	public ResponseEntity<List<Sponsor>> search(@RequestHeader Long userId, @RequestBody SponsorSearch search) {	
 		 List<Parish> parishes = parishMapper.searchByCity(search.getCity());
 		 Long[] ids = parishes.stream().map(parish -> parish.getId()).toArray(Long[]::new);
-        System.out.println(" ---- > "+ids);
-		 List<Sponsor> sponsors = sponsorMapper.searchSponsor(ids, search.getZipCode(), search.getSponsorCode(), 
+         List<Sponsor> sponsors = sponsorMapper.searchSponsor(ids, search.getZipCode(), search.getSponsorCode(), 
 				 search.getFirstName(), search.getLastName());
 		 return new ResponseEntity<List<Sponsor>>(sponsors, HttpStatus.OK);
 	}
 	
 	@GetMapping("/listbyparish/{id}")
 	public List<Sponsor> getAllSponsorsByParishId(@PathVariable(value = "id") Long parishId) {
-		return sponsorMapper.listSponsorsByParishId(parishId);
+		
+		List<Sponsor> sponsors = sponsorMapper.listSponsorsByParishId(parishId);
+		List<Sponsor> amountsums = sponsorMapper.getSumOfSponsorAmountByParish(parishId);
+
+		//if(null != amountsums) {
+			// pair each id with its marks
+			Map<Long, Double> amountsumsMap = amountsums.stream().filter(x -> x!=null).collect(Collectors.toMap(Sponsor::getId, Sponsor::getAmount));
+			// go through list of `ObjectOne`s and lookup marks in the index
+			sponsors.forEach(o1 -> {
+				o1.setAmount(amountsumsMap.containsKey(o1.getId()) ? amountsumsMap.get(o1.getId()) : 0.00);
+				}
+			);
+		//}
+		return sponsors;
 	}
 	
 	@PostMapping("/add")

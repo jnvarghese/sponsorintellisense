@@ -27,10 +27,32 @@ public class EnrollmentSummary {
 	
 	private double contribution;
 	
+	private double netDonation;
+	
 	private int numberOfStudents;
 	
 	private List<StudentSummary> students = new ArrayList<StudentSummary>();
 	
+	private List<SponsorReceipts> sponsorReceipts = new ArrayList<SponsorReceipts>();
+	
+	
+	
+	public List<SponsorReceipts> getSponsorReceipts() {
+		return sponsorReceipts;
+	}
+
+	public void setSponsorReceipts(List<SponsorReceipts> sponsorReceipts) {
+		this.sponsorReceipts = sponsorReceipts;
+	}
+
+	public double getNetDonation() {
+		return netDonation;
+	}
+
+	public void setNetDonation(double netDonation) {
+		this.netDonation = netDonation;
+	}
+
 	public int getNumberOfStudents() {
 		return numberOfStudents;
 	}

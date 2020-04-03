@@ -1,12 +1,18 @@
 package com.sposnor.intellisense.sponsorintellisense.data.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 @JsonInclude(Include.NON_EMPTY)
-public class StudentSummary {
+public class StudentSummary implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private Long enrollmentId;
 	
@@ -355,6 +361,18 @@ public class StudentSummary {
 	}
 
 	public void setMaxOutYear(String maxOutYear) {
+		this.maxOutYear = maxOutYear;
+	}
+	public StudentSummary() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public StudentSummary(Long enrollmentId, String studentCode, Date maxOut, String maxOutMonth, String maxOutYear) {
+		super();
+		this.enrollmentId = enrollmentId;
+		this.studentCode = studentCode;
+		this.maxOut = maxOut;
+		this.maxOutMonth = maxOutMonth;
 		this.maxOutYear = maxOutYear;
 	}
 

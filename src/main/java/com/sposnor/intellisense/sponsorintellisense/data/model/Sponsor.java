@@ -55,6 +55,36 @@ public class Sponsor implements Serializable {
 	
 	private double miscAmount;
 	
+	/** for find the sum of sponsor amount for enrollment **/
+	private double amount;
+	private double enrollmentNetAmount;
+	private String type;
+	
+	
+	public double getEnrollmentNetAmount() {
+		return enrollmentNetAmount;
+	}
+
+	public void setEnrollmentNetAmount(double enrollmentNetAmount) {
+		this.enrollmentNetAmount = enrollmentNetAmount;
+	}
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	private String promoterEmail;
 	
 	public double getMiscAmount() {
@@ -350,7 +380,8 @@ public class Sponsor implements Serializable {
 				+ ", updatedDate=" + updatedDate + ", createdBy=" + createdBy + ", updatedBy=" + updatedBy + ", phone1="
 				+ phone1 + ", phone2=" + phone2 + ", entId=" + entId + ", noOfStudents=" + noOfStudents
 				+ ", expirationMonth=" + expirationMonth + ", expirationYear=" + expirationYear + ", effectiveDate="
-				+ effectiveDate + ", miscAmount=" + miscAmount + ", promoterEmail=" + promoterEmail + "]";
+				+ effectiveDate + ", miscAmount=" + miscAmount + ", amount=" + amount + ", enrollmentNetAmount="
+				+ enrollmentNetAmount + ", type=" + type + ", promoterEmail=" + promoterEmail + "]";
 	}
 
 	

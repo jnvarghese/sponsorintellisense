@@ -27,8 +27,49 @@ public class SponsorReceipts implements Serializable {
 	
 	private double sponsorReceiptAmount;
 	
+	private String type;
 	
+	/** Receipt data **/
 	
+	private String rdate;
+	
+	private String transaction;
+	
+	private int receiptType;
+
+	
+	public String getRdate() {
+		return rdate;
+	}
+
+	public void setRdate(String rdate) {
+		this.rdate = rdate;
+	}
+
+	public String getTransaction() {
+		return transaction;
+	}
+
+	public void setTransaction(String transaction) {
+		this.transaction = transaction;
+	}
+
+	public int getReceiptType() {
+		return receiptType;
+	}
+
+	public void setReceiptType(int receiptType) {
+		this.receiptType = receiptType;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public double getReceiptAmount() {
 		return receiptAmount;
 	}
@@ -118,14 +159,23 @@ public class SponsorReceipts implements Serializable {
 		this.amount = amount;
 		this.createdBy = createdBy;
 	}
+	public SponsorReceipts(Long sponsorId, Long receiptId, double amount, Long createdBy, String type) {
+		super();
+		this.sponsorId = sponsorId;
+		this.receiptId = receiptId;
+		this.amount = amount;
+		this.createdBy = createdBy;
+		this.type = type;
+	}
 
 	@Override
 	public String toString() {
-		return "SponsorReceipts [sponsorId=" + sponsorId + "]";
+		return "SponsorReceipts [id=" + id + ", sponsorId=" + sponsorId + ", receiptId=" + receiptId + ", amount="
+				+ amount + ", status=" + status + ", createdBy=" + createdBy + ", updatedBy=" + updatedBy
+				+ ", receiptAmount=" + receiptAmount + ", sponsorReceiptAmount=" + sponsorReceiptAmount + ", type="
+				+ type + ", rdate=" + rdate + ", transaction=" + transaction + ", receiptType=" + receiptType + "]";
 	}
-	
-	
-	
-	
+
+	 
 
 }

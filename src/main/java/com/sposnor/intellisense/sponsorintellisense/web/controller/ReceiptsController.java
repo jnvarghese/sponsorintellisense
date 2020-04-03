@@ -94,10 +94,10 @@ public class ReceiptsController {
 		List<SponsorReceipts> lists = receiptsMapper.listByReceiptId(receiptId);
 		return new ResponseEntity<List<SponsorReceipts>>(lists, HttpStatus.OK);
 	}
-	
+	// from the Parish to Sponsor distrbution
 	@PostMapping("/addSponsorReceipt") 
 	public ResponseEntity<SponsorReceipts> addSponsorToReceipt(@RequestHeader Long userId, @Valid @RequestBody SponsorReceipts r) {
-		SponsorReceipts sr = new SponsorReceipts(r.getSponsorId(), r.getReceiptId(), r.getAmount(), userId);
+		SponsorReceipts sr = new SponsorReceipts(r.getSponsorId(), r.getReceiptId(), r.getAmount(), userId, "P");
 		receiptsMapper.insertSponsorReceipts(sr);
 		return new ResponseEntity<SponsorReceipts>(sr, HttpStatus.OK);
 	}
@@ -137,12 +137,14 @@ public class ReceiptsController {
 	public ResponseEntity<Receipts> createReceipts(@RequestHeader Long userId, @Valid @RequestBody Receipts r) {
 		r.setCreatedby(userId);
 		if(null != r.getSponsorId()) {
-			LOGGER.info("receipt getSponsorId is not null");
+			LOGGER.info("receipt getSponsorId is not null and reference id is "+r.getReferenceId());
 			this.getSponsorAddedToReceipt(r);
-			receiptsMapper.insert(r);
-			receiptsMapper.insertSponsorReceipts(new SponsorReceipts(r.getSponsorId(), r.getReceiptId(), userId));
+			if(r.getReferenceId() != 82) {
+				receiptsMapper.insert(r);
+				receiptsMapper.insertSponsorReceipts(new SponsorReceipts(r.getSponsorId(), r.getReceiptId(), r.getAmount(), userId));
+			}
 		} else if(null == r.getSponsorId() && r.getReceiptType() == 2) {
-			LOGGER.info("receipt getSponsorId is null and receiptType is 2");
+			LOGGER.info("receipt getSponsorId is null and receiptType is 2 and reference id is "+r.getReferenceId());
 			Sponsor sponsor = new Sponsor();
 			sponsor.setCreatedBy(userId);
 			sponsor.setParishId(r.getReferenceId());
@@ -157,16 +159,20 @@ public class ReceiptsController {
 			sponsor.setEmailAddress(r.getEmail1());	
 			sponsor.setCoSponserName(r.getCoSponsor());
 			sponsor.setSponsorCode(String.valueOf(sponsorMapper.getSequenceByParishId(r.getReferenceId()).getSequence()+1));
-			receiptsMapper.insert(r);
-			sponsorMapper.insert(sponsor);
-			receiptsMapper.insertSponsorReceipts(new SponsorReceipts(sponsor.getId(), r.getReceiptId(), userId));
+			if(r.getReferenceId() != 82) {
+				receiptsMapper.insert(r);
+				sponsorMapper.insert(sponsor);
+				receiptsMapper.insertSponsorReceipts(new SponsorReceipts(sponsor.getId(), r.getReceiptId(), r.getAmount(), userId));
+			}
 			r.setSponsorId(sponsor.getId());
 			r.setSponsorCode(sponsor.getSponsorCode());
 		} else {
-			LOGGER.info("ELSE ---");
+			LOGGER.info("ELSE ---and reference id is "+r.getReferenceId());
 			if(null != r.getSponsorId())
 				this.getSponsorAddedToReceipt(r);
-			receiptsMapper.insert(r);
+			if(r.getReferenceId() != 82) {
+				receiptsMapper.insert(r);
+			}
 		}
 		return new ResponseEntity<Receipts>(r, HttpStatus.OK);
 	}

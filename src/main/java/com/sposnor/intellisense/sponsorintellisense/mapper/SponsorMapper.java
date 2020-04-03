@@ -33,7 +33,8 @@ public interface SponsorMapper {
 			+ "AND P.CENTERID = C.ID AND C.REGIONID = R.ID "
 			+ "AND S.PARISHID = #{id} AND S.SPONSORSTATUS = 0 order by sponsorCode";
 	*/
-	public static final String SELECT_ALL_ACTIVE_SPONSORS_BY_PARISHID = "SELECT S.ID,(CASE WHEN EN.ID IS NULL THEN RAND() ELSE EN.ID END) ENTID, EN.MISCAMOUNT, DATE_FORMAT(en.effectiveDate,'%m/%Y') effectiveDate, "
+	public static final String SELECT_ALL_ACTIVE_SPONSORS_BY_PARISHID = "SELECT S.ID,(CASE WHEN EN.ID IS NULL THEN RAND() ELSE EN.ID END) ENTID, EN.MISCAMOUNT, "
+			+ "EN.netAmount enrollmentNetAmount, DATE_FORMAT(en.effectiveDate,'%m/%Y') effectiveDate, "
 			+ "COUNT(SE.STUDENTID) NOOFSTUDENTS, SE.EXPIRATIONMONTH, SE.EXPIRATIONYEAR, "
 			+ "CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',S.SPONSORCODE) SPONSORCODE, FIRSTNAME, LASTNAME, MIDDLEINITIAL, "
 			+ "NICKNAME,STREET, S.CITY, STATE,POSTALCODE, PARISHID "
@@ -88,6 +89,12 @@ public interface SponsorMapper {
 	
 	@Select("SELECT id,firstname, sponsorcode, middleInitial, lastName,street,city,state,postalCode,emailAddress, emailAddress2,phone1,phone2 FROM SPONSOR s WHERE s.parishid=#{parishid} AND s.sponsorCode = #{code}")
 	Sponsor getSponsorByParishIdAndSponsorCode(@Param("parishid") Long parishId, @Param("code") String spondorCode);
+	
+	
+	@Select("SELECT SUM(SR.AMOUNT) AMOUNT, SR.SPONSORID ID FROM SPONSOR_RECEIPTS SR, RECEIPTS R "
+			+ "WHERE SPONSORID IN (SELECT ID FROM SPONSOR WHERE PARISHID =#{parishid}) "
+			+ "AND SR.RECEIPTID=R.RECEIPTID AND R.STATUS =0  GROUP BY SR.SPONSORID")
+	List<Sponsor> getSumOfSponsorAmountByParish(@Param("parishid") Long parishId);
 	
 	@Select(SEARCH_BY_NAME)
 	List<Sponsor> searchByName(@Param("name") String name);

@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
@@ -95,13 +96,13 @@ public class ManageProgramController {
 		List<ViewEnroll> enrollments = manageProgramMapper.selectEnrollments(parishId);
 		List<SponsorReceipts> contributions = receiptsMapper.getContributionsByParishId(parishId);
 		// pair each id with its marks
-		Map<Long, Double> individualReceiptMap = contributions.stream().collect(Collectors.toMap(SponsorReceipts::getSponsorId, SponsorReceipts::getReceiptAmount));
-		// go through list of `ObjectOne`s and lookup marks in the index
-		enrollments.forEach(o1 -> o1.setNetIndividualContribution(individualReceiptMap.containsKey(o1.getSponsorId()) ? individualReceiptMap.get(o1.getSponsorId()) : 0.00));
 		
-		Map<Long, Double> parishReceiptMap = contributions.stream().collect(Collectors.toMap(SponsorReceipts::getSponsorId, SponsorReceipts::getSponsorReceiptAmount));
+		//Map<Long, Double> individualReceiptMap = contributions.stream().collect(Collectors.toMap(SponsorReceipts::getSponsorId, SponsorReceipts::getReceiptAmount));
 		// go through list of `ObjectOne`s and lookup marks in the index
-		enrollments.forEach(o1 -> o1.setNetParishContribution(parishReceiptMap.containsKey(o1.getSponsorId()) ? parishReceiptMap.get(o1.getSponsorId()) : 0.00));
+		//enrollments.forEach(o1 -> o1.setNetIndividualContribution(individualReceiptMap.containsKey(o1.getSponsorId()) ? individualReceiptMap.get(o1.getSponsorId()) : 0.00));
+		Map<Long, Double> individualReceiptMap = contributions.stream().collect(Collectors.toMap(SponsorReceipts::getSponsorId, SponsorReceipts::getSponsorReceiptAmount));
+		// go through list of `ObjectOne`s and lookup marks in the index
+		enrollments.forEach(o1 -> o1.setNetContribution(individualReceiptMap.containsKey(o1.getSponsorId()) ? individualReceiptMap.get(o1.getSponsorId()) : 0.00));
 		
 		return enrollments;
 	}
@@ -233,14 +234,20 @@ public class ManageProgramController {
 		
 		Parish parish = parishMapper.findById(parishId);
 		
-	    List<EnrollmentSummary> list = manageProgramMapper.getSummaryByParishId(parishId);
-		list.stream().forEach(i-> {
-			List<StudentSummary> studentlist = manageProgramMapper.getStudentByEnrollmentId(i.getEnrollmentId());
-			if(!ObjectUtils.isEmpty(studentlist)) {
-				i.setStudents(studentlist);
-				i.setNumberOfStudents(studentlist.size());
-			}
-		});
+		List<EnrollmentSummary> list = manageProgramMapper.getSummaryByParishId(parishId);
+		
+		List<StudentSummary> studentlist = manageProgramMapper.getStudentByEnrollmentId(parishId);
+		
+		Map<Long, List<StudentSummary>> studentSumamryMap = studentlist.stream()
+					.collect(Collectors.groupingBy(StudentSummary::getEnrollmentId));
+
+		List<SponsorReceipts> contributions = receiptsMapper.getContributionsByParishId(parishId);
+		
+		Map<Long, Double> individualReceiptMap = contributions.stream().collect(Collectors.toMap(SponsorReceipts::getSponsorId, SponsorReceipts::getSponsorReceiptAmount));
+		
+		list.forEach(o1 -> o1.setNetDonation(individualReceiptMap.containsKey(o1.getSponsorId()) ? individualReceiptMap.get(o1.getSponsorId()) : 0.00));
+		
+		list.forEach(o1 -> o1.setStudents(studentSumamryMap.containsKey(o1.getEnrollmentId()) ? studentSumamryMap.get(o1.getEnrollmentId()) : new ArrayList()));
 	          
 		String summary = VelocityTemplateParser.generateSummary(list, parish);
 	
@@ -294,13 +301,27 @@ public class ManageProgramController {
 	@GetMapping("/enrollment/viewsummary/{id}")
 	public List<EnrollmentSummary> getSummary(@PathVariable(value = "id") Long parishId) {
 		List<EnrollmentSummary> list = manageProgramMapper.getSummaryByParishId(parishId);
-		list.stream().forEach(i-> {
-			List<StudentSummary> studentlist = manageProgramMapper.getStudentByEnrollmentId(i.getEnrollmentId());
-			if(!ObjectUtils.isEmpty(studentlist)) {
-				i.setStudents(studentlist);
-				i.setNumberOfStudents(studentlist.size());
-			}
-		});
+		
+		List<StudentSummary> studentlist = manageProgramMapper.getStudentByEnrollmentId(parishId);
+		
+		Map<Long, List<StudentSummary>> studentSumamryMap = studentlist.stream()
+					.collect(Collectors.groupingBy(StudentSummary::getEnrollmentId));
+
+		List<SponsorReceipts> contributions = receiptsMapper.getContributionsByParishId(parishId);
+		
+		List<SponsorReceipts> sponsorReceipts = receiptsMapper.getReceiptDetails(parishId);
+		
+		Map<Long, List<SponsorReceipts>> sponsorReceiptsMap = sponsorReceipts.stream()
+				.collect(Collectors.groupingBy(SponsorReceipts::getSponsorId));
+		
+		Map<Long, Double> individualReceiptMap = contributions.stream().collect(Collectors.toMap(SponsorReceipts::getSponsorId, SponsorReceipts::getSponsorReceiptAmount));
+		
+		list.forEach(o1 -> o1.setNetDonation(individualReceiptMap.containsKey(o1.getSponsorId()) ? individualReceiptMap.get(o1.getSponsorId()) : 0.00));
+		
+		list.forEach(o1 -> o1.setStudents(studentSumamryMap.containsKey(o1.getEnrollmentId()) ? studentSumamryMap.get(o1.getEnrollmentId()) : new ArrayList()));
+
+		list.forEach(o1 -> o1.setSponsorReceipts(sponsorReceiptsMap.containsKey(o1.getSponsorId()) ? sponsorReceiptsMap.get(o1.getSponsorId()) : new ArrayList()));
+		//sponsorReceipts
 		return list;
 	}
 
@@ -309,60 +330,7 @@ public class ManageProgramController {
 			@PathVariable(value = "sponsorid") Long sponsorId) {
 		return manageProgramMapper.getSponsorshipContribution(studentId, sponsorId);
 	}
-/*
-	@RequestMapping(value = "/enrollment/generatereceipt/{enrollmentId}", method = RequestMethod.GET, produces = "application/pdf")
-	ResponseEntity<byte[]> generatereceipt(@PathVariable(value = "enrollmentId") Long enrollmentId) throws Exception {
 
-		Receipt receipt = manageProgramMapper.getReceipt(enrollmentId);
-		String receiptHtml = VelocityTemplateParser.generateReceipt(receipt);
-
-		// System.out.println(receipt);
-		ByteArrayOutputStream byteArrayPutStream = new ByteArrayOutputStream();
-		byte[] pdfBytes = byteArrayPutStream.toByteArray();
-
-		// step 1
-		Document document = new Document();
-		// step 2
-
-		PdfWriter writer = PdfWriter.getInstance(document, byteArrayPutStream);
-		// TableHeader event = new TableHeader();
-		// writer.setPageEvent(event);
-		// step 3
-		document.open();
-		// step 4
-
-		// CSS
-		CSSResolver cssResolver = XMLWorkerHelper.getInstance().getDefaultCssResolver(true);
-
-		// HTML
-		HtmlPipelineContext htmlContext = new HtmlPipelineContext(null);
-		htmlContext.setTagFactory(Tags.getHtmlTagProcessorFactory());
-		htmlContext.setImageProvider(new Base64ImageProvider());
-
-		// Pipelines
-		PdfWriterPipeline pdf = new PdfWriterPipeline(document, writer);
-		HtmlPipeline html = new HtmlPipeline(htmlContext, pdf);
-		CssResolverPipeline css = new CssResolverPipeline(cssResolver, html);
-
-		// XML Worker
-		XMLWorker worker = new XMLWorker(css, true);
-		XMLParser p = new XMLParser(worker);
-		p.parse(new ByteArrayInputStream(receiptHtml.getBytes()));
-
-		// step 5
-		document.close();
-
-		pdfBytes = byteArrayPutStream.toByteArray();
-
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.parseMediaType("application/pdf"));
-		String filename = "output.pdf";
-		headers.setContentDispositionFormData(filename, filename);
-		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-		ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfBytes, headers, HttpStatus.OK);
-		return response;
-	}
-*/
 	class Base64ImageProvider extends AbstractImageProvider {
 
 		@Override

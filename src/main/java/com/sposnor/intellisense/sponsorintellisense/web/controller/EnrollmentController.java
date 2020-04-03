@@ -46,6 +46,7 @@ public class EnrollmentController {
 		LOGGER.debug("Enrollment Id is " + enrollment.getEnrollmentId());
 		if(enrollment.getEnrollmentId() == 0) {
 			LOGGER.debug("Creating new enrollment");
+			enrollment.setNetAmount(enrollment.getContributionAmount());
 			createNewEnrollment(enrollment);
 		}else {
 			LOGGER.debug("Updating new enrollment");
@@ -67,14 +68,11 @@ public class EnrollmentController {
 			c = Calendar.getInstance();
 			sponsee.setEnrollmentId(enrollment.getId());
 			enrollmentMapper.insertSponsee(sponsee);
-			System.out.println(" before " + dateFormat.format(c.getTime())); 
 			c.set(sponsee.getExpirationYear(), sponsee.getExpirationMonth() - 1, 1, 0, 0);  
-			System.out.println(" after " + dateFormat.format(c.getTime())); 
 			dates.add(c.getTime());
 			maxOutMapper.insertStudentMaxOut(new StudentMaxOut(sponsee.getStudentId(), enrollment.getId(), c.getTime()));
 		}
 		Date maxDate = dates.stream().map(date -> date).max(Date::compareTo).get();
-		System.out.println(" max  " + dateFormat.format(maxDate.getTime())); 
 		maxOutMapper.insertSponsorMaxOut(new SponsorMaxOut(enrollment.getSponsorId(), enrollment.getId(), maxDate));
 	}
 	
@@ -107,18 +105,21 @@ public class EnrollmentController {
 		disableEnrollment(dbEnrollment, sponsees, sponsorMaxOuts, studentMaxOuts, userId); // set the status to 1 for enr, sponsee and maxouts
 		modifyEnrollment(enrollment, sponsees, studentMaxOuts);  // build up new enrollment entity with exiting and new/ modified students
 		setNetAmountForActiveEnrollment(enrollment, dbEnrollment);
+		System.out.println(" After new net amount > "+enrollment.getNetAmount());
 		createNewEnrollment(enrollment);
 		
 	}
 	
 	private void setNetAmountForActiveEnrollment(Enrollment newEnrollment, Enrollment existingEnrollment) {
-		if(existingEnrollment.getNetAmount() > 0) {
+		System.out.println(newEnrollment.getContributionAmount() + " < actual : existing net > "+existingEnrollment.getNetAmount());
+		newEnrollment.setNetAmount(newEnrollment.getContributionAmount() + existingEnrollment.getNetAmount());
+		/*if(existingEnrollment.getNetAmount() > 0) {
 			newEnrollment.setNetAmount(newEnrollment.getActualamount()+existingEnrollment.getNetAmount());
 		} else if(existingEnrollment.getActualamount() > 0) {
 			newEnrollment.setNetAmount(newEnrollment.getActualamount()+existingEnrollment.getActualamount());
 		} else {
 			newEnrollment.setNetAmount(newEnrollment.getActualamount()+existingEnrollment.getContributionAmount()+existingEnrollment.getMiscAmount());
-		}
+		} */
 	}
 		
 	/**

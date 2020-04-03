@@ -66,7 +66,7 @@ public interface ReceiptsMapper {
 			+ "users u  WHERE r.status=0 AND r.createdby = u.id  and receiptId = #{receiptId}")
 	Receipts getReceipt(@Param("receiptId") Long rId);
 	
-	@Insert("INSERT INTO sponsor_receipts(sponsorId, receiptId, amount, createdBy) values (#{sponsorId}, #{receiptId}, #{amount}, #{createdBy})")
+	@Insert("INSERT INTO sponsor_receipts(sponsorId, receiptId, amount, type, createdBy) values (#{sponsorId}, #{receiptId}, #{amount}, #{type}, #{createdBy})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id", before = false, resultType= Long.class)
 	void insertSponsorReceipts(SponsorReceipts sr);
 	
@@ -85,4 +85,13 @@ public interface ReceiptsMapper {
 			" WHERE  SR.`STATUS` <> 1   AND R.REFERENCEID = #{parishId} AND SR.SPONSORID = S.ID" + 
 			" GROUP BY SR.SPONSORID  ORDER BY SR.SPONSORID, R.RECEIPTID;")
 	List<SponsorReceipts> getContributionsByParishId(@Param("parishId") Long parishId);
+	
+	/**
+	 * This method will be used to consolidate the receipt details.
+	 * @param parishId
+	 * @return
+	 */
+	@Select("SELECT sr.sponsorId, r.receiptId, rdate, TRANSACTION, receiptType, sr.amount, sr.type FROM sponsor s, sponsor_receipts sr, receipts r "
+			+ "WHERE sponsorid= s.id AND sr.receiptId = r.receiptId and s.parishId = #{id}")
+	List<SponsorReceipts> getReceiptDetails(@Param("id") Long parishId);
 }

@@ -16,7 +16,7 @@ public class ViewEnroll {
 	
 	private double netIndividualContribution;
 	
-	private double netParishContribution;
+	private double netContribution; // net enrollment contribution. previous netcontribution + previous actualcontribution
 	
 	private String renewed;
 	
@@ -33,7 +33,14 @@ public class ViewEnroll {
 	private String createdDate;
 	
 	
-	
+	public double getNetContribution() {
+		return netContribution;
+	}
+
+	public void setNetContribution(double netContribution) {
+		this.netContribution = netContribution;
+	}
+
 	public Long getSponsorId() {
 		return sponsorId;
 	}
@@ -146,20 +153,24 @@ public class ViewEnroll {
 		this.netIndividualContribution = netIndividualContribution;
 	}
 
-	public double getNetParishContribution() {
-		return netParishContribution;
-	}
-
-	public void setNetParishContribution(double netParishContribution) {
-		this.netParishContribution = netParishContribution;
-	}
-
 	@Override
 	public String toString() {
-		return "ViewEnroll [enrollmentId=" + enrollmentId + ", sponsorId=" + sponsorId +  ", contribution "
-				+ contribution + ", netIndividualContribution=" + netIndividualContribution + ", netParishContribution="
-				+ netParishContribution + "]";
+		return "ViewEnroll [enrollmentId=" + enrollmentId + ", sponsorId=" + sponsorId + ", sponsorName=" + sponsorName
+				+ ", sponsorNickName=" + sponsorNickName + ", parishName=" + parishName + ", contribution="
+				+ contribution + ", netIndividualContribution=" + netIndividualContribution + ", netContribution="
+				+ netContribution + ", renewed=" + renewed + ", paymentDate=" + paymentDate + ", effectiveDate="
+				+ effectiveDate + ", createdBy=" + createdBy + ", uniqueId=" + uniqueId + ", updatedDate=" + updatedDate
+				+ ", createdDate=" + createdDate + ", getNetContribution()=" + getNetContribution()
+				+ ", getSponsorId()=" + getSponsorId() + ", getRenewed()=" + getRenewed() + ", getEffectiveDate()="
+				+ getEffectiveDate() + ", getCreatedBy()=" + getCreatedBy() + ", getUniqueId()=" + getUniqueId()
+				+ ", getEnrollmentId()=" + getEnrollmentId() + ", getSponsorName()=" + getSponsorName()
+				+ ", getSponsorNickName()=" + getSponsorNickName() + ", getParishName()=" + getParishName()
+				+ ", getPaymentDate()=" + getPaymentDate() + ", getUpdatedDate()=" + getUpdatedDate()
+				+ ", getCreatedDate()=" + getCreatedDate() + ", getContribution()=" + getContribution()
+				+ ", getNetIndividualContribution()=" + getNetIndividualContribution() + ", getClass()=" + getClass()
+				+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
 	}
+
 	
 	
 	

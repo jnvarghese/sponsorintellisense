@@ -16,29 +16,29 @@
 <body class="bodyStyle">
   <table width="100%" border="1">
     <tr>
-      <td colspan="7" height="35" style="text-align: center; background-color:#717477; vertical-align: middle;">
+      <td colspan="7" height="35" style="text-align: center; background-color:#717477; vertical-align: middle; padding-top: 20px;">
         <h1>$!parishName - $!parishCity</h1>
       </td>
     </tr>
     <tr>
-      <td colspan="7" height="20" style="text-align: center; background-color:#a2a6aa; vertical-align: middle;">
+      <td colspan="7" height="20" style="text-align: center; background-color:#a2a6aa; vertical-align: middle; padding-top: 20px;">
         <h3>LIGHT TO LIFE - SPONSORSHIP SUMMARY - AS OF $currentMonth $currentYear</h3>
       </td>
     </tr>
     <tr>
-      <td style="font-weight:bold; font-size: 10pt;" width="20%">SPONSOR ID</td>
+      <td style="font-weight:bold; font-size: 10pt;" width="17%">SPONSOR ID</td>
       <td style="font-weight:bold; font-size: 10pt;" width="30%">NAME OF SPONSOR</td>
-      <td style="font-weight:bold; font-size: 10pt; text-align: right;" width="10%">AMOUNT</td>
-      <td style="font-weight:bold; font-size: 10pt; text-align: center;" width="5%">NO.</td>
-      <td style="font-weight:bold; font-size: 10pt;" width="20%">CHILD ID</td>
-      <td style="font-weight:bold; font-size: 10pt;" colspan="2" width="15%">RENEWAL DUE</td>
+      <td style="font-weight:bold; font-size: 10pt; text-align: right;" width="14%">Net Donation</td>
+      <td style="font-weight:bold; font-size: 10pt; text-align: center;" width="4%">NO.</td>
+      <td style="font-weight:bold; font-size: 10pt;" width="18%">CHILD ID</td>
+      <td style="font-weight:bold; font-size: 10pt; text-align: right;" colspan="2" width="18%">RENEWAL DUE</td>
     </tr>
     #foreach ($sponsor in $sponsorList)
     <tr>
       <td style="font-size: 9pt;">$!sponsor.sponsorCode</td>
       <td style="font-size: 9pt;">$!sponsor.sponsorFirstName $!sponsor.sponsorMi $!sponsor.sponsorLastName</td>
-      <td style="font-size: 9pt; text-align: right;">$number.format("currency", $sponsor.contribution)</td>
-      <td style="font-size: 9pt; text-align: center;">$!sponsor.numberOfStudents</td>
+      <td style="font-size: 9pt; text-align: right;">$number.format("currency", $sponsor.netDonation)</td>
+      <td style="font-size: 9pt; text-align: center;">$!sponsor.students.size()</td>
       <td colspan="3">
         #foreach ($student in $sponsor.students)
         <table width="100%" border="0">
