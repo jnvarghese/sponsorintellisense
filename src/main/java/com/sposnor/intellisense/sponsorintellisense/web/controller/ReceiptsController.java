@@ -66,6 +66,11 @@ public class ReceiptsController {
 	@Autowired
 	private SponsorMapper sponsorMapper;
 	
+	@GetMapping("/amount/{id}")
+	public Receipts getSponsorReceiptAmount(@PathVariable(value = "id") Long receiptId) {
+		return receiptsMapper.getSponsorReceiptAmount(receiptId);
+	}
+	
 	@GetMapping("/list")
 	@Deprecated
 	public List<Receipts> list() {
@@ -107,7 +112,7 @@ public class ReceiptsController {
 		String currentTime = MYSQL_DATE_FORMAT.format(new java.util.Date());
 		SponsorReceipts sponsorReceipts= receiptsMapper.getSponsorReceipt(requestPayload.getId());
 		receiptsMapper.deleteSponsorReceipts(requestPayload.getId(), userId, currentTime);
-		SponsorReceipts sr = new SponsorReceipts(sponsorReceipts.getSponsorId(), sponsorReceipts.getReceiptId(), requestPayload.getAmount(), userId);
+		SponsorReceipts sr = new SponsorReceipts(sponsorReceipts.getSponsorId(), sponsorReceipts.getReceiptId(), requestPayload.getAmount(), userId, "P");
 		receiptsMapper.insertSponsorReceipts(sr);
 		return new ResponseEntity<SponsorReceipts>(sr, HttpStatus.OK);
 	}

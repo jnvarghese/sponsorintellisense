@@ -40,6 +40,16 @@ public class EnrollmentController {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(EnrollmentController.class);
 	
+
+	@PostMapping("/release")
+	public ResponseEntity<String> release(@RequestHeader(value="userId") int userId, @RequestBody Enrollment enrollment){
+		enrollmentMapper.updateEnrollment(enrollment.getEnrollmentId(), userId);
+		enrollmentMapper.updateSponsee(enrollment.getEnrollmentId());
+		enrollmentMapper.updateSponsorMaxout(enrollment.getEnrollmentId());
+		enrollmentMapper.updateStudentMaxout(enrollment.getEnrollmentId());
+		return ResponseEntity.ok().body("Success");
+	}
+	
 	@PostMapping("/enroll")
 	public ResponseEntity<String> createStudent(@RequestHeader(value="userId") int userId, @RequestBody Enrollment enrollment) {
 		enrollment.setCreatedBy(userId);
@@ -166,6 +176,19 @@ public class EnrollmentController {
 		LOGGER.debug("Enrollment sponsees size before adding the sponseesTodb "+ payloadSponsees.size());
 		enrollment.setSponsees(sponseesTodb);
 		LOGGER.debug("Enrollment sponsees size after adding the sponseesTodb "+ enrollment.getSponsees().size());
+	}
+	
+	class EnrollmentPayload{
+		private Long enrollmentId;
+
+		public Long getEnrollmentId() {
+			return enrollmentId;
+		}
+
+		public void setEnrollmentId(Long enrollmentId) {
+			this.enrollmentId = enrollmentId;
+		}
+		
 	}
 	
 }

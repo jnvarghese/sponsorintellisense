@@ -21,11 +21,12 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.sposnor.intellisense.sponsorintellisense.data.model.MaxOutOverview;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Parish;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sequence;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsor;
-import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReceipts;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorSearch;
+import com.sposnor.intellisense.sponsorintellisense.mapper.DashboardMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ParishMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
 
@@ -40,6 +41,9 @@ public class SponsorController {
 	
 	@Autowired
 	private ParishMapper parishMapper;
+	
+	@Autowired
+	DashboardMapper dashboardMapper;
 	
 	@GetMapping("/list")
 	public List<Sponsor> getAllSponsors() {
@@ -60,6 +64,11 @@ public class SponsorController {
          List<Sponsor> sponsors = sponsorMapper.searchSponsor(ids, search.getZipCode(), search.getSponsorCode(), 
 				 search.getFirstName(), search.getLastName());
 		 return new ResponseEntity<List<Sponsor>>(sponsors, HttpStatus.OK);
+	}
+	
+	@GetMapping("/receipts/{id}")
+	public List<Sponsor> getSponsorsReceiptsByParishId(@PathVariable(value = "id") Long receiptId) {
+		return sponsorMapper.getSponsorReceiptsByParish(receiptId);
 	}
 	
 	@GetMapping("/listbyparish/{id}")
@@ -148,4 +157,9 @@ public class SponsorController {
 	    return ResponseEntity.ok().body(sponsors);
 	}
 	
+	@GetMapping("/maxout/{fromDate}/{toDate}")
+	public ResponseEntity<List<MaxOutOverview>> getMaxOutSponsors(
+			@PathVariable(value = "fromDate") String fromDate, @PathVariable(value = "toDate") String toDate) {
+		 return ResponseEntity.ok().body(dashboardMapper.getMaxedOut());
+	}
 }

@@ -53,5 +53,15 @@ public interface EnrollmentMapper {
 	@Update("UPDATE ENROLLMENT SET STATUS = 1, RENEWED= 'Y', updatedBy= #{updatedBy} WHERE id=#{id}")
 	void updateEnrollmentStatus(@Param("id") Long enrollmentId, @Param("updatedBy") int updatedBy);
 	
+	@Update("UPDATE ENROLLMENT SET STATUS = 1, updatedBy= #{updatedBy} WHERE id=#{id}")
+	void updateEnrollment(@Param("id") Long enrollmentId, @Param("updatedBy") int updatedBy);
 	
+	@Update("UPDATE sponsee SET STATUS = 1 WHERE enrollmentId=#{id}")
+	void updateSponsee(@Param("id") Long enrollmentId);
+	
+	@Update("UPDATE sponsor_maxout SET STATUS = 1 WHERE enrollmentId=#{id}")
+	void updateSponsorMaxout(@Param("id") Long enrollmentId);
+	
+	@Update("UPDATE student_maxout SET STATUS = 1 WHERE enrollmentId=#{id}")
+	void updateStudentMaxout(@Param("id") Long enrollmentId);
 }

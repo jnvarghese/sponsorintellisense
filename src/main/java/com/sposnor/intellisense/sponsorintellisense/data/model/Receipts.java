@@ -78,7 +78,17 @@ public class Receipts {
 	
 	private String coSponsor;
 	
+	private double sponsorReceiptAmount;
 	
+	
+	public double getSponsorReceiptAmount() {
+		return sponsorReceiptAmount;
+	}
+
+	public void setSponsorReceiptAmount(double sponsorReceiptAmount) {
+		this.sponsorReceiptAmount = sponsorReceiptAmount;
+	}
+
 	public String getCoSponsor() {
 		return coSponsor;
 	}

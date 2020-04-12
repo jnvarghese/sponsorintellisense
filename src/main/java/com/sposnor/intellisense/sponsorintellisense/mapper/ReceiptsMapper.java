@@ -38,7 +38,7 @@ public interface ReceiptsMapper {
 	List<Receipts> listByParishId(@Param("parishId") Long parishId);*/
 	
 	@Select("SELECT r.receiptId, rdate, receiptType,referenceId, r.firstName, r.middleName, r.lastName, r.amount, amountInWords, org.name orgName, p.name parishName, "
-			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName, sr.sponsorId "
+			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName, sr.sponsorId, sum(sr.amount) sponsorReceiptAmount "
 			+ "FROM sponsor_receipts sr right JOIN receipts r ON r.receiptId = sr.receiptId and sr.STATUS<>1 left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
 			+ "initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id  "
 			+ "and date_format(str_to_date(rdate, '%m/%d/%Y'), '%Y-%m-%d') >= CURDATE() - INTERVAL #{range} DAY GROUP BY r.receiptId order by r.receiptId desc;")
@@ -73,18 +73,22 @@ public interface ReceiptsMapper {
 	@Select("SELECT sponsorId, receiptId from sponsor_receipts where id=#{id} and status <> 1")
 	SponsorReceipts getSponsorReceipt(@Param("id") Long id);
 	
-	@Select("SELECT id, sponsorId, receiptId,amount from sponsor_receipts where receiptId=#{receiptId} and status <> 1")
+	@Select("SELECT id, sponsorId, receiptId, sum(amount) from sponsor_receipts where receiptId=#{receiptId} and status <> 1 GROUP BY sponsorId")
 	List<SponsorReceipts> listByReceiptId(@Param("receiptId") Long receiptId);
 	
 	@Update("UPDATE sponsor_receipts SET status= 1,updatedBy = #{userId}, updatedDate=#{currentTime}  WHERE id=#{id}")	
 	void deleteSponsorReceipts(@Param("id") Long id, @Param("userId") Long userId, @Param("currentTime") String currentTime);
 	
 	@Select(" SELECT SR.SPONSORID, SUM(CASE WHEN SR.AMOUNT = 0 THEN R.AMOUNT ELSE 0 END) AS RECEIPTAMOUNT," + 
-			" SUM(SR.AMOUNT) SPONSORRECEIPTAMOUNT" + 
+			" SUM(SR.AMOUNT) SPONSORRECEIPTAMOUNT " + 
 			" FROM SPONSOR_RECEIPTS SR LEFT JOIN RECEIPTS R ON R.RECEIPTID=SR.RECEIPTID,  SPONSOR S" + 
 			" WHERE  SR.`STATUS` <> 1   AND R.REFERENCEID = #{parishId} AND SR.SPONSORID = S.ID" + 
 			" GROUP BY SR.SPONSORID  ORDER BY SR.SPONSORID, R.RECEIPTID;")
 	List<SponsorReceipts> getContributionsByParishId(@Param("parishId") Long parishId);
+	
+	@Select("SELECT sr.receiptId,SUM(sr.amount) sponsorReceiptAmount FROM sponsor_receipts sr "
+			+ "WHERE sr.receiptId=#{receiptId} and status=0 GROUP BY sr.receiptId")
+	Receipts getSponsorReceiptAmount(@Param("receiptId") Long receiptId);
 	
 	/**
 	 * This method will be used to consolidate the receipt details.

@@ -59,8 +59,17 @@ public class Sponsor implements Serializable {
 	private double amount;
 	private double enrollmentNetAmount;
 	private String type;
+	private Long sponsorReceiptId;
 	
 	
+	public Long getSponsorReceiptId() {
+		return sponsorReceiptId;
+	}
+
+	public void setSponsorReceiptId(Long sponsorReceiptId) {
+		this.sponsorReceiptId = sponsorReceiptId;
+	}
+
 	public double getEnrollmentNetAmount() {
 		return enrollmentNetAmount;
 	}

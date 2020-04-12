@@ -15,14 +15,27 @@ public class UploadDocument {
 	private String uploadedBy;
 	private String userName;
 	private String fileName;
-	private boolean status;
 	private Long batchExecutionStatus;
 	private String createdDate;
 	private String type;	
 	private Long createdBy;
 	private Long updatedBy;
-
-	
+    private String status;
+    private int jobid;
+    
+    
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public int getJobid() {
+		return jobid;
+	}
+	public void setJobid(int jobid) {
+		this.jobid = jobid;
+	}
 	public Long getCenterId() {
 		return centerId;
 	}
@@ -119,12 +132,7 @@ public class UploadDocument {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-	public boolean isStatus() {
-		return status;
-	}
-	public void setStatus(boolean status) {
-		this.status = status;
-	}
+	
 	public Long getBatchExecutionStatus() {
 		return batchExecutionStatus;
 	}

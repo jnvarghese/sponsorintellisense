@@ -127,6 +127,11 @@ public interface SponsorMapper {
 			@Param("sponsorCode") String sponsorCode,
 			@Param("firstName") String firstName,
 			@Param("lastName") String lastName);
+	
+	@Select("SELECT S.ID,SR.ID sponsorReceiptId,FIRSTNAME,LASTNAME,MIDDLEINITIAL,SPONSORCODE,EMAILADDRESS,APPARTMENTNUMBER,STREET,CITY, STATE, POSTALCODE, "
+			+ "PHONE1, SUM(AMOUNT) AMOUNT,TYPE FROM SPONSOR S, SPONSOR_RECEIPTS SR WHERE TYPE= 'P' AND SR.STATUS= 0 "
+			+ "AND S.ID = SR.SPONSORID AND SR.RECEIPTID= #{id} GROUP BY S.ID ORDER BY FIRSTNAME, LASTNAME")
+	List<Sponsor> getSponsorReceiptsByParish(@Param("id") Long receiptId);
 }
 //@Options(flushCache=true)
 //@Options(useGeneratedKeys = true, keyProperty = "id", flushCache=true)
