@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .bodyStyle {
+            font-family: Cambria;
+        }
+
+        .tableStyle {
+            border-spacing: 1px;
+            border-collapse: separate;
+            width: 97.7%;
+        }
+
+        .thStype {
+            border: .2px solid black;
+            border-collapse: inherit;
+            padding-left: 5px;
+            padding-top: 2px;
+            height: 20px;
+            text-align: left;
+        }
+
+        .thStypeHeader {
+            border: .2px solid black;
+            background-color: #B5CCEB;
+            border-collapse: inherit;
+            padding-left: 5px;
+            padding-top: 2px;
+            height: 20px;
+            text-align: left;
+        }
+
+		.tdSpanStyleTitle {
+		            font-size: 9px;
+		            font-weight: bold;
+		 }
+		 
+        .tdSpanStyle {
+       		padding-left: 5px;
+            font-size: 11px;
+        }
+
+        .thSpanStyle {
+            font-size: 12px;
+
+        }
+
+        .tdHighLightStyle {
+            border: .5px solid black;
+            border-collapse: collapse;
+            padding-left: 5px;
+            padding-top: 2px;
+            padding-right: 5px;
+            text-align: left;
+        }
+
+        .container {
+            width: 100%;
+            font-size: 0;
+            margin: 15px;
+            padding-left: 20px;
+            padding-bottom: 20px;
+        }
+        tr.border_bottom td {
+		  border-bottom: .5pt solid black;
+		}
+
+    </style>
+</head>
+
+<body class="bodyStyle">
+    <div style="padding-left:16px">
+        <br />
+        <img width="665" src="data:image/png;base64,$header" />
+    </div>
+    <div>
+
+        <div>
+            <div>
+                <div style="padding-bottom: 1px;">
+                    <div style="padding-left:20px">
+                        <br />
+                        <span style="font-size: 13px;"><b><u>SPONSORSHIP DETAILS</u></b></span>
+                        <br />
+                        <br />
+                    </div>
+                </div>
+            </div>
+            <div class="container">
+                <table class="tableStyle">
+                    <tr>
+                        <td class="thStypeHeader" colspan="4">
+                            <span class="thSpanStyle"><b>SPONSOR INFORMATION</b></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdHighLightStyle" width="20px;">
+                            <span class="tdSpanStyle">ID</span>
+                        </td>
+                        <td class="thStype">
+                            <span class="tdSpanStyle">$sponsorId</span>
+                        </td>
+                        <td class="tdHighLightStyle">
+                            <span class="tdSpanStyle">NAME</span>
+                        </td>
+                        <td class="thStype">
+                            <span class="tdSpanStyle">$sponsorName</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdHighLightStyle">
+                            <span class="tdSpanStyle">REGION/CENTER</span>
+                        </td>
+                        <td class="thStype">
+                            <span class="tdSpanStyle">$sponsorParishRegion</span>
+                        </td>
+                        <td class="tdHighLightStyle">
+                            <span class="tdSpanStyle">PARISH</span>
+                        </td>
+                        <td class="thStype">
+                            <span class="tdSpanStyle">$sponsorParish</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdHighLightStyle">
+                            <span class="tdSpanStyle">PHONE</span>
+                        </td>
+                        <td class="thStype">
+                            <span class="tdSpanStyle">$!sponsorPhone</span>
+                        </td>
+                        <td class="tdHighLightStyle">
+                            <span class="tdSpanStyle">E-MAIL</span>
+                        </td>
+                        <td class="thStype" width="150px">
+                            <span class="tdSpanStyle">$!sponsorEmail</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdHighLightStyle">
+                            <span class="tdSpanStyle">ADDRESS</span>
+                        </td>
+                        <td class="thStype" colspan="3">
+                            <span class="tdSpanStyle">$sponsorAddress</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="container">
+                <table border="1" width="98%" class="tableStyle">
+
+                    #foreach( $mapEntry in $substitutions.entrySet() )
+
+                    <tr>
+                        <td class="thStypeHeader" colspan="2">
+                            <span class="thSpanStyle"><b>$mapEntry.key</b></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        Value: $mapEntry.value
+
+                        <td>
+
+                            <table border=0 width="100%">
+                                <tr class="border_bottom">
+                                    <td colspan="2" height="30px" align="center"><span class="thSpanStyle"><b>OLD STUDENT</b></span></td>
+                                </tr>
+
+                                <tr class="border_bottom">
+                                	<td width="50px"><span class="tdSpanStyleTitle">IDENTIFICATION NUMBER</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).uniqueId</span></td>
+                                    <td width="18px" rowspan="4" >
+                                        <img style="border:0px solid black;" width="80" height="90"
+                                            src="data:image/png;base64,$mapEntry.value.get(0).profilePicture"
+                                            alt="imagename" />
+                                    </td>
+                                </tr>
+                                <tr class="border_bottom">
+                                    <td><span class="tdSpanStyleTitle">NAME</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).studentName</span></td>
+                                </tr>
+                                <tr class="border_bottom">
+                                    <td><span class="tdSpanStyleTitle">DATE OF BIRTH</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).dateOfBirth</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td><span class="tdSpanStyleTitle">GENDER</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).gender</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">CLASS/GRADE</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).grade</span></td>
+                                </tr >
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">MEDIUM OF STUDY</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).baseLanguage</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">HOBBY</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).hobby</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">FAVORITE COLOR</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).favColor</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">FAVORITE GAME</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).favGame</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">NAME OF GUARDIAN</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).nameOfGuardian</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">OCCUPATION</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).occupationOfGuardian</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">PARTNER ORGANIZATION</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).projectName</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">PROJECT LOCATION</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).address</span></td>
+                                </tr>
+                                <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">SPONSORSHIP PERIOD</span><br/><span class="tdSpanStyle">-</span></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><span class="tdSpanStyleTitle">RENEWAL DATE</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).renewalDue</span></td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td>
+                            <table border=0 width="100%">
+                                <tr class="border_bottom">
+                                    <td height="30px" colspan="2" align="center"><span class="thSpanStyle"><b>NEW STUDENT</b></span></td>
+                                </tr>
+
+                                <tr class="border_bottom">
+                                	<td width="50px"><span class="tdSpanStyleTitle">IDENTIFICATION NUMBER</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).uniqueId</span></td>
+                                    <td width="18px" rowspan="4" >
+                                        <img style="border:0px solid black;" width="80" height="90"
+                                            src="data:image/png;base64,$mapEntry.value.get(0).profilePicture"
+                                            alt="imagename" />
+                                    </td>
+                                </tr>
+                                <tr class="border_bottom">
+                                    <td><span class="tdSpanStyleTitle">NAME</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).studentName</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td><span class="tdSpanStyleTitle">DATE OF BIRTH</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).dateOfBirth</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td><span class="tdSpanStyleTitle">GENDER</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).gender</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">CLASS/GRADE</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).grade</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">MEDIUM OF STUDY</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).baseLanguage</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">HOBBY</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).hobby</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">FAVORITE COLOR</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).favColor</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">FAVORITE GAME</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).favGame</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">NAME OF GUARDIAN</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).nameOfGuardian</span></td>
+                                </tr >
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">OCCUPATION</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).occupationOfGuardian</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">PARTNER ORGANIZATION</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).projectName</span></td>
+                                </tr>
+                                 <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">PROJECT LOCATION</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).address</span></td>
+                                </tr>
+                                <tr class="border_bottom">
+                                    <td colspan="2"><span class="tdSpanStyleTitle">SPONSORSHIP PERIOD</span><br/><span class="tdSpanStyle">-</span></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2"><span class="tdSpanStyleTitle">RENEWAL DATE</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).renewalDue</span></td>
+                                </tr>
+                            </table>
+                        </td>
+
+                    </tr>
+
+                    #end
+
+
+                </table>
+            </div>
+           
+            <div class="container">
+                <table class="tableStyle">
+                    <tr>
+                        <td class="thStype" colspan="4">
+                            <span class="thSpanStyle">SPONSORSHIP DETAILS</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdHighLightStyle">
+                            <span class="tdSpanStyle">NUMBER OF CHILDREN SPONSORED</span>
+                        </td>
+                        <td class="thStype">
+                            <span class="tdSpanStyle">$!totalChildrenSposored</span>
+                        </td>
+                        <td class="tdHighLightStyle">
+                            <span class="tdSpanStyle">SPONSORSHIP START DATE</span>
+                        </td>
+                        <td class="thStype">
+                            <span class="tdSpanStyle">$!spnStartDate</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdHighLightStyle">
+                            <span class="tdSpanStyle">TOTAL DONATION RECEIVED</span>
+                        </td>
+                        <td class="thStype">
+                            <span class="tdSpanStyle">$$!totalSponsorshipReceived</span>
+                        </td>
+                        <td class="tdHighLightStyle">
+                            <span class="tdSpanStyle">PAYMENT METHOD</span>
+                        </td>
+                        <td class="thStype">
+                            <span class="tdSpanStyle">$!paymentMethod</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="tdHighLightStyle">
+                            <span class="tdSpanStyle">FUNDS UTILIZED</span>
+                        </td>
+                        <td class="thStype">
+                            <span class="tdSpanStyle">$$!fundUsed</span>
+                        </td>
+                        <td class="tdHighLightStyle">
+                            <span class="tdSpanStyle">BALANCE</span>
+                        </td>
+                        <td class="thStype">
+                            <span class="tdSpanStyle">$$!totalBalance</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+        </div>
+    </div>
+</body>
+
+</html>

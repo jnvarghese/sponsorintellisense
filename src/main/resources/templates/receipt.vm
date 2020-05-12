@@ -2,234 +2,303 @@
 <html>
 
 <head>
-  <style>
-    .bodyStyle {
-      font-family: serif;
-    }
+    <style>
+        .bodyStyle {
+            font-family: Cambria;
+        }
 
-    #container {
-      width: 100%;
-      font-size: 0;
-      margin: 15px;
-      padding-left: 90px;
-      padding-right: 50px;
-      padding-bottom: 20px;
-    }
+        .borderTable {
+            padding: 0px 80px 0px 80px;
+            border-collapse: collapse;
+            border: 2px solid black;
+            width: 100%;
+        }
 
-    .tableStyle {
-      border-spacing: 1px;
-      border-collapse: separate;
-      width: 97.7%;
-    }
-
-    .thStype {
-      border: .2px solid black;
-      border-collapse: inherit;
-      padding-left: 5px;
-      padding-top: 2px;
-      height: 40px;
-      text-align: left;
-    }
-
-    .thStype2 {
-      border: .2px solid black;
-      border-collapse: inherit;
-      padding-left: 5px;
-      padding-top: 2px;
-      height: 40px;
-      text-align: right;
-      vertical-align: middle;
-    }
-
-    .blank_row {
-      height: 40px !important;
-      /* overwrites any other rules */
-      background-color: #FFFFFF;
-    }
-
-    h2 {
-      display: block;
-      font-size: 1.3em;
-      margin-top: 0.10em;
-      margin-bottom: 0.83em;
-      margin-left: 0;
-      margin-right: 0;
-      font-weight: bold;
-    }
-  </style>
+        .border-td {
+            border-collapse: collapse;
+            border: 2px solid black;
+            border-width: 0 2px 0 2px;
+        }
+    </style>
 </head>
 
 <body class="bodyStyle">
-  <div style="border: thin solid black">
-    <div style="float: left;padding-left:85px;">
-      <img width="100" src="data:image/png;base64,$waterMark" alt="imagename" />
-    </div>
-    <div style="float: right; width: 97%">
-      <div style="padding: 0px;margin: 0px;">
-        <div  style="padding-left: 26px">
-          <h2 style="padding: 0px;margin: 0px;">MAR THOMA MISSION BOARD</h2>
-        </div>
-         <div style="padding-left:54px">
-           <span style="font-size: 15px;">Diocese of North America & Europe</span>
-        </div>
-        
-        <div style="padding-left:36px">
-          <p style="padding: 0px;margin: 0px; font-size: 14px;">2320 Merrick Ave, Merrick, New York - 11566</p>
-        </div>
-        <div style="padding-left: -6px">
-          <span style="font-size: 13px;"><strong>Phone: </strong> </span>
-          <span style="font-size: 13px;">(516) 377-3311 </span>
-           <span style="font-size: 13px;"><strong>Email: </strong></span>
-            <span style="font-size: 13px;">marthomamissionboard@gmail.com</span>
-        </div>
-        <div style="padding-left: 48px">
-          <span style="font-size: 13px;"><strong>Website: </strong> </span>
-          <span style="font-size: 13px;">www.marthomamissionnae.org</span>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div>
-    <br />
-    <br />
-    <div id="container">
-      <table cellpadding="5" cellspacing="5">
-        <tr>
-          <td>
-            <span style="font-size:20;font-weight: bold; color: red">No: $receiptNo</span>
-          </td>
-          <td width="37%">
-            <span></span>
-          </td>
-          <td>
-            <span><strong>Date:</strong></span><span>$!receiptDate</span>
-          </td>
-        </tr>
-      </table>
-    </div>
-    <br />
-    <br />
-    <div id="container">
-      <table cellpadding="5" cellspacing="5">
-        <tr>
-          <td>
-            <span style="font-weight: bold;">Received with thanks from:</span>
-            #if( $rType == 0 || $rType == 1)
-             $!from
-            #else
-           	 $!receivedfrom
-            #end
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <span style="font-weight: bold;">Address:</span> $!address
-          </td>
-        </tr>
-        <tr>
-          <td>
-            #if( $rType == 0 )
-            <span style="font-weight: bold;">Parish:</span> $from
-            #elseif( $rType == 1 )
-            <span style="font-weight: bold;">Organization:</span> $from
-            #elseif( $rType == 2 )
-            <span style="font-weight: bold;">Parish:</span> $from
-            #else
-            <span></span>
-            #end
-          </td>
-        </tr>
-      </table>
-    </div>
-    <div id="container">
-      <table class="tableStyle">
-        <tr>
-          <td class="thStype" width="10px;">
-            <span>1</span>
-          </td>
-          <td class="thStype">
-            <span>$!submissionname</span>
-	        <span>$!missionname</span>
-          </td>
-          <td class="thStype">
-            <span>$$total</span>
-          </td>
-        </tr>
-        <tr>
-          <td class="thStype2" colspan="2">
-            <span>
-              <b>TOTAL</b>
-            </span>
-          </td>
-          <td class="thStype">
-            <span>$$total</span>
-          </td>
-        </tr>
-      </table>
-    </div>
-    <br />
-    <br />
-     <div id="container">
-      <table cellpadding="5" cellspacing="5">
-        <tr>
-          <td colspan="3">
-            <span style="font-weight: bold;">Method of Payment:</span> $!paymentmethod
-          </td>
-        </tr>
+    <pre>
 
-      </table>
-    </div>
-    <div id="container">
-      <table cellpadding="10" cellspacing="10" border="0" width="100%">
+
+
+    </pre>
+    <table>
         <tr>
+            <td width="13%"> </td>
+            <td width="95%">
+                <table class="borderTable">
+                    <tr>
+                        <td>
+                            <div style="padding-left:20px; border: solid;">
+                                <br />
+                                <img width="500" src="data:image/png;base64,$receiptHeader" />
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <div>
+                    <table class="border-td" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td width="4%"></td>
+                            <td width="64.2%">
+                            <table>
+                                <tr>
+                                    <td style="height: 5px;"></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span style=" font-size:15;font-weight: bold; color: red">No:
+                                            $receiptNo</span>
+                                    </td>
+                                    <td width="55%">
+                                        <span></span>
+                                    </td>
+                                    <td>
+                                        <span style="font-weight: bold; font-size:13px">Date:</span>
+                                        <span style="font-size:13px">$!receiptDate</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="height: 4px;"></td>
+                                </tr>
+                            </table>
+                        </td>
+                            <td>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="borderTable">
+                        <tr>
+                            <td>
 
-          <td colspan="3">
-            <div style="padding-left:100px">
-              <img width="160px" src="data:image/png;base64,$seal" />
-            </div>
-          </td>
+                                <table align="center">
+                                    <tr>
+                                        <td style="height: 20px;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            <span style="font-weight: bold; font-size:13px">Received with thanks
+                                                from:</span>
+                                            <span style="font-size:13px">
+                                                #if( $rType == 0 || $rType == 1)
+                                                $!from
+                                                #else
+                                                $!receivedfrom
+                                                #end
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height: 2px;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            <span style="font-weight: bold; font-size:13px">Address:</span>
+                                            <span style="font-size:13px"> $!address </span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height: 20px;"></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="text-align:center;">
+                                            #if( $rType == 0 )
+                                            <span style="font-weight: bold; font-size:13px">Parish:</span> <span
+                                                style="font-size:13px">$from</span>
+                                            #elseif( $rType == 1 )
+                                            <span style="font-weight: bold;">Organization:</span> <span
+                                                style="font-size:13px">$from</span>
+                                            #elseif( $rType == 2 )
+                                            <span
+                                                style="font-weight: bold; font-size:13px"">Parish:</span> <span style="
+                                                font-size:13px">$from</span>
+                                            #else
+                                            <span></span>
+                                            #end
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="height: 20px;"></td>
+                                    </tr>
+                                </table>
 
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="border-td" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td width="10%"></td>
+                            <td width="50%" height="5%">
+
+                                <table border="1" cellpadding="0" cellspacing="0" >
+                                    <tr>
+                                        <td style="text-align: center;height: 20px;border-top-style: none;">
+                                            <span style="font-weight: bold;font-size:13px;">No</span></td>
+                                        <td style="text-align: center;height: 20px;">
+                                            <span style="font-weight: bold;font-size:13px;">Particulars</span></td>
+                                        <td style="text-align: center;height: 20px;">
+                                            <span style="font-weight: bold;font-size:13px;">Amount</span></td>
+                                    </tr>
+                                     #set($i = 0)
+                                     #foreach ($initiative in $initiatives)
+                                     
+                                     #set($i = $i+1)
+                                    <tr>
+                                        <td width="10px;" style="text-align: center;">
+                                            <span style="font-size:13px;height: 20px;">$i</span>
+                                        </td>
+                                        <td>
+                                            <span style="font-size:13px;height: 20px;">$!initiative.name</span>
+                                        </td>
+                                        <td style="text-align: right;">
+                                            <span style="font-size:13px;height: 20px;">$</span>
+                                            <span style="font-size:13px;height: 20px;">$number.format("#0.00", $initiative.amount) </span>
+                                        </td>
+                                    </tr>
+                                   	#end
+                                    <tr>
+                                        <td></td>
+                                        <td>
+                                            <span style="font-weight: bold;font-size:13px;height: 20px;">
+                                                TOTAL
+                                            </span>
+                                        </td>
+                                        <td style="text-align: right;height: 20px;">
+                                            <span style="font-weight: bold;">$</span>
+                                            <span style="font-weight: bold;font-size:13px;">$number.format("#0.00", $total)</span>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </td>
+                            <td width="8.2%"></td>
+                        </tr>
+                    </table>
+                    <table class="borderTable" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td>
+                                <div>
+                                    <table align="center">
+                                        <tr>
+                                            <td style="height: 20px;"></td>
+                                        </tr>
+                                        #if ($amountInwords) 
+										 <tr>
+                                            <td style="text-align:center;">
+                                                <span style="font-weight: bold; font-size:13px">Total Amount in
+                                                    words:</span>
+                                                <span style="font-size:13px">$!amountInwords</span>
+                                            </td>
+                                         </tr> 
+										#end
+                                        
+                                        <tr>
+                                            <td style="text-align:center;">
+                                                <span style="font-weight: bold; font-size:13px">Payment by
+                                                    Cash/Check/PayPal:</span>
+                                                <span style="font-size:13px">$!paymentmethod </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height: 25px;"></td>
+                                        </tr>
+                                         #if ($submissionname) 
+	                                        <tr>
+	                                            <td style="text-align:center;">
+	                                                <span style="font-weight: bold; font-size:13px">Description:</span>
+	                                                <span style="font-size:13px">$!submissionname</span>
+	                                            </td>
+	                                        </tr>
+	                                     #end
+                                        <tr>
+                                            <td style="height: 35px;"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div>
+                                    <table width="100%" align="center">
+                                    	 <tr>
+                                            <td style="text-align:center;">
+                                                <span style="font-size:13;font-weight: bold;"></span>
+                                            </td>
+                                            <td style="text-align:center;">
+                                                <span style="font-size:13;font-weight: bold;"></span>
+                                            </td>
+                                            <td style="text-align:center;">
+                                                <span style="font-size:13;font-weight: bold;"> <img width="80" src="data:image/png;base64,$coordinatorSignature" /> </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center;">
+                                                <span style="font-size:13;font-weight: bold;"> Secretary </span>
+                                            </td>
+                                            <td style="text-align:center;">
+                                                <span style="font-size:13;font-weight: bold;"> Treasurer </span>
+                                            </td>
+                                            <td style="text-align:center;">
+                                                <span style="font-size:13;font-weight: bold;"> Coordinator </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" style="height: 25px;"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="borderTable">
+                        <tr>
+                            <td>
+                                <div>
+                                    <table width="100%">
+                                        <tr>
+                                            <td style="height: 3px;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center;">
+                                                <span style="font-size:13;font-style: italic;">Mar Thoma Mission Board -
+                                                    Diocese of
+                                                    North America & Europe
+                                                    is a 501 (c) (3) non-for-profit tax
+                                                    exempt organization</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height: 5px;"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="text-align:center;">
+                                                <span style="font-size:13;font-style: italic;">Tax Id: 81-5479018.
+                                                    Donors can deduct
+                                                    contribution under IRC
+                                                    Section 170</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="height: 3px;"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+            </td>
+            <td width="1%"> </td>
         </tr>
-        <tr>
-          <td></td>
-          <td>
-            <div style="padding-left:5px">
-              <img width="70px" src="data:image/png;base64,$sign2" />
-            </div>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <td>
-            Secretary
-          </td>
-          <td>
-            Coordinator
-          </td>
-          <td>Treasurer</td>
-        </tr>
-      </table>
-    </div>
-    <div id="container">
-      <table border="0" width="100%">
-        <tr>
-
-          <td style="text-align:center;">
-            <span style="font-size:9.5;font-weight: bold;">Mar Thoma Mission Board - Diocese of North America & Europe is a 501 (c) (3) not-for-profit tax exempt organization.</span>
-          </td>
-
-        </tr>
-        <tr>
-
-          <td style="text-align:center;">
-            <span style="font-size:10;font-weight: bold;">Tax Identification Number: 81-5479018. Donors can deduct contributions under IRC Section 170.</span>
-          </td>
-
-        </tr>
-       </table>
-    </div>
-
-  </div>
+    </table>
 </body>
 
 </html>

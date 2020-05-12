@@ -19,7 +19,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -141,9 +140,7 @@ public class ManageProgramController {
 		map.put("totalBalance", sponser.getMiscAmount());
 		map.put("spnStartDate", sponser.getPaymentDate());
 		map.put("renewalDue", sponser.getRenewalDue());
-		map.put("sign2", sponser.getSign2());
-		map.put("sign1", sponser.getSign1());
-		map.put("waterMark", sponser.getWaterMark());
+
 
 		return map;
 	} 
@@ -161,7 +158,7 @@ public class ManageProgramController {
 		SponsorReport sponsorReport = sponsorMapper.findSponsorByEnrolmentId(enrollmentId);
 
 		String coverLetter = VelocityTemplateParser.generateCoverLetter(sponsorReport, sponseeList.size());
-		String htmlstring = VelocityTemplateParser.generateHTML(getDataMap(sponsorReport, sponseeList),sponseeList.size());
+		String htmlstring = VelocityTemplateParser.generateHTML(getDataMap(sponsorReport, sponseeList),sponseeList.size(), "enrollment");
 		String consolidatedData = (coverLetter + htmlstring).replaceAll("&", "&amp;");
 		 //System.out.println(" consolidatedData "+consolidatedData);
 
@@ -211,17 +208,6 @@ public class ManageProgramController {
 		return response;
 	}
 
-	@RequestMapping("/exampleVelocity/{enrollmentId}")
-	String home(@PathVariable(value = "enrollmentId") Long enrollmentId) throws Exception {
-
-		List<SponseeReport> sponseeList = studentMapper.listSponseesByEnrolmentId(new Long(9));
-		SponsorReport sponsorReport = sponsorMapper.findSponsorByEnrolmentId(new Long(9));
-
-		String htmlstring = VelocityTemplateParser.generateHTML(getDataMap(sponsorReport, sponseeList), sponseeList.size());
-		// result = writer.toString();
-  
-		return htmlstring;
-	}
 	
 	
 	@GetMapping("/manage/view/{id}")

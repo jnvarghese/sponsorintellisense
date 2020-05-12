@@ -31,4 +31,7 @@ public interface InitMapper {
 	@Select("SELECT id, name, code, parentId from initiative where id= #{id}")
 	Initiative getInitiativeById(@Param("id")  Long id);
 	
+	@Select("SELECT * FROM initiative WHERE  active='Y' ORDER BY name;")
+	List<Initiative> getActiveInitiatives();
+	
 }

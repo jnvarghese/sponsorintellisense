@@ -159,6 +159,7 @@ public class SponsorReceipts implements Serializable {
 		this.amount = amount;
 		this.createdBy = createdBy;
 	}
+	
 	public SponsorReceipts(Long sponsorId, Long receiptId, double amount, Long createdBy, String type) {
 		super();
 		this.sponsorId = sponsorId;
@@ -166,6 +167,23 @@ public class SponsorReceipts implements Serializable {
 		this.amount = amount;
 		this.createdBy = createdBy;
 		this.type = type;
+	}
+	
+	public SponsorReceipts(Long sponsorId, Long receiptId, double amount, Long createdBy, int type) {
+		super();
+		this.sponsorId = sponsorId;
+		this.receiptId = receiptId;
+		this.amount = amount;
+		this.createdBy = createdBy;
+		if(type == 2) {
+			this.type = "I";
+		} else if(type == 1) {
+			this.type = "O";
+		} else if(type == 0) {
+			this.type = "P";
+		} else {
+			this.type = "E";
+		}
 	}
 
 	@Override

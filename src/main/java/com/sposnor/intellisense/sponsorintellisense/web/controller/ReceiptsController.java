@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
@@ -52,83 +53,86 @@ import com.sposnor.intellisense.sponsorintellisense.util.VelocityTemplateParser;
 @RequestMapping("/api/receipts")
 public class ReceiptsController {
 
-	java.text.SimpleDateFormat MYSQL_DATE_FORMAT = 
-		     new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	java.text.SimpleDateFormat MYSQL_DATE_FORMAT = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ReceiptsController.class);
-	
+
 	@Autowired
 	private ReceiptsMapper receiptsMapper;
-	
+
 	@Autowired
 	private InitMapper initMapper;
-	
+
 	@Autowired
 	private SponsorMapper sponsorMapper;
-	
+
 	@GetMapping("/amount/{id}")
 	public Receipts getSponsorReceiptAmount(@PathVariable(value = "id") Long receiptId) {
 		return receiptsMapper.getSponsorReceiptAmount(receiptId);
 	}
-	
+
 	@GetMapping("/list")
 	@Deprecated
 	public List<Receipts> list() {
 		LOGGER.debug(" Listing Receipts");
 		return receiptsMapper.list();
 	}
-	
+
 	@GetMapping("/listbyrange/{id}")
 	public List<Receipts> listByRange(@PathVariable(value = "id") int range) {
-		return receiptsMapper.listByRange(range);	
+		return receiptsMapper.listByRange(range);
 	}
-	
+
 	@GetMapping("/listbyparish/{id}")
 	public List<Receipts> listByParishId(@PathVariable(value = "id") Long parishId) {
-		//return receiptsMapper.listByParishId(parishId);
+		// return receiptsMapper.listByParishId(parishId);
 		return null;
 	}
-	
+
 	@GetMapping("/find/{id}")
 	public Receipts listById(@PathVariable(value = "id") Long receiptId) {
-		return receiptsMapper.findById(receiptId);	
+		return receiptsMapper.findById(receiptId);
 	}
-	
+
 	@GetMapping("/listbyreceiptid/{id}")
 	public ResponseEntity<List<SponsorReceipts>> listByReceiptId(@PathVariable(value = "id") Long receiptId) {
 		List<SponsorReceipts> lists = receiptsMapper.listByReceiptId(receiptId);
 		return new ResponseEntity<List<SponsorReceipts>>(lists, HttpStatus.OK);
 	}
+
 	// from the Parish to Sponsor distrbution
-	@PostMapping("/addSponsorReceipt") 
-	public ResponseEntity<SponsorReceipts> addSponsorToReceipt(@RequestHeader Long userId, @Valid @RequestBody SponsorReceipts r) {
+	@PostMapping("/addSponsorReceipt")
+	public ResponseEntity<SponsorReceipts> addSponsorToReceipt(@RequestHeader Long userId,
+			@Valid @RequestBody SponsorReceipts r) {
 		SponsorReceipts sr = new SponsorReceipts(r.getSponsorId(), r.getReceiptId(), r.getAmount(), userId, "P");
 		receiptsMapper.insertSponsorReceipts(sr);
 		return new ResponseEntity<SponsorReceipts>(sr, HttpStatus.OK);
 	}
-	
+
 	@PutMapping("/modifySponsorReceipt")
-	public ResponseEntity<SponsorReceipts> updateReceipts(@RequestHeader Long userId, @Valid @RequestBody SponsorReceipts requestPayload) {		
+	public ResponseEntity<SponsorReceipts> updateReceipts(@RequestHeader Long userId,
+			@Valid @RequestBody SponsorReceipts requestPayload) {
 		String currentTime = MYSQL_DATE_FORMAT.format(new java.util.Date());
-		SponsorReceipts sponsorReceipts= receiptsMapper.getSponsorReceipt(requestPayload.getId());
+		SponsorReceipts sponsorReceipts = receiptsMapper.getSponsorReceipt(requestPayload.getId());
 		receiptsMapper.deleteSponsorReceipts(requestPayload.getId(), userId, currentTime);
-		SponsorReceipts sr = new SponsorReceipts(sponsorReceipts.getSponsorId(), sponsorReceipts.getReceiptId(), requestPayload.getAmount(), userId, "P");
+		SponsorReceipts sr = new SponsorReceipts(sponsorReceipts.getSponsorId(), sponsorReceipts.getReceiptId(),
+				requestPayload.getAmount(), userId, "P");
 		receiptsMapper.insertSponsorReceipts(sr);
 		return new ResponseEntity<SponsorReceipts>(sr, HttpStatus.OK);
 	}
-	
+
 	@PutMapping("/deleteSponsorReceipt/{id}")
-	public void deleteReceipts(@RequestHeader Long userId, @PathVariable(value = "id") Long id) {	
+	public void deleteReceipts(@RequestHeader Long userId, @PathVariable(value = "id") Long id) {
 		String currentTime = MYSQL_DATE_FORMAT.format(new java.util.Date());
-		receiptsMapper.deleteSponsorReceipts(id, userId,  currentTime);
+		receiptsMapper.deleteSponsorReceipts(id, userId, currentTime);
 	}
-	
+
 	private Receipts getSponsorAddedToReceipt(Receipts receipts) {
 		Sponsor sponsor = sponsorMapper.findById(receipts.getSponsorId());
 		receipts.setFirstName(sponsor.getFirstName());
 		receipts.setLastName(sponsor.getLastName());
 		receipts.setMiddleName(sponsor.getMiddleInitial());
-		receipts.setFullName(sponsor.getFirstName()+ " "+sponsor.getLastName());
+		receipts.setFullName(sponsor.getFirstName() + " " + sponsor.getLastName());
 		receipts.setStreetAddress(sponsor.getStreet());
 		receipts.setCity(sponsor.getCity());
 		receipts.setState(sponsor.getState());
@@ -137,19 +141,20 @@ public class ReceiptsController {
 		receipts.setPhone1(sponsor.getPhone1());
 		return receipts;
 	}
-	
+
 	@PostMapping("/add")
 	public ResponseEntity<Receipts> createReceipts(@RequestHeader Long userId, @Valid @RequestBody Receipts r) {
 		r.setCreatedby(userId);
-		if(null != r.getSponsorId()) {
-			LOGGER.info("receipt getSponsorId is not null and reference id is "+r.getReferenceId());
+		if (null != r.getSponsorId()) {
+			LOGGER.info("receipt getSponsorId is not null and reference id is " + r.getReferenceId());
 			this.getSponsorAddedToReceipt(r);
-			if(r.getReferenceId() != 82) {
+			if (r.getReferenceId() != 82) {
 				receiptsMapper.insert(r);
-				receiptsMapper.insertSponsorReceipts(new SponsorReceipts(r.getSponsorId(), r.getReceiptId(), r.getAmount(), userId));
+				receiptsMapper.insertSponsorReceipts(
+						new SponsorReceipts(r.getSponsorId(), r.getReceiptId(), r.getAmount(), userId, r.getReceiptType()));
 			}
-		} else if(null == r.getSponsorId() && r.getReceiptType() == 2) {
-			LOGGER.info("receipt getSponsorId is null and receiptType is 2 and reference id is "+r.getReferenceId());
+		} else if (null == r.getSponsorId() && r.getReceiptType() == 2) {
+			LOGGER.info("receipt getSponsorId is null and receiptType is 2 and reference id is " + r.getReferenceId());
 			Sponsor sponsor = new Sponsor();
 			sponsor.setCreatedBy(userId);
 			sponsor.setParishId(r.getReferenceId());
@@ -161,45 +166,65 @@ public class ReceiptsController {
 			sponsor.setCity(r.getCity());
 			sponsor.setState(r.getState());
 			sponsor.setPostalCode(r.getZipCode());
-			sponsor.setEmailAddress(r.getEmail1());	
+			sponsor.setEmailAddress(r.getEmail1());
 			sponsor.setCoSponserName(r.getCoSponsor());
-			sponsor.setSponsorCode(String.valueOf(sponsorMapper.getSequenceByParishId(r.getReferenceId()).getSequence()+1));
-			if(r.getReferenceId() != 82) {
+			sponsor.setSponsorCode(
+					String.valueOf(sponsorMapper.getSequenceByParishId(r.getReferenceId()).getSequence() + 1));
+			if (r.getReferenceId() != 82) {
 				receiptsMapper.insert(r);
 				sponsorMapper.insert(sponsor);
-				receiptsMapper.insertSponsorReceipts(new SponsorReceipts(sponsor.getId(), r.getReceiptId(), r.getAmount(), userId));
+				receiptsMapper.insertSponsorReceipts(
+						new SponsorReceipts(sponsor.getId(), r.getReceiptId(), r.getAmount(), userId, r.getReceiptType()));
 			}
 			r.setSponsorId(sponsor.getId());
 			r.setSponsorCode(sponsor.getSponsorCode());
 		} else {
-			LOGGER.info("ELSE ---and reference id is "+r.getReferenceId());
-			if(null != r.getSponsorId())
+			LOGGER.info("ELSE ---and reference id is " + r.getReferenceId());
+			if (null != r.getSponsorId())
 				this.getSponsorAddedToReceipt(r);
-			if(r.getReferenceId() != 82) {
+			if (r.getReferenceId() != 82) {
 				receiptsMapper.insert(r);
 			}
 		}
 		return new ResponseEntity<Receipts>(r, HttpStatus.OK);
 	}
-	
+
 	@PutMapping("/modify/{id}")
-	public void updateReceipts(@RequestHeader Long userId, @Valid @RequestBody Receipts r) {		
+	public void updateReceipts(@RequestHeader Long userId, @Valid @RequestBody Receipts r) {
 		r.setUpdatedBy(userId);
 		receiptsMapper.update(r);
 	}
-	
+
 	@RequestMapping(value = "/generatereceipt/{id}", method = RequestMethod.GET, produces = "application/pdf")
 	ResponseEntity<byte[]> generatereceipt(@PathVariable(value = "id") Long receiptId) throws Exception {
 
 		Receipts receipt = receiptsMapper.getReceipt(receiptId);
-		Initiative subInitiative;
-		Initiative initiative = initMapper.getInitiativeById(receipt.getInitiativeId());
-		receipt.setInitiativeName(initiative.getName());
+
+		List<Initiative> initiatives = initMapper.getActiveInitiatives();
+
+		Long initiativeId = null;
+		String subInitiativeName = null;
+
+		List<Initiative> childtInitiative = initiatives.stream().filter(i -> i.getParentId() != 0)
+				.filter(j -> j.getId() == receipt.getInitiativeId()).collect(Collectors.toList());
+		if (childtInitiative.size() > 0) {
+			subInitiativeName = childtInitiative.get(0).getName();
+			initiativeId = childtInitiative.get(0).getParentId();
+		}
+		final Long initiativeIdToCompare = initiativeId;
 		
-		subInitiative = initMapper.getInitiativeById(initiative.getParentId());
-		if(null != subInitiative)	
-			receipt.setSubInitiativeName(subInitiative.getName());
+		initiatives = initiatives.stream()
+				.filter(i -> i.getParentId() == 0)
+				.collect(Collectors.toList());
+				
+		initiatives.forEach(j -> {
+			if (j.getId() == ((null != initiativeIdToCompare) ? initiativeIdToCompare : receipt.getInitiativeId()))
+				j.setAmount(receipt.getAmount());
+		});
 		
+
+		receipt.setInitiatives(initiatives);
+		receipt.setSubInitiativeName(subInitiativeName);
 		
 		String receiptHtml = VelocityTemplateParser.generateReceipt(receipt);
 
@@ -249,7 +274,7 @@ public class ReceiptsController {
 		ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfBytes, headers, HttpStatus.OK);
 		return response;
 	}
-	
+
 	class Base64ImageProvider extends AbstractImageProvider {
 
 		@Override

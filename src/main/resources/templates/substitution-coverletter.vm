@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    .bodyStyle {
+      font-family: Cambria;
+    }
+
+    #container {
+      width: 100%;
+      font-size: 0;
+      margin: 15px;
+      padding-left: 20px;
+      padding-bottom: 20px;
+    }
+
+    .wtrMark {
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+
+    .wtrMark .wtrMarkCnt {
+      background-color: white;
+      opacity: 0.9;
+    }
+  </style>
+</head>
+
+<body class="bodyStyle">
+  <div style="padding-left:15px">
+  <br/>
+   <img width="580" src="data:image/png;base64,$coverLetterHeader" />
+  </div>
+  <div class="wtrMark">
+
+    <div class="wtrMarkCnt">
+      <div>
+        <div style="padding-bottom: 1px;">
+          <div style="padding-left:20px">
+            <br/>
+            <br/>
+            <span style="font-weight: bold;">$timeNow</span>
+            <br/>
+            <br/>
+            <span style="font-weight: bold;">To</span>
+            <br/>
+            <br/>
+            <span>$sponsorName</span>
+            <br/>
+            <span>$parishName</span>
+            <br/>
+            <span>$parishCity</span>
+            <br/>
+            <br/>
+            <span style="font-weight: bold;font-style: italic;">Greetings from the Sinai Mar Thoma Center,</span>
+             <span style="font-weight: bold;"> New York </span>
+            <br/>
+            <br/>
+              #if( $totalCount == 1 )
+		          #set($c_word1 = 'child')
+		          #set($c_word2 = 'the')
+		          #set($c_word3= 'A')
+		      #else
+			    #set($c_word1 = 'children')
+			    #set($c_word2 = 'these')
+			    #set($c_word3= 'Few')
+			#end
+            <span>We would like to express our gratitude to you for being a part of the Light to Life Mission and 
+            sponsoring $totalCount $c_word1. Your support has enabled $c_word2 $c_word1 to attend church-based development 
+            programs that is altering the quality of their lives while building up the children&#39;s self-esteemand enabling 
+            them to hope for a brighter future.</span>
+            <br/>
+            <br/>
+            <br/>
+
+            <span>Although we would love for every child to complete our program, regrettably, some children(s) leave the
+             program early due to their altered circumstances. $c_word3 $c_word1 under your sponsorship had to leave the program and 
+             we have provided an alternate $c_word1 in place of that child. The information of the new child has been included 
+             with this letter.</span>
+            <br/>
+            <br/>
+            <br/>
+
+            <span>If you have any questions or need any clarification, kindly contact the office of the Mar Thoma 
+            Mission Board by email: marthomamissionboard@gmail.com or  phone +1(516)377-3311.</span>
+            <br/>
+            <br/>
+            <br/>
+
+            <span>May God bless you and your family.</span>
+            <br/>
+            <br/>
+            <br/>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div style="padding-bottom: 2px;">
+
+          <div style="padding-left:15px">
+		  <table width="100%">
+			  <tr>
+				<td>
+				  Thank you and kind regards,
+				  <br/>	
+				  <img width="120px" src="data:image/png;base64,$secAchen" />
+				  <br/>
+				  <b>Rev. Manoj Idiculla</b>
+				  <br/>
+				  Secretary, Mar Thoma Mission Board
+				  <br/>
+				  Diocese of North America &amp; Europe
+				  <br/>
+				</td>
+				<td>
+				  <br/>
+				  <br/>
+				  <img width="90" src="data:image/png;base64,$coordinatorSignature" />
+				  <br/>
+				  <b>Liz Mathew</b>
+				  <br/>
+				  Mission Coordinator
+				  <br/>
+				  Mar Thoma Mission Board
+				</td>
+			  </tr>
+		  </table>
+          </div>
+        </div>
+      </div>
+
+		   <br/>
+		   <br/>
+		   <br/>
+		   <br/>
+		   <br/>
+		   <br/>
+    </div>
+    <div style="padding-left:60px;">
+      <b style="color: #1245BC; font-size: 11px;font-weight: bold;">Mission Activities: Mexico Mission, Native American Mission, Neighborhood Mission, India Mission, Light to Life</b>
+    </div>
+    <div style="padding-left:150px;">
+      <b style="color: #a31010; font-size: 14px;font-style: italic;">'Reaching out to the unreached with the message of love'</b>
+    </div>
+  </div>
+ 
+</body>
+
+</html>

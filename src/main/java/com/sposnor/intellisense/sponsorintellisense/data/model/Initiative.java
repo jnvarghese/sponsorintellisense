@@ -13,6 +13,17 @@ public class Initiative {
 	private Long parentId;
 
 	private String initiativeName;
+	
+	private double amount;
+	
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
 
 	public Long getInitiativeId() {
 		return initiativeId;
