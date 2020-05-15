@@ -86,7 +86,7 @@
                                             <span style="font-weight: bold; font-size:13px">Received with thanks
                                                 from:</span>
                                             <span style="font-size:13px">
-                                                #if( $rType == 0 || $rType == 1)
+                                                #if( $rType == 0 )
                                                 $!from
                                                 #else
                                                 $!receivedfrom
@@ -99,8 +99,11 @@
                                     </tr>
                                     <tr>
                                         <td style="text-align:center;">
-                                            <span style="font-weight: bold; font-size:13px">Address:</span>
-                                            <span style="font-size:13px"> $!address </span>
+                                            #if($address)
+  												<span style="font-weight: bold; font-size:13px">Address:</span>
+                                            	<span style="font-size:13px"> $!address </span>
+											#end
+                                            
                                         </td>
                                     </tr>
                                     <tr>
@@ -112,11 +115,11 @@
                                             <span style="font-weight: bold; font-size:13px">Parish:</span> <span
                                                 style="font-size:13px">$from</span>
                                             #elseif( $rType == 1 )
-                                            <span style="font-weight: bold;">Organization:</span> <span
+                                            <span style="font-weight: bold;font-size:13px">Organization:</span> <span
                                                 style="font-size:13px">$from</span>
                                             #elseif( $rType == 2 )
                                             <span
-                                                style="font-weight: bold; font-size:13px"">Parish:</span> <span style="
+                                                style="font-weight: bold; font-size:13px">Parish:</span> <span style="
                                                 font-size:13px">$from</span>
                                             #else
                                             <span></span>

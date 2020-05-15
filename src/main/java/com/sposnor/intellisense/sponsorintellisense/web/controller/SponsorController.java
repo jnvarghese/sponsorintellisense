@@ -59,6 +59,11 @@ public class SponsorController {
 	
 	@PostMapping("/searchsponsor")
 	public ResponseEntity<List<Sponsor>> search(@RequestHeader Long userId, @RequestBody SponsorSearch search) {	
+	     if("1".equalsIgnoreCase(search.getCity())) {
+	    	 List<Sponsor> sponsors = sponsorMapper.searchExternalSponsor(search.getZipCode(), search.getSponsorCode(), 
+					 search.getFirstName(), search.getLastName());
+			 return new ResponseEntity<List<Sponsor>>(sponsors, HttpStatus.OK);
+		 }
 		 List<Parish> parishes = parishMapper.searchByCity(search.getCity());
 		 Long[] ids = parishes.stream().map(parish -> parish.getId()).toArray(Long[]::new);
          List<Sponsor> sponsors = sponsorMapper.searchSponsor(ids, search.getZipCode(), search.getSponsorCode(), 

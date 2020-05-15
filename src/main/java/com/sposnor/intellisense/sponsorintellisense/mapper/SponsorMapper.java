@@ -128,6 +128,16 @@ public interface SponsorMapper {
 			@Param("firstName") String firstName,
 			@Param("lastName") String lastName);
 	
+	
+	@Select("SELECT S.ID, PARISHID,FIRSTNAME, LASTNAME, SPONSORCODE, S.STREET, S.CITY, S.STATE, S.POSTALCODE, EMAILADDRESS,PHONE1,PHONE2 FROM SPONSOR S WHERE "
+			+ "S.PARISHID IN (88) AND SPONSORCODE LIKE CONCAT(#{sponsorCode}, '%') AND FIRSTNAME LIKE CONCAT(#{firstName}, '%') "
+			+ "AND LASTNAME LIKE CONCAT(#{lastName}, '%') AND S.postalCode LIKE CONCAT(#{zipCode}, '%')")
+	List<Sponsor> searchExternalSponsor( 
+			@Param("zipCode") String zipCode, 
+			@Param("sponsorCode") String sponsorCode,
+			@Param("firstName") String firstName,
+			@Param("lastName") String lastName);
+	
 	@Select("SELECT S.ID,SR.ID sponsorReceiptId,FIRSTNAME,LASTNAME,MIDDLEINITIAL,SPONSORCODE,EMAILADDRESS,APPARTMENTNUMBER,STREET,CITY, STATE, POSTALCODE, "
 			+ "PHONE1, SUM(AMOUNT) AMOUNT,TYPE FROM SPONSOR S, SPONSOR_RECEIPTS SR WHERE TYPE= 'P' AND SR.STATUS= 0 "
 			+ "AND S.ID = SR.SPONSORID AND SR.RECEIPTID= #{id} GROUP BY S.ID ORDER BY FIRSTNAME, LASTNAME")

@@ -53,8 +53,7 @@
             <span>$parishCity</span>
             <br/>
             <br/>
-            <span style="font-weight: bold;font-style: italic;">Greetings from the Sinai Mar Thoma Center,</span>
-             <span style="font-weight: bold;"> New York </span>
+            <span style="font-weight: bold;font-style: italic;">Greetings from the Sinai Mar Thoma Center, New York</span>
             <br/>
             <br/>
               #if( $totalCount == 1 )

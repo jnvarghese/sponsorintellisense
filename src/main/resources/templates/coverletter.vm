@@ -15,42 +15,36 @@
       padding-bottom: 20px;
     }
 
-    .wtrMark {
-      background: url('data:image/png;base64,$waterMark');
-      background-repeat: no-repeat;
-      background-position: center;
-    }
-
-    .wtrMark .wtrMarkCnt {
-      background-color: white;
-      opacity: 0.9;
-    }
-  </style>
+     </style>
 </head>
 
 <body class="bodyStyle">
   <div style="padding-left:15px">
   <br/>
-   <img width="600" src="data:image/png;base64,$coverLetterHeader" />
+   <img width="600" src="data:image/png;base64,$header" />
   </div>
-  <div class="wtrMark">
+  <div>
 
-    <div class="wtrMarkCnt">
+    <div>
       <div>
         <div style="padding-bottom: 1px;">
           <div style="padding-left:20px">
-            <br/>
+           <br/>
             <br/>
             <span style="font-weight: bold;">$timeNow</span>
             <br/>
             <br/>
+            <span style="font-weight: bold;">To</span>
             <br/>
             <br/>
-            <span>Dear $sponsorName,</span>
+            <span>$sponsorName</span>
+            <br/>
+            <span>$parishName</span>
+            <br/>
+            <span>$parishCity</span>
             <br/>
             <br/>
-            <span style="font-weight: bold;font-style: italic;">Greetings from the Sinai Mar Thoma Center,</span>
-             <span style="font-weight: bold;"> New York </span>
+            <span style="font-weight: bold;font-style: italic;">Greetings from the Sinai Mar Thoma Center, New York</span>
             <br/>
             <br/>
               #if( $totalCount == 1 )
@@ -61,24 +55,27 @@
 			    #set($c_word2 = 'these')
 			#end
             
-            <span>Thank you for being part of the mission activities of our diocese. We have received your pledge to sponsor $totalCount
-              $c_word1 through the Light to Life Mission project. Your donation will be utilized for the overall development
-              of $c_word2 $c_word1 in a systematic manner.</span>
+            <span>On behalf of the Diocese, I would like to thank you for being a part of the Light to Life Mission. We have received your contribution to sponsor $totalCount $c_word1 and 
+            the donation will be utilized for the overall development of these children.</span>
             <br/>
             <br/>
-            <span>As you are aware, this project aims at the social transformation of communities by the holistic development of
-              children through education, health care, food and shelter. I sincerely appreciate you for setting aside a portion
-              of your resources for this mission. The office of the Mar Thoma Mission Board will be contacting you with further
-              information regarding the sponsorship.</span>
+            <span>This project aims at the social transformation of communities in a holistic manner. The physical, social, emotional, mental, and spiritual growth of the children is 
+            crucial for their development and growth. The Mission provides supplies,education, health care and nutrition to the children.Byinvesting in the children&#39;s education and welfare,
+             it will result in long lasting benefits in the community. It will change these children&#39;s lives and allow them to hope for a brighter future.</span>
             <br/>
             <br/>
-            <span>May God abundantly bless you and your family.</span>
+            <span>Our Mission activities would not be successful without the support and generosity of our sponsors. Your commitment towards the mission program is highly appreciated.</span>
+            <br/>
+            <br/>
+            <span>The Mar Thoma Mission Board has included further information regarding your sponsorship.</span>
+            <br/>
+            <br/>
+            <span>May God bless you and your family.</span>
             <br/>
 
             <br/>
-            <span style="font-weight: bold;"> Yours in His ministry, </span>
-            <br/>
-            <br/>
+            <span style="font-weight: bold;"> Yours in Christ&#39;s ministry, </span>
+           
 
           </div>
         </div>
@@ -91,7 +88,7 @@
 		  <table width="100%">
 			  <tr>
 				<td>
-				 <img width="190px" src="data:image/png;base64,$sign1" />
+				 <img width="190px" src="data:image/png;base64,$bishopSignature" />
 				</td>
 				<td>
 				 <img width="160px" src="data:image/png;base64,$seal" />
@@ -108,13 +105,8 @@
           </div>
         </div>
       </div>
-           <br/>
-		   <br/>  
-		   <br/>
-		   <br/>
-		   <br/>
-		   <br/>
-		   <br/>
+
+            <br/>
 		   <br/>
     </div>
     <div style="padding-left:60px;">

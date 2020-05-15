@@ -154,7 +154,7 @@
 
                     <tr>
                         <td class="thStypeHeader" colspan="2">
-                            <span class="thSpanStyle"><b>$mapEntry.key</b></span>
+                            <span class="thSpanStyle"><b>CHILD SUBSTITUTION INFORMATION</b></span>
                         </td>
                     </tr>
                     <tr>
@@ -289,7 +289,7 @@
             <div class="container">
                 <table class="tableStyle">
                     <tr>
-                        <td class="thStype" colspan="4">
+                        <td class="thStypeHeader" colspan="4">
                             <span class="thSpanStyle">SPONSORSHIP DETAILS</span>
                         </td>
                     </tr>
