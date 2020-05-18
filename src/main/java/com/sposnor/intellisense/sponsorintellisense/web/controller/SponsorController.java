@@ -26,9 +26,11 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.Parish;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sequence;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsor;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorSearch;
+import com.sposnor.intellisense.sponsorintellisense.data.model.StudentSummary;
 import com.sposnor.intellisense.sponsorintellisense.mapper.DashboardMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ParishMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
+import com.sposnor.intellisense.sponsorintellisense.mapper.StudentMapper;
 
 @RestController
 @RequestMapping("/api/sponsor")
@@ -44,6 +46,9 @@ public class SponsorController {
 	
 	@Autowired
 	DashboardMapper dashboardMapper;
+	
+	@Autowired
+	private StudentMapper studentMapper;
 	
 	@GetMapping("/list")
 	public List<Sponsor> getAllSponsors() {
@@ -162,9 +167,24 @@ public class SponsorController {
 	    return ResponseEntity.ok().body(sponsors);
 	}
 	
+	@GetMapping("/search/{name}/parish/{id}")
+	public ResponseEntity<List<Sponsor>> getSponsorByNameAndParishId(@PathVariable(value = "name") String name,
+			@PathVariable(value = "id") Long parishId) {
+		List<Sponsor> sponsors = sponsorMapper.searchByNameAndParishId(name+"%", parishId);
+	    if(sponsors == null) {
+	        return ResponseEntity.notFound().build();
+	    }
+	    return ResponseEntity.ok().body(sponsors);
+	}
+	
 	@GetMapping("/maxout/{fromDate}/{toDate}")
 	public ResponseEntity<List<MaxOutOverview>> getMaxOutSponsors(
 			@PathVariable(value = "fromDate") String fromDate, @PathVariable(value = "toDate") String toDate) {
 		 return ResponseEntity.ok().body(dashboardMapper.getMaxedOut());
+	}
+	
+	@GetMapping("/{id}/students")
+	public ResponseEntity<List<StudentSummary>> enrollments(@RequestHeader(value="userId") int userId, @PathVariable(value = "id") Long sponsorId) {
+	 return ResponseEntity.ok().body(studentMapper.summaryBySponsorId(sponsorId));
 	}
 }

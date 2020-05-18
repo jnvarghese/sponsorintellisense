@@ -151,7 +151,7 @@ public class ReceiptsController {
 			if (r.getReferenceId() != 82) {
 				receiptsMapper.insert(r);
 				receiptsMapper.insertSponsorReceipts(
-						new SponsorReceipts(r.getSponsorId(), r.getReceiptId(), r.getAmount(), userId, r.getReceiptType()));
+						new SponsorReceipts(r.getSponsorId(), r.getReceiptId(), r.getAmount(), userId, r.getReceiptType(), r.getNoOfRenewal()));
 			}
 		} else if (null == r.getSponsorId() && r.getReceiptType() == 2) {
 			LOGGER.info("receipt getSponsorId is null and receiptType is 2 and reference id is " + r.getReferenceId());
@@ -174,7 +174,7 @@ public class ReceiptsController {
 				receiptsMapper.insert(r);
 				sponsorMapper.insert(sponsor);
 				receiptsMapper.insertSponsorReceipts(
-						new SponsorReceipts(sponsor.getId(), r.getReceiptId(), r.getAmount(), userId, r.getReceiptType()));
+						new SponsorReceipts(sponsor.getId(), r.getReceiptId(), r.getAmount(), userId, r.getReceiptType(), r.getNoOfRenewal()));
 			}
 			r.setSponsorId(sponsor.getId());
 			r.setSponsorCode(sponsor.getSponsorCode());

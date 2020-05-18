@@ -12,20 +12,20 @@ import org.apache.ibatis.annotations.Update;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sequence;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsee;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponseeReport;
-import com.sposnor.intellisense.sponsorintellisense.data.model.SponseeSoftDelete;
-import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorMaxOut;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Student;
 import com.sposnor.intellisense.sponsorintellisense.data.model.StudentMaxOut;
+import com.sposnor.intellisense.sponsorintellisense.data.model.StudentSubstitution;
 import com.sposnor.intellisense.sponsorintellisense.data.model.StudentSummary;
 
 @Mapper
 public interface StudentMapper {
 
-	@Select("SELECT S.ID, S.PROJECTID, STUDENTNAME, GENDER, DATEOFBIRTH, S.ADDRESS, HOBBIES, S.STATUS,TALENT, "
-			+ "RECENTACHIVEMENTS, SOFTLOCKED, P.NAME PROJECTNAME, A.NAME AGENCYNAME, studentCode, imageLinkRef,grade,favColor,favGame,nameOfGuardian,occupationOfGuardian,baseLanguage FROM STUDENT S "
+	@Select("SELECT S.ID, CONCAT(A.CODE,'-',P.CODE,'-',STUDENTCODE) studentUniqueCode, uploadstatus, S.PROJECTID, STUDENTNAME, GENDER, DATEOFBIRTH, S.ADDRESS, HOBBIES, S.STATUS,TALENT, "
+			+ "RECENTACHIVEMENTS, SOFTLOCKED, P.NAME PROJECTNAME, P.ADDRESS PROJECTADDRESS, A.NAME AGENCYNAME, studentCode, imageLinkRef,grade,favColor,favGame,nameOfGuardian,occupationOfGuardian,baseLanguage, "
+			+ "DATE_FORMAT(SMAX.maxOut, '%M %Y') renewalDue FROM STUDENT S "
 			+ "LEFT JOIN PROJECT P ON S.PROJECTID = P.ID "
-			+ "LEFT JOIN AGENCY A ON P.AGENCYID = A.ID "
-			+ "WHERE S.ID = #{id}")
+			+ "LEFT JOIN AGENCY A ON P.AGENCYID = A.ID, STUDENT_MAXOUT SMAX "
+			+ "WHERE S.ID = #{id} AND S.ID = SMAX.STUDENTID")
 	Student findById(@Param("id") Long id);
 	
 	@Select("SELECT S.ID, STUDENTNAME, GENDER, P.NAME projectName, A.NAME agencyName, studentCode, imageLinkRef FROM STUDENT S "
@@ -49,6 +49,13 @@ public interface StudentMapper {
 			+ "E.STATUS=0 GROUP BY S.ID ORDER BY SM.MAXOUT, NAMEOFGUARDIAN")
 	List<StudentSummary> summaryByProjectId(@Param("id") Long id);
 	
+	@Select("SELECT ST.id studentId, ST.projectId projectId, E.ID enrollmentId,E.SPONSORID sponsorId, E.EFFECTIVEDATE effectiveDate, ST.ID studentId, "
+			+ "ST.STUDENTNAME studentName,ST.STUDENTCODE studentCode,ST.STATUS STATUS, ST.GENDER, ST.GRADE, "
+			+ "S.EXPIRATIONMONTH maxOutMonth,S.EXPIRATIONYEAR maxOutYear,P.NAME projectName FROM ENROLLMENT E, "
+			+ "SPONSEE S, STUDENT ST, PROJECT P WHERE E.ID=S.ENROLLMENTID AND S.STUDENTID = ST.ID "
+			+ "AND ST.PROJECTID=P.ID AND E.SPONSORID=#{sponsorId} AND E.STATUS =0 AND S.STATUS =0")
+	List<StudentSummary> summaryBySponsorId(@Param("sponsorId") Long id);		
+	
     @Select("SELECT E.ID enrollmentId, A.ID AGENCYID, A.NAME AGENCYNAME, PROJECTID,SP.PARISHID PARISHID,P.NAME PROJECTNAME, S.ID STUDENTID,S.STUDENTNAME, CONCAT(A.CODE,'-',P.CODE,'-',S.STUDENTCODE) UNIQUEID, "
     		+ "GENDER, GRADE, NAMEOFGUARDIAN, OCCUPATIONOFGUARDIAN, DATEOFBIRTH, DATE_FORMAT(SM.MAXOUT, '%b %Y') maxout,"
     		+ "DATEDIFF(SM.MAXOUT, NOW()) AS DAYS, "
@@ -70,9 +77,9 @@ public interface StudentMapper {
 	Sequence getSequenceByProjectId(@Param("id") Long id);
 	
 	@Insert("INSERT INTO STUDENT (PROJECTID, STUDENTNAME, GENDER, DATEOFBIRTH, ADDRESS, HOBBIES, TALENT, "
-			+ "RECENTACHIVEMENTS, PROFILEPICTURE, SOFTLOCKED,grade,favColor,favGame,nameOfGuardian,occupationOfGuardian,baseLanguage,studentCode, createdBy, createdDate) "
+			+ "RECENTACHIVEMENTS, SOFTLOCKED,grade,favColor,favGame,nameOfGuardian,occupationOfGuardian,baseLanguage,studentCode, createdBy, createdDate) "
 			+ "VALUES (#{projectId}, #{studentName},  #{gender}, #{dateOfBirth}, #{address},"
-			+ "#{hobbies}, #{talent}, #{recentAchivements}, #{profilePicture}, #{softlocked}, #{grade}, #{favColor}, #{favGame}, #{nameOfGuardian}, "
+			+ "#{hobbies}, #{talent}, #{recentAchivements}, #{softlocked}, #{grade}, #{favColor}, #{favGame}, #{nameOfGuardian}, "
 			+ "#{occupationOfGuardian}, #{baseLanguage}, #{studentCode}, #{createdBy}, #{createdDate})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id",
 			before = false, resultType= Long.class)
@@ -88,8 +95,7 @@ public interface StudentMapper {
 	@Update("UPDATE STUDENT SET uploadstatus= #{uploadstatus} WHERE id=#{id}")	
 	void updateUploadStatus(Student student);
 
-	@Update("UPDATE STUDENT SET profilePicture = #{profilePicture}, updatedBy= #{updatedBy} WHERE id=#{id}")
-	void uploadImage(Student student);
+	
 	
 	@Select("SELECT ID, STUDENTNAME, studentCode FROM STUDENT WHERE STATUS = 0 AND FIRSTNAME LIKE #{name} ")
 	List<Student> searchByName(@Param("name") String name);
@@ -114,6 +120,10 @@ public interface StudentMapper {
 			@Param("parishId") Long parishId,
 			@Param("projectId") Long projectId
 			);
+	
+	@Select("SELECT *,p.name as projectName FROM STUDENT ST, PROJECT P WHERE ST.PROJECTID = P.ID AND ST.ID NOT IN (SELECT DISTINCT STUDENTID FROM SPONSEE SP, STUDENT ST WHERE "
+			+ "SP.STUDENTID = ST.ID AND ST.PROJECTID= #{projectId} AND SP.STATUS = 0 AND ST.STATUS=0) AND PROJECTID= #{projectId} AND ST.STATUS=0")
+	List<Student> availableStudentsByProject(@Param("projectId") Long projectId);
 	
 	@Select("SELECT S.ID, S.STUDENTCODE, S.STUDENTNAME, S.GENDER, S.GRADE FROM STUDENT S LEFT JOIN SPONSEE SE ON S.ID = SE.STUDENTID, "
 			+ "PARISH_PROJECT PP WHERE S.PROJECTID = PP.PROJECTID and parishId=#{parishId} AND SE.expirationMonth IS NULL AND STUDENTNAME "
@@ -156,9 +166,9 @@ public interface StudentMapper {
 	@Select("SELECT * from sponsee where studentId= #{studentId} and enrollmentId=#{enrollmentId}")
 	Sponsee findSponsee(@Param("studentId") Long studentId, @Param("enrollmentId") Long enrollmentId);
 	
-	@Insert("INSERT INTO sponsee_softdelete (id, enrollmentId, expirationMonth, expirationYear, studentId, createdBy, createdDate) "
-			+ "VALUES (#{id}, #{enrollmentId}, #{expirationMonth}, #{expirationYear}, #{studentId}, #{createdBy}, #{createdDate})")
-	void insertSponseeSoftDelete(SponseeSoftDelete sp);
+	@Insert("INSERT INTO student_substitution (id, enrollmentId, expirationMonth, expirationYear, studentId, substitutedStudentId, createdBy, createdDate, maxOut, reason) "
+			+ "VALUES (#{id}, #{enrollmentId}, #{expirationMonth}, #{expirationYear}, #{studentId}, #{substitutedStudentId}, #{createdBy}, #{createdDate}, #{maxOut}, #{reason})")
+	void insertSponseeSoftDelete(StudentSubstitution sp);
 	
 	@Select("delete from sponsee where id= #{id}")
 	void deleteSponsee(@Param("id") Long id);

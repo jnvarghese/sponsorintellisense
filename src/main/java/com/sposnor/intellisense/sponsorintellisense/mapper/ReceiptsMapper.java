@@ -50,6 +50,13 @@ public interface ReceiptsMapper {
 			+ "WHERE receiptId = #{id}")
 	List<Receipts> list(); // @Deprecated
 	
+	@Select("SELECT r.receiptId, rdate, receiptType,referenceId, r.firstName, r.middleName, r.lastName, r.amount, amountInWords, org.name orgName, p.name parishName, "
+			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName, sr.sponsorId, sum(sr.amount) sponsorReceiptAmount "
+			+ "FROM sponsor_receipts sr right JOIN receipts r ON r.receiptId = sr.receiptId and sr.STATUS<>1 left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
+			+ "initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id  "
+			+ "and r.type=#{type} GROUP BY r.receiptId order by r.receiptId desc;")
+	List<Receipts> listByType(@Param("type") int type); 
+	
 	
 	@Update("UPDATE receipts SET rdate= #{rdate} , firstName = #{firstName}, "
 			+ "middleName= #{middleName}, lastName= #{lastName}, fullName= #{fullName},"
@@ -66,12 +73,15 @@ public interface ReceiptsMapper {
 			+ "users u  WHERE r.status=0 AND r.createdby = u.id  and receiptId = #{receiptId}")
 	Receipts getReceipt(@Param("receiptId") Long rId);
 	
-	@Insert("INSERT INTO sponsor_receipts(sponsorId, receiptId, amount, type, createdBy) values (#{sponsorId}, #{receiptId}, #{amount}, #{type}, #{createdBy})")
+	@Insert("INSERT INTO sponsor_receipts(sponsorId, receiptId, amount, type, createdBy, noOfRenewal) values (#{sponsorId}, #{receiptId}, #{amount}, #{type}, #{createdBy}, #{noOfRenewal})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id", before = false, resultType= Long.class)
 	void insertSponsorReceipts(SponsorReceipts sr);
 	
-	@Select("SELECT sponsorId, receiptId from sponsor_receipts where id=#{id} and status <> 1")
+	@Select("SELECT sponsorId, receiptId, noOfRenewal from sponsor_receipts where id=#{id} and status <> 1")
 	SponsorReceipts getSponsorReceipt(@Param("id") Long id);
+	
+	@Select("SELECT sponsorId, receiptId, noOfRenewal from sponsor_receipts where receiptId=#{id} and status <> 1")
+	SponsorReceipts getSponsorReceiptByReceiptId(@Param("id") Long id);
 	
 	@Select("SELECT id, sponsorId, receiptId, sum(amount) from sponsor_receipts where receiptId=#{receiptId} and status <> 1 GROUP BY sponsorId")
 	List<SponsorReceipts> listByReceiptId(@Param("receiptId") Long receiptId);

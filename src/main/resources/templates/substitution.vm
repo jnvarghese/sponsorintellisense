@@ -168,7 +168,7 @@
                                 </tr>
 
                                 <tr class="border_bottom">
-                                	<td width="50px"><span class="tdSpanStyleTitle">IDENTIFICATION NUMBER</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).uniqueId</span></td>
+                                	<td width="50px"><span class="tdSpanStyleTitle">IDENTIFICATION NUMBER</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).studentUniqueCode</span></td>
                                     <td width="18px" rowspan="4" >
                                         <img style="border:0px solid black;" width="80" height="90"
                                             src="data:image/png;base64,$mapEntry.value.get(0).profilePicture"
@@ -181,8 +181,15 @@
                                 <tr class="border_bottom">
                                     <td><span class="tdSpanStyleTitle">DATE OF BIRTH</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).dateOfBirth</span></td>
                                 </tr>
+                                #if($mapEntry.value.get(0).gender == 'M')
+		         					 #set($gender = 'Male')
+							      #elseif( $mapEntry.value.get(0).gender == 'F')
+								    #set($gender = 'Female')
+							      #elseif($mapEntry.value.get(0).gender == 'O')
+								     #set($gender = 'Other')
+								 #end
                                  <tr class="border_bottom">
-                                    <td><span class="tdSpanStyleTitle">GENDER</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).gender</span></td>
+                                    <td><span class="tdSpanStyleTitle">GENDER</span><br/><span class="tdSpanStyle">$gender</span></td>
                                 </tr>
                                  <tr class="border_bottom">
                                     <td colspan="2"><span class="tdSpanStyleTitle">CLASS/GRADE</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).grade</span></td>
@@ -191,7 +198,7 @@
                                     <td colspan="2"><span class="tdSpanStyleTitle">MEDIUM OF STUDY</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).baseLanguage</span></td>
                                 </tr>
                                  <tr class="border_bottom">
-                                    <td colspan="2"><span class="tdSpanStyleTitle">HOBBY</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).hobby</span></td>
+                                    <td colspan="2"><span class="tdSpanStyleTitle">HOBBY</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).hobbies</span></td>
                                 </tr>
                                  <tr class="border_bottom">
                                     <td colspan="2"><span class="tdSpanStyleTitle">FAVORITE COLOR</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).favColor</span></td>
@@ -209,11 +216,9 @@
                                     <td colspan="2"><span class="tdSpanStyleTitle">PARTNER ORGANIZATION</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).projectName</span></td>
                                 </tr>
                                  <tr class="border_bottom">
-                                    <td colspan="2"><span class="tdSpanStyleTitle">PROJECT LOCATION</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).address</span></td>
+                                    <td colspan="2"><span class="tdSpanStyleTitle">PROJECT LOCATION</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).projectAddress</span></td>
                                 </tr>
-                                <tr class="border_bottom">
-                                    <td colspan="2"><span class="tdSpanStyleTitle">SPONSORSHIP PERIOD</span><br/><span class="tdSpanStyle">-</span></td>
-                                </tr>
+                               
                                 <tr>
                                     <td colspan="2"><span class="tdSpanStyleTitle">RENEWAL DATE</span><br/><span class="tdSpanStyle">$mapEntry.value.get(0).renewalDue</span></td>
                                 </tr>
@@ -226,10 +231,10 @@
                                 </tr>
 
                                 <tr class="border_bottom">
-                                	<td width="50px"><span class="tdSpanStyleTitle">IDENTIFICATION NUMBER</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).uniqueId</span></td>
+                                	<td width="50px"><span class="tdSpanStyleTitle">IDENTIFICATION NUMBER</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).studentUniqueCode</span></td>
                                     <td width="18px" rowspan="4" >
                                         <img style="border:0px solid black;" width="80" height="90"
-                                            src="data:image/png;base64,$mapEntry.value.get(0).profilePicture"
+                                            src="data:image/png;base64,$mapEntry.value.get(1).profilePicture"
                                             alt="imagename" />
                                     </td>
                                 </tr>
@@ -239,8 +244,15 @@
                                  <tr class="border_bottom">
                                     <td><span class="tdSpanStyleTitle">DATE OF BIRTH</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).dateOfBirth</span></td>
                                 </tr>
+                                 #if($mapEntry.value.get(1).gender == 'M')
+		         					 #set($gender2 = 'Male')
+							      #elseif( $mapEntry.value.get(1).gender == 'F')
+								    #set($gender2 = 'Female')
+							      #elseif($mapEntry.value.get(1).gender == 'O')
+								     #set($gender2 = 'Other')
+								 #end
                                  <tr class="border_bottom">
-                                    <td><span class="tdSpanStyleTitle">GENDER</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).gender</span></td>
+                                    <td><span class="tdSpanStyleTitle">GENDER</span><br/><span class="tdSpanStyle">$gender2</span></td>
                                 </tr>
                                  <tr class="border_bottom">
                                     <td colspan="2"><span class="tdSpanStyleTitle">CLASS/GRADE</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).grade</span></td>
@@ -249,7 +261,7 @@
                                     <td colspan="2"><span class="tdSpanStyleTitle">MEDIUM OF STUDY</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).baseLanguage</span></td>
                                 </tr>
                                  <tr class="border_bottom">
-                                    <td colspan="2"><span class="tdSpanStyleTitle">HOBBY</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).hobby</span></td>
+                                    <td colspan="2"><span class="tdSpanStyleTitle">HOBBY</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).hobbies</span></td>
                                 </tr>
                                  <tr class="border_bottom">
                                     <td colspan="2"><span class="tdSpanStyleTitle">FAVORITE COLOR</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).favColor</span></td>
@@ -267,11 +279,9 @@
                                     <td colspan="2"><span class="tdSpanStyleTitle">PARTNER ORGANIZATION</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).projectName</span></td>
                                 </tr>
                                  <tr class="border_bottom">
-                                    <td colspan="2"><span class="tdSpanStyleTitle">PROJECT LOCATION</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).address</span></td>
+                                    <td colspan="2"><span class="tdSpanStyleTitle">PROJECT LOCATION</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).projectAddress</span></td>
                                 </tr>
-                                <tr class="border_bottom">
-                                    <td colspan="2"><span class="tdSpanStyleTitle">SPONSORSHIP PERIOD</span><br/><span class="tdSpanStyle">-</span></td>
-                                </tr>
+                               
                                 <tr>
                                     <td colspan="2"><span class="tdSpanStyleTitle">RENEWAL DATE</span><br/><span class="tdSpanStyle">$mapEntry.value.get(1).renewalDue</span></td>
                                 </tr>

@@ -1,11 +1,23 @@
-package com.sposnor.intellisense.sponsorintellisense.util;
+package com.sposnor.intellisense.sponsorintellisense.web.controller;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Base64;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
@@ -22,33 +34,34 @@ import com.itextpdf.tool.xml.pipeline.html.AbstractImageProvider;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipeline;
 import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Receipts;
+import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReceipts;
+import com.sposnor.intellisense.sponsorintellisense.mapper.ReceiptsMapper;
+import com.sposnor.intellisense.sponsorintellisense.util.VelocityTemplateParser;
 
-public class VelocityRenewalGeneratorRunner {
+@RestController
+@RequestMapping("/api/renewal")
+public class RenewalController {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ReceiptsController.class);
+
+	@Autowired
+	private ReceiptsMapper receiptsMapper;
 	
-	public static void main(String[] args) throws Exception {
-		
-		VelocityRenewalGeneratorRunner parser = new VelocityRenewalGeneratorRunner();
-		
-		parser.generatePdf();
-		
+	
+	@GetMapping("/list")
+	public List<Receipts> list() {
+		LOGGER.debug(" Listing Receipts");
+		return receiptsMapper.listByType(2);
 	}
 	
-	private void generatePdf() throws Exception {
+	@RequestMapping(value = "/generaterenewal/{id}", method = RequestMethod.GET, produces = "application/pdf")
+	ResponseEntity<byte[]> generatereceipt(@PathVariable(value = "id") Long receiptId) throws Exception {
 
-	    Receipts sr = new Receipts();
-	    
-	    sr.setFullName("Jinu Varghese");
-	    sr.setStreetAddress("120 Lindsey Ct");
-	    sr.setCity("Franklin Park");
-	    sr.setState("NJ");
-	    
-	    sr.setParishName("St Stephens MTC");
-	    sr.setParishCity("East Brunswick");
-	    
-
-	 
-		String receiptHtml = VelocityTemplateParser.generateRenewalLetter(sr, 1);
+		Receipts receipt = receiptsMapper.getReceipt(receiptId);
+		
+		SponsorReceipts sr = receiptsMapper.getSponsorReceiptByReceiptId(receipt.getReceiptId());
+		
+		String receiptHtml = VelocityTemplateParser.generateRenewalLetter(receipt, sr.getNoOfRenewal());
 
 		// System.out.println(receipt);
 		ByteArrayOutputStream byteArrayPutStream = new ByteArrayOutputStream();
@@ -87,11 +100,16 @@ public class VelocityRenewalGeneratorRunner {
 		document.close();
 
 		pdfBytes = byteArrayPutStream.toByteArray();
-		
-		OutputStream out = new FileOutputStream("C://Users//HP//Desktop//"+System.currentTimeMillis()+".pdf");
-		out.write(pdfBytes);
-		out.close();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.parseMediaType("application/pdf"));
+		String filename = "output.pdf";
+		headers.setContentDispositionFormData(filename, filename);
+		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+		ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfBytes, headers, HttpStatus.OK);
+		return response;
 	}
+	
 	class Base64ImageProvider extends AbstractImageProvider {
 
 		@Override
@@ -117,5 +135,4 @@ public class VelocityRenewalGeneratorRunner {
 			return null;
 		}
 	}
-
 }

@@ -2,7 +2,7 @@ package com.sposnor.intellisense.sponsorintellisense.data.model;
 
 import java.io.Serializable;
 
-public class SwapStudent implements Serializable {
+public class SubstituteStudent implements Serializable {
 
 	/**
 	 * 
@@ -15,6 +15,18 @@ public class SwapStudent implements Serializable {
 	
 	private Long enrollentId;
 	
+	private String reason;
+	
+	
+	
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
 	public Long getEnrollentId() {
 		return enrollentId;
 	}

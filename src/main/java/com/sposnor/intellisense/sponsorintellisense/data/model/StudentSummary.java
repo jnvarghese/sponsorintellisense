@@ -84,6 +84,18 @@ public class StudentSummary implements Serializable {
 	
 	private String maxOutYear;
 	
+	private int status;
+	
+	
+	
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
 	public Long getParishId() {
 		return parishId;
 	}

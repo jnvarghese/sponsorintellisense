@@ -15,6 +15,8 @@ public class SponsorReceipts implements Serializable {
 	
 	private Long receiptId;
 	
+	private int noOfRenewal;
+	
 	private double amount;
 	
 	private Long status;
@@ -38,6 +40,16 @@ public class SponsorReceipts implements Serializable {
 	private int receiptType;
 
 	
+	
+	
+	public int getNoOfRenewal() {
+		return noOfRenewal;
+	}
+
+	public void setNoOfRenewal(int noOfRenewal) {
+		this.noOfRenewal = noOfRenewal;
+	}
+
 	public String getRdate() {
 		return rdate;
 	}
@@ -169,12 +181,13 @@ public class SponsorReceipts implements Serializable {
 		this.type = type;
 	}
 	
-	public SponsorReceipts(Long sponsorId, Long receiptId, double amount, Long createdBy, int type) {
+	public SponsorReceipts(Long sponsorId, Long receiptId, double amount, Long createdBy, int type, int noOfRenewal) {
 		super();
 		this.sponsorId = sponsorId;
 		this.receiptId = receiptId;
 		this.amount = amount;
 		this.createdBy = createdBy;
+		this.noOfRenewal = noOfRenewal;
 		if(type == 2) {
 			this.type = "I";
 		} else if(type == 1) {

@@ -14,6 +14,8 @@ public class Receipts {
 	
 	private String rdate;
 	
+	private int noOfRenewal;
+	
 	private String firstName;
 	
 	private String middleName;
@@ -85,6 +87,14 @@ public class Receipts {
 	private List<Initiative> initiatives;
 	
 	
+	public int getNoOfRenewal() {
+		return noOfRenewal;
+	}
+
+	public void setNoOfRenewal(int noOfRenewal) {
+		this.noOfRenewal = noOfRenewal;
+	}
+
 	public List<Initiative> getInitiatives() {
 		return initiatives;
 	}

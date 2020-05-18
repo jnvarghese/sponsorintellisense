@@ -12,6 +12,7 @@ import org.apache.ibatis.annotations.Update;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sequence;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsor;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReport;
+import com.sposnor.intellisense.sponsorintellisense.data.model.Substitution;
 
 @Mapper
 //@CacheNamespace(implementation=org.mybatis.caches.ehcache.EhcacheCache.class)
@@ -58,6 +59,10 @@ public interface SponsorMapper {
 	public static final String SEARCH_BY_NAME ="SELECT S.ID, FIRSTNAME, LASTNAME, MIDDLEINITIAL, NICKNAME, PARISHID, NAME parishName, P.CITY parishCity "
 			+ "FROM SPONSOR S, PARISH P WHERE S.PARISHID = P.ID AND SPONSORSTATUS = 0 AND FIRSTNAME LIKE #{name} ";
 	
+	public static final String SEARCH_BY_NAME_AND_PARISHID ="SELECT S.ID, FIRSTNAME, LASTNAME, MIDDLEINITIAL, NICKNAME, PARISHID,"
+			+ " NAME parishName, P.CITY parishCity, s.street, s.city, s.state, s.postalcode "
+			+ "FROM SPONSOR S, PARISH P WHERE S.PARISHID = P.ID AND SPONSORSTATUS = 0 AND PARISHID = #{parishId} AND FIRSTNAME LIKE #{name} ";
+	
 	@Select(SELECT_SPONSOR_BY_ID)
 	Sponsor findById(@Param("id") Long id);
 	
@@ -98,6 +103,9 @@ public interface SponsorMapper {
 	
 	@Select(SEARCH_BY_NAME)
 	List<Sponsor> searchByName(@Param("name") String name);
+	
+	@Select(SEARCH_BY_NAME_AND_PARISHID)
+	List<Sponsor> searchByNameAndParishId(@Param("name") String name, @Param("parishId") Long id);
 //	/profilePicture
 	
 	@Select("SELECT EN.ID, DATE_FORMAT(SM.maxOut, '%M %Y') renewalDue, CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',SP.SPONSORCODE) UNIQUEID, "
@@ -142,6 +150,12 @@ public interface SponsorMapper {
 			+ "PHONE1, SUM(AMOUNT) AMOUNT,TYPE FROM SPONSOR S, SPONSOR_RECEIPTS SR WHERE TYPE= 'P' AND SR.STATUS= 0 "
 			+ "AND S.ID = SR.SPONSORID AND SR.RECEIPTID= #{id} GROUP BY S.ID ORDER BY FIRSTNAME, LASTNAME")
 	List<Sponsor> getSponsorReceiptsByParish(@Param("id") Long receiptId);
+	
+	@Select("SELECT SS.ENROLLMENTID, SS.SUBSTITUTEDSTUDENTID OLDSTUDENTID, SS.STUDENTID NEWSTUDENTID, SS.MAXOUT, "
+			+ " SS.REASON, S.ID SPONSORID, S.FIRSTNAME, S.LASTNAME, S.MIDDLEINITIAL, CONCAT(S.STREET,' ',S.CITY,' ', "
+			+ "S.STATE,' ',S.POSTALCODE) SPONSORADDRESS,  P.NAME PARISHNAME, P.CITY PARISHCITY FROM STUDENT_SUBSTITUTION SS, "
+			+ "ENROLLMENT E, SPONSOR S, PARISH P WHERE SS.ENROLLMENTID = E.ID AND E.SPONSORID = S.ID AND S.PARISHID = P.ID ORDER BY ss.createdDate desc")
+	List<Substitution> getSubstitutions();
 }
 //@Options(flushCache=true)
 //@Options(useGeneratedKeys = true, keyProperty = "id", flushCache=true)

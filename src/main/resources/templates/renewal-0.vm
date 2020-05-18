@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .bodyStyle {
+            font-family: Cambria;
+        }
+
+        #container {
+            width: 100%;
+            font-size: 0;
+            margin: 15px;
+            padding-left: 20px;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body class="bodyStyle">
+    <div style="padding-left:15px">
+        <br />
+        <img width="580" src="data:image/png;base64,$coverLetterHeader" />
+    </div>
+    <div>
+
+        <div>
+            <div>
+                <div style="padding-bottom: 1px;">
+                    <div style="padding-left:20px">
+         
+                        <br />
+                        <br />
+                        <table width="100%">
+                            <tr>
+                                <td> </td>
+                                <td align="right"><span style="font-weight: bold;">$timeNow</span></td>
+                            </tr>
+                            <tr>
+                                <td height="60px"><span style="font-weight: bold;">To</span></td>
+                                <td></td>
+                            </tr>
+                           
+                            <tr>
+                                <td><span style="font-weight: bold;">$sponsorName</span></td>
+                                <td align="right"><span style="font-weight: bold;">Parish: $parishName, $parishCity</span></td>
+                            </tr>
+                            <tr>
+                                <td><span style="font-weight: bold;">$street</span></td>
+                                <td><span style="font-weight: bold;"></span></td>
+                            </tr>
+                            <tr>
+                                <td><span style="font-weight: bold;">$city</span></td>
+                                <td><span style="font-weight: bold;"></span></td>
+                            </tr>
+                            <tr>
+                                <td><span style="font-weight: bold;">$state</span></td>
+                                <td><span style="font-weight: bold;"></span></td>
+                            </tr>
+                        </table>
+
+                        <br />
+                        <span style="font-weight: bold;font-style: italic;">Dear $sponsorName</span>
+                        <br />
+                        <br />
+                        <span style="font-weight: bold;font-style: italic;">Greetings from the Sinai Mar Thoma
+                            Center,New York</span>
+                        <br />
+                        <br />
+         
+                        <span>Thank you for being a part of the Light to Life Mission. We have received your
+                            contribution to renew your sponsorship and the donation will be
+                            utilized for the overall development of these children.</span>
+                        <br />
+                        <br />
+            
+                        <span>This project aims at the social transformation of communities in a holistic manner. The
+                            physical, social, emotional, mental, and spiritual growth of the children is
+                            crucial for their growth and development. The Mission provides education, health care and
+                            nutrition to the children.</span>
+                        <br />
+                        <br />
+           
+                        <span>Investing in the children&#39;s education and welfare will transform their lives and bless
+                            them with a brighter future. We request you to remember these children and their
+                            caregivers in your prayers. Let our efforts help the children to stay healthy and create a
+                            lasting impact in the community so that they will be a positive influence for
+                            their community.</span>
+                        <br />
+                        <br />
+                    	<br />
+
+                        <span>Our Mission activities would not be successful without the support and generosity of our
+                            sponsors. We request your continued support and prayers towards this worthy cause.
+                            May God bless your family and use you to touch the lives of many through this
+                            project.</span>
+                        <br />
+                        <br />
+                  		<br />
+
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div style="padding-bottom: 2px;">
+
+                    <div style="padding-left:15px">
+                        <table width="100%">
+                            <tr>
+                                <td>
+                                    Thank you and kind regards,
+                                    <br />
+                                    <img width="120px" src="data:image/png;base64,$secAchen" />
+                                    <br />
+                                    <b>Rev. Manoj Idiculla</b>
+                                    <br />
+                                    Secretary, Mar Thoma Mission Board
+                                    <br />
+                                    Diocese of North America &amp; Europe
+                                    <br />
+                                </td>
+                                <td>
+                                    <br />
+                                    <br />
+                                    <img width="90" src="data:image/png;base64,$coordinatorSignature" />
+                                    <br />
+                                    <b>Liz Mathew</b>
+                                    <br />
+                                    Mission Coordinator
+                                    <br />
+                                    Mar Thoma Mission Board
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <br />
+            <br />
+       
+        </div>
+        <div style="padding-left:60px;">
+            <b style="color: #1245BC; font-size: 11px;font-weight: bold;">Mission Activities: Mexico Mission, Native
+                American Mission, Neighborhood Mission, India Mission, Light to Life</b>
+        </div>
+        <div style="padding-left:150px;">
+            <b style="color: #a31010; font-size: 14px;font-style: italic;">'Reaching out to the unreached with the
+                message of love'</b>
+        </div>
+    </div>
+
+</body>
+
+</html>

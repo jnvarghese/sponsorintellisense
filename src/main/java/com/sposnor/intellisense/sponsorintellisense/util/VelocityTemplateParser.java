@@ -220,7 +220,8 @@ public class VelocityTemplateParser {
 		context.put("timeNow", time);
 	
 		context.put("sponsorName", sr.getSponsorName());
-		
+		context.put("parishName", sr.getParishName());
+		context.put("parishCity", sr.getParishCity());
 		context.put("totalCount", size);
 		context.put("seal", seal); //FIXME
 		context.put("header", header);
@@ -237,7 +238,7 @@ public class VelocityTemplateParser {
 		return writer.toString();
 	}
 	
-	public static String generateRenewalLetter(SponsorReport sr, int size) throws Exception {
+	public static String generateRenewalLetter(Receipts sr, int size) throws Exception {
 		final Properties props = new Properties();
 		props.setProperty("resource.loader", "class");
 		props.setProperty("class.resource.loader.class",
@@ -253,16 +254,20 @@ public class VelocityTemplateParser {
 		
 		
 		/* next, get the Template */
-		Template t = engine.getTemplate("templates/renewal.vm");
+		Template t;
+		if(size > 0)
+			t = engine.getTemplate("templates/renewal.vm"); 
+		else
+			t = engine.getTemplate("templates/renewal-0.vm"); 
 		/* create a context and add data */
 		context.put("timeNow", time);
 	
-		context.put("sponsorName", sr.getSponsorName());
+		context.put("sponsorName", sr.getFullName());
 		context.put("parishName", sr.getParishName());
 		context.put("parishCity", sr.getParishCity());
-		context.put("street", sr.getStreet());
-		context.put("city", sr.getSponsorCity());
-		context.put("state", sr.getSponsorState());
+		context.put("street", sr.getStreetAddress());
+		context.put("city", sr.getCity());
+		context.put("state", sr.getState());
 		
 		context.put("totalCount", size);
 		
@@ -291,12 +296,10 @@ public class VelocityTemplateParser {
 
 		/* next, get the Template */
 		Template t = null;
-		if(studentSize == 2) {
-			t = engine.getTemplate("templates/"+vmTemplate+"2.vm");
-		}else {
-			t = engine.getTemplate("templates/"+vmTemplate+".vm");
-		}
+		t = engine.getTemplate("templates/"+vmTemplate+".vm");
+		
 		/* create a context and add data */
+		context.put("studentSize", dataMap.get("studentSize"));
 		context.put("timeNow", dataMap.get("timeNow"));
 		context.put("sponsorId", dataMap.get("sponsorId"));
 		context.put("sponsorName", dataMap.get("sponsorName"));
