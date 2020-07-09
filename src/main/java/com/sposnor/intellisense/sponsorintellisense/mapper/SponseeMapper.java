@@ -12,11 +12,11 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsee;
 public interface SponseeMapper {
 
 	@Select({"<script>",
-        "SELECT * FROM SPONSEE SP WHERE SP.studentId IN ", 
+        "SELECT * FROM SPONSEE SP WHERE SP.STATUS = 0 AND SP.studentId IN ", 
           "<foreach item='id' index='index' collection='studentIds'",
             "open='(' separator=',' close=')'>",
             "#{id}",
           "</foreach>",
         "</script>"})
-	List<Sponsee> listSponseeByStudentIds(@Param("studentIds") Long[] studentIds);
+	List<Sponsee> listOfActiveSponseeByStudentIds(@Param("studentIds") Long[] studentIds);
 }

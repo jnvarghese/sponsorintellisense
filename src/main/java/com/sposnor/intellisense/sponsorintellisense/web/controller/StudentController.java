@@ -239,10 +239,7 @@ public class StudentController {
 		
 		Long[] ids = students.stream().map(student -> student.getId()).toArray(Long[]::new);
 		
-		List<Sponsee> sponsees = sponseeMapper.listSponseeByStudentIds(ids);
-
-		List<Long> activeSponseeIds = sponsees.stream()
-										.filter(sp -> sp.getStatus() == 0)
+		List<Long> activeSponseeIds = sponseeMapper.listOfActiveSponseeByStudentIds(ids).stream()
 										.map(sp -> sp.getStudentId()).collect(Collectors.toList());
 		
 		eligibleStudents = students.stream()
