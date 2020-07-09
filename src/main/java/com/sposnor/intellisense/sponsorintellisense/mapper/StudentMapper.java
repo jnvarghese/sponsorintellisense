@@ -28,6 +28,14 @@ public interface StudentMapper {
 			+ "WHERE S.ID = #{id} AND S.ID = SMAX.STUDENTID")
 	Student findById(@Param("id") Long id);
 	
+	@Select("SELECT S.ID, CONCAT(A.CODE,'-',P.CODE,'-',STUDENTCODE) studentUniqueCode, uploadstatus, S.PROJECTID, STUDENTNAME, GENDER, DATEOFBIRTH, S.ADDRESS, HOBBIES, S.STATUS,TALENT, "
+			+ "RECENTACHIVEMENTS, SOFTLOCKED, P.NAME PROJECTNAME, P.ADDRESS PROJECTADDRESS, A.NAME AGENCYNAME, studentCode, imageLinkRef,grade,favColor,favGame,nameOfGuardian,occupationOfGuardian,baseLanguage, "
+			+ "DATE_FORMAT(SMAX.maxOut, '%M %Y') renewalDue FROM STUDENT S "
+			+ "LEFT JOIN PROJECT P ON S.PROJECTID = P.ID "
+			+ "LEFT JOIN AGENCY A ON P.AGENCYID = A.ID, STUDENT_MAXOUT SMAX "
+			+ "WHERE S.ID = #{id} AND S.ID = SMAX.STUDENTID and smax.enrollmentid= #{enrollmentId}")
+	Student findByIdAndEnrollmentId(@Param("id") Long id, @Param("enrollmentId") Long enrollmentId);
+	
 	@Select("SELECT S.ID, STUDENTNAME, GENDER, P.NAME projectName, A.NAME agencyName, studentCode, imageLinkRef FROM STUDENT S "
 			+ "LEFT JOIN PROJECT P ON S.PROJECTID = P.ID LEFT JOIN AGENCY A ON P.AGENCYID = A.ID WHERE S.STATUS = 0 ")
 	List<Student> list();
@@ -114,9 +122,17 @@ public interface StudentMapper {
 	
 	@Select("SELECT S.ID, S.STUDENTCODE, S.STUDENTNAME, S.GENDER, S.GRADE FROM STUDENT S LEFT JOIN SPONSEE SE ON S.ID = SE.STUDENTID, "
 			+ "PARISH_PROJECT PP WHERE S.PROJECTID = PP.PROJECTID  AND PP.PARISHID = #{parishId} "
-			+ "AND PP.PROJECTID = #{projectId} AND SE.expirationMonth IS NULL "
+			+ "AND PP.PROJECTID = #{projectId} AND SE.STATUS = 0 "
 			+ "AND S.STATUS = 0 ORDER BY S.STUDENTNAME")
 	List<Student> findUnEnrolledStudents(
+			@Param("parishId") Long parishId,
+			@Param("projectId") Long projectId
+			);
+	
+	@Select("SELECT S.ID, S.STUDENTCODE, S.STUDENTNAME, S.GENDER, S.GRADE FROM STUDENT S ,PARISH_PROJECT PP "
+			+ "WHERE S.PROJECTID = PP.PROJECTID AND PP.PARISHID = #{parishId} AND PP.PROJECTID = #{projectId} AND S.STATUS = 0 "
+			+ "ORDER BY S.STUDENTNAME")
+	List<Student> listStudentsByParishAndProject(
 			@Param("parishId") Long parishId,
 			@Param("projectId") Long projectId
 			);

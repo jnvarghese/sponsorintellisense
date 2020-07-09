@@ -82,8 +82,8 @@ public class SubstitutionController {
 		
 		Map<String,List<Student>> substitutions= new HashMap<String,List<Student>>();
 		List<Student> students = new ArrayList<Student>();
-		Student oldStudent = studentMapper.findById(oldStudentId);
-		Student newStudent = studentMapper.findById(newStudentId);
+		Student oldStudent = studentMapper.findByIdAndEnrollmentId(oldStudentId, enrollmentId);
+		Student newStudent = studentMapper.findByIdAndEnrollmentId(newStudentId, enrollmentId);
 		students.add(newStudent);
 		students.add(oldStudent);	
 		

@@ -29,6 +29,10 @@ public class Sponsee implements Serializable {
 
 	private Date updatedDate;
 	
+	private int status;
+	
+	
+	
 	public Sponsee() {
 		// TODO Auto-generated constructor stub
 	}
@@ -102,6 +106,14 @@ public class Sponsee implements Serializable {
 
 	public void setUpdatedDate(Date updatedDate) {
 		this.updatedDate = updatedDate;
+	}
+ 
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	@Override

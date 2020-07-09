@@ -36,6 +36,7 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.StudentStatus;
 import com.sposnor.intellisense.sponsorintellisense.data.model.StudentSubstitution;
 import com.sposnor.intellisense.sponsorintellisense.data.model.StudentSummary;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SubstituteStudent;
+import com.sposnor.intellisense.sponsorintellisense.mapper.SponseeMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.StudentMapper;
 import com.sposnor.intellisense.sponsorintellisense.s3.S3Wrapper;
 
@@ -52,6 +53,9 @@ public class StudentController {
 
 	@Autowired
 	private StudentMapper studentMapper;
+	
+	@Autowired
+	SponseeMapper sponseeMapper;
 
 	@GetMapping("/list")
 	public List<Student> getAllStudents() {
@@ -229,11 +233,26 @@ public class StudentController {
 	public ResponseEntity<List<Student>> getUnEnrolledStudents(@PathVariable(value = "parishId") Long parishId,
 			@PathVariable(value = "projectId") Long projectId) {
 
-		List<Student> students = studentMapper.findUnEnrolledStudents(parishId, projectId);
+		List<Student> eligibleStudents;
+		
+		List<Student> students = studentMapper.listStudentsByParishAndProject(parishId, projectId);
+		
+		Long[] ids = students.stream().map(student -> student.getId()).toArray(Long[]::new);
+		
+		List<Sponsee> sponsees = sponseeMapper.listSponseeByStudentIds(ids);
+
+		List<Long> activeSponseeIds = sponsees.stream()
+										.filter(sp -> sp.getStatus() == 0)
+										.map(sp -> sp.getStudentId()).collect(Collectors.toList());
+		
+		eligibleStudents = students.stream()
+			      .filter(student -> !activeSponseeIds.contains(student.getId()))
+			      .collect(Collectors.toList());
+		
 		if (students == null) {
 			return ResponseEntity.notFound().build();
 		}
-		return ResponseEntity.ok().body(students);
+		return ResponseEntity.ok().body(eligibleStudents);
 	}
 
 	@GetMapping("/list/project/{projectId}/unenrolled")
