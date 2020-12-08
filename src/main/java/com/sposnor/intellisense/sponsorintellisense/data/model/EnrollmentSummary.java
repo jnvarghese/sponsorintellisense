@@ -31,6 +31,17 @@ public class EnrollmentSummary {
 	
 	private int numberOfStudents;
 	
+	private String effectiveDate;
+	
+	
+	public String getEffectiveDate() {
+		return effectiveDate;
+	}
+
+	public void setEffectiveDate(String effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
+
 	private List<StudentSummary> students = new ArrayList<StudentSummary>();
 	
 	private List<SponsorReceipts> sponsorReceipts = new ArrayList<SponsorReceipts>();

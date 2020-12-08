@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectKey;
 import org.apache.ibatis.annotations.Update;
 
+import com.sposnor.intellisense.sponsorintellisense.data.model.Enrollment;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sequence;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Sponsee;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponseeReport;
@@ -25,8 +26,16 @@ public interface StudentMapper {
 			+ "DATE_FORMAT(SMAX.maxOut, '%M %Y') renewalDue FROM STUDENT S "
 			+ "LEFT JOIN PROJECT P ON S.PROJECTID = P.ID "
 			+ "LEFT JOIN AGENCY A ON P.AGENCYID = A.ID, STUDENT_MAXOUT SMAX "
-			+ "WHERE S.ID = #{id} AND S.ID = SMAX.STUDENTID")
+			+ "WHERE S.ID = #{id} AND S.ID = SMAX.STUDENTID AND SMAX.STATUS= 0 ")
 	Student findById(@Param("id") Long id);
+	
+	@Select("SELECT S.ID, CONCAT(A.CODE,'-',P.CODE,'-',STUDENTCODE) studentUniqueCode, uploadstatus, S.PROJECTID, STUDENTNAME, GENDER, DATEOFBIRTH, "
+			+ "S.ADDRESS, HOBBIES, S.STATUS,TALENT, RECENTACHIVEMENTS, SOFTLOCKED, P.NAME PROJECTNAME, P.ADDRESS PROJECTADDRESS, A.NAME AGENCYNAME, "
+			+ "studentCode, imageLinkRef,grade,favColor,favGame,nameOfGuardian,occupationOfGuardian,baseLanguage FROM STUDENT S "
+			+ "LEFT JOIN PROJECT P ON S.PROJECTID = P.ID "
+			+ "LEFT JOIN AGENCY A ON P.AGENCYID = A.ID "
+			+ "WHERE S.ID = #{id} ")
+	Student getById(@Param("id") Long id);
 	
 	@Select("SELECT S.ID, CONCAT(A.CODE,'-',P.CODE,'-',STUDENTCODE) studentUniqueCode, uploadstatus, S.PROJECTID, STUDENTNAME, GENDER, DATEOFBIRTH, S.ADDRESS, HOBBIES, S.STATUS,TALENT, "
 			+ "RECENTACHIVEMENTS, SOFTLOCKED, P.NAME PROJECTNAME, P.ADDRESS PROJECTADDRESS, A.NAME AGENCYNAME, studentCode, imageLinkRef,grade,favColor,favGame,nameOfGuardian,occupationOfGuardian,baseLanguage, "
@@ -167,15 +176,27 @@ public interface StudentMapper {
 	List<SponseeReport> listSponseesByEnrolmentId(@Param("id") Long id);
 
 	@Select("SELECT CONCAT(A.CODE,'-',P.CODE,'-',ST.STUDENTCODE) STUDENTUNIQUECODE,STUDENTNAME,ST.ID,P.ID PROJECTID, GENDER, "
-			+ "GRADE,A.NAME AGENCYNAME,P.NAME PROJECTNAME FROM STUDENT ST,SPONSEE SP, PROJECT P, AGENCY A WHERE ST.PROJECTID = P.ID "
+			+ "GRADE,A.NAME AGENCYNAME,P.NAME PROJECTNAME, profilePicture FROM STUDENT ST,SPONSEE SP, PROJECT P, AGENCY A WHERE ST.PROJECTID = P.ID "
 			+ "AND P.AGENCYID = A.ID AND ST.ID = SP.STUDENTID AND ST.STATUS = 0 AND STUDENTNAME LIKE CONCAT(#{name}, '%') "
 			+ "GROUP BY STUDENTNAME")
-	List<Student> search(@Param("name") String name);
+	List<Student> searchEnrolledByName(@Param("name") String name);
+	
+	@Select("SELECT CONCAT(A.CODE,'-',P.CODE,'-',ST.STUDENTCODE) STUDENTUNIQUECODE,STUDENTNAME,ST.ID,P.ID PROJECTID, GENDER, "
+			+ "GRADE,A.NAME AGENCYNAME,P.NAME PROJECTNAME, profilePicture FROM STUDENT ST,SPONSEE SP, PROJECT P, AGENCY A WHERE ST.PROJECTID = P.ID "
+			+ "AND P.AGENCYID = A.ID AND ST.ID = SP.STUDENTID AND ST.STATUS = 0 AND STUDENTCODE LIKE CONCAT(#{studentCode}, '%') "
+			+ "GROUP BY STUDENTCODE ORDER BY STUDENTCODE")
+	List<Student> searchEnrolledByCode(@Param("studentCode") String studentCode);
+	
+	@Select("SELECT ST.ID ID,E.ID ENROLLMENTID, SM.ID SPONSEEID, ST.STUDENTCODE,ST.STUDENTNAME, ST.NAMEOFGUARDIAN, "
+			+ "DATE_FORMAT(SM.MAXOUT,'%M, %Y') EXPIRATION,  P.NAME projectName, P.ADDRESS projectAddress FROM ENROLLMENT E, STUDENT_MAXOUT SM,STUDENT ST, "
+			+ "PROJECT P WHERE SM.ENROLLMENTID=E.ID AND SM.STUDENTID=ST.ID AND ST.PROJECTID = P.ID AND SPONSORID= #{id} "
+			+ "AND E.STATUS =0 AND SM.STATUS=0")
+	List<Student> findStudentsBySponsorId(@Param("id") Long sponsorId);
 	
 	@Select("SELECT E.ID ENROLLMENTID, E.EFFECTIVEDATE,E.ACTUALAMOUNT,E.CONTRIBUTIONAMOUNT,E.MISCAMOUNT, "
-			+ "CONCAT(U.FIRSTNAME,' ', U.LASTNAME) CREATEDBY,E.CREATEDDATE,SM.STUDENTID,SM.MAXOUT,SP.ID SPONSEEID,SM.ID STUMAXOUTID, "
-			+ "ST.STUDENTNAME, ST.STUDENTCODE FROM ENROLLMENT E, SPONSEE SP, STUDENT_MAXOUT SM , STUDENT ST, USERS U "
-			+ "WHERE E.ID=SP.ENROLLMENTID AND E.ID = SM.ENROLLMENTID AND SP.STUDENTID=ST.ID AND SP.STUDENTID = SM.STUDENTID "
+			+ "CONCAT(U.FIRSTNAME,' ', U.LASTNAME) CREATEDBY,E.CREATEDDATE,SM.STUDENTID, DATE_FORMAT(sm.maxOut,'%M, %Y') MAXOUT,SP.ID SPONSEEID,SM.ID STUMAXOUTID, "
+			+ "ST.STUDENTNAME, ST.STUDENTCODE, ST.GENDER, ST.GRADE, ST.occupationOfGuardian, ST.nameOfGuardian, p.NAME projectName FROM ENROLLMENT E, SPONSEE SP, STUDENT_MAXOUT SM , STUDENT ST, PROJECT P, USERS U "
+			+ "WHERE ST.PROJECTID= P.ID AND E.ID=SP.ENROLLMENTID AND E.ID = SM.ENROLLMENTID AND SP.STUDENTID=ST.ID AND SP.STUDENTID = SM.STUDENTID "
 			+ "AND E.CREATEDBY = U.ID AND SPONSORID=#{sponsorId} AND E.STATUS=0")
 	List<StudentSummary> getEnrollmentBySponsorId(@Param("sponsorId") Long sponsorId);
 	

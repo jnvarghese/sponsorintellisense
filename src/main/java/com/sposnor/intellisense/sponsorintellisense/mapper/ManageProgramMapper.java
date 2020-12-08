@@ -16,20 +16,20 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.ViewEnroll;
 @Mapper
 public interface ManageProgramMapper {
 
-	@Select("SELECT SUM(EN.CONTRIBUTIONAMOUNT) totalContribution, SP.FIRSTNAME spFn, SP. LASTNAME spLn, SP.MIDDLEINITIAL spMI,"
-			+ "SP.SPONSORSTATUS, SP.ID spId FROM SPONSOR SP , ENROLLMENT EN, SPONSEE SPE, STUDENT ST WHERE SP.ID = EN.SPONSORID "
-			+ "AND EN.ID = SPE.ENROLLMENTID "
+	@Select("SELECT SP.SPONSORCODE, P.NAME PARISHNAME, SUM(EN.CONTRIBUTIONAMOUNT) totalContribution, SP.FIRSTNAME spFn, SP. LASTNAME spLn, SP.MIDDLEINITIAL spMI,"
+			+ "SP.SPONSORSTATUS, SP.ID spId FROM SPONSOR SP , ENROLLMENT EN, SPONSEE SPE, STUDENT ST, PARISH P WHERE SP.ID = EN.SPONSORID "
+			+ "AND EN.ID = SPE.ENROLLMENTID AND SP.PARISHID = P.ID "
 			+ "AND ST.ID = SPE.STUDENTID  AND ST.ID = #{studentId}  GROUP BY EN.SPONSORID,SP.FIRSTNAME, SP. LASTNAME, "
 			+ "SP.MIDDLEINITIAL, SP.SPONSORSTATUS, SP.ID")
 	List<SponsorshipInfo> getSponsorshipInfoByStudentId(@Param("studentId") Long studentId);	
 	
-	@Select("SELECT DATE_FORMAT(PAYMENTDATE, \"%M %Y\") paymentDate, DATE_FORMAT(maxOut, \"%M %Y\") maxOut, "
+	@Select("SELECT DATE_FORMAT(EFFECTIVEDATE, \"%M %Y\") effectiveDate, effectiveDate efdt, renewed, DATE_FORMAT(maxOut, \"%M %Y\") maxOut, maxOut maxOutDate, "
 			+ "CONTRIBUTIONAMOUNT contriAmount, MISCAMOUNT miscAmount, SP_CNT.noOfKids noOfKids, SP_CNT.STUDENTNAME, SP_CNT.NAME projectName "
 			+ "FROM SPONSEE SP, ENROLLMENT EN , STUDENT_MAXOUT STM, "
 			+ "(SELECT COUNT(SP.ID) NOOFKIDS,SP.ENROLLMENTID, ST.STUDENTNAME, P.NAME FROM SPONSEE SP, ENROLLMENT EN, STUDENT ST, PROJECT P "
 			+ "WHERE SP.ENROLLMENTID=EN.ID AND EN.SPONSORID=#{sponsorId} AND SP.STATUS=0 AND SP.studentId= ST.id AND ST.projectId=P.id) SP_CNT "
 			+ "WHERE  EN.ID = SP.ENROLLMENTID AND EN.ID = STM.ENROLLMENTID AND EN.ID = STM.ENROLLMENTID "
-			+ "AND STM.STUDENTID = SP.STUDENTID AND SP.STUDENTID= #{studentId} AND EN.SPONSORID= #{sponsorId}")
+			+ "AND STM.STUDENTID = SP.STUDENTID AND SP.STUDENTID= #{studentId} AND EN.SPONSORID= #{sponsorId} ORDER BY efdt desc ")
 	List<Contribution> getSponsorshipContribution(@Param("studentId") Long studentId, @Param("sponsorId") Long sponsorId);	
 	
 	
@@ -48,7 +48,7 @@ public interface ManageProgramMapper {
 			+ "receipt r where ern.receiptId= r.id and ern.id = #{ernId}")
 	Receipt getReceipt(@Param("ernId") Long ernId);
 	
-	@Select("SELECT S.ID sponsorId, CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',S.SPONSORCODE) sponsorCode, MAX(EN.id) enrollmentId, "
+	@Select("SELECT S.ID sponsorId, CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',S.SPONSORCODE) sponsorCode, effectiveDate, MAX(EN.id) enrollmentId, "
 			+ "FIRSTNAME sponsorFirstName, LASTNAME sponsorLastName, MIDDLEINITIAL sponsorMi, p.name parishName, p.city parishCity, "
 			+ "NICKNAME sponsorNickName, SUM((ROUND(contributionAmount)+ROUND(miscAmount, 2))) contribution FROM ENROLLMENT EN, "
 			+ "SPONSOR S, PARISH P, CENTER C,REGION R "
@@ -57,9 +57,9 @@ public interface ManageProgramMapper {
 			+ "AND EN.RENEWED IN ('Y','N') AND S.SPONSORSTATUS = 0  GROUP BY EN.sponsorId")
 	List<EnrollmentSummary> getSummaryByParishId(@Param("id") Long parishId); 
 	
-	@Select("SELECT E.ID ENROLLMENTID, CONCAT(A.CODE,'-',P.CODE,'-',ST.STUDENTCODE) STUDENTCODE, STM.MAXOUT, DATE_FORMAT(STM.MAXOUT, \"%M\") MAXOUTMONTH, "
+	@Select("SELECT E.ID ENROLLMENTID, CONCAT(A.CODE,'-',P.CODE,'-',ST.STUDENTCODE) STUDENTCODE, STM.MAXOUT, DATE_FORMAT(STM.MAXOUT, \"%b\") MAXOUTMONTH, "
 			+ "DATE_FORMAT(STM.MAXOUT, \"%Y\") MAXOUTYEAR FROM ENROLLMENT E, SPONSOR SP,STUDENT_MAXOUT STM, STUDENT ST,PROJECT P, AGENCY A  "
 			+ "WHERE E.SPONSORID = SP.ID AND SP.PARISHID= #{id} AND E.ID=STM.ENROLLMENTID AND STM.STUDENTID = ST.ID AND ST.PROJECTID = P.ID AND P.AGENCYID = A.ID "
-			+ "AND E.STATUS=0 ORDER BY ENROLLMENTID,MAXOUT")
+			+ "AND E.STATUS=0 AND STM.STATUS=0 ORDER BY ENROLLMENTID,MAXOUT")
 	List<StudentSummary> getStudentByEnrollmentId(@Param("id") Long parishId); 
 }

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.management.RuntimeErrorException;
 import javax.validation.Valid;
 
 import org.apache.commons.collections.map.HashedMap;
@@ -173,7 +174,7 @@ public class StudentController {
 			throws IOException {
 		String message = "";
 		String name = null;
-		Student student = studentMapper.findById(studentId);
+		Student student = studentMapper.getById(studentId);
 		try {
 			PutObjectResult result = s3Wrapper.upload(multipartFile.getInputStream(), student.getId(),
 					student.getImageLinkRef(), student.getProjectId(), userId);
@@ -245,7 +246,6 @@ public class StudentController {
 		eligibleStudents = students.stream()
 			      .filter(student -> !activeSponseeIds.contains(student.getId()))
 			      .collect(Collectors.toList());
-		
 		if (students == null) {
 			return ResponseEntity.notFound().build();
 		}
@@ -264,7 +264,19 @@ public class StudentController {
 
 	@GetMapping("/search/{name}")
 	public List<Student> getStudentsByName(@PathVariable(value = "name") String name) {
-		return studentMapper.search(name);
+		return studentMapper.searchEnrolledByName(name);
+	}
+	
+	@GetMapping("/type/{type}/match/{term}")
+	public List<Student> getStudentsBySearchType(@PathVariable(value = "type") String type, 
+			@PathVariable(value = "term") String term) {
+		if(type.equalsIgnoreCase("name")) {
+			return studentMapper.searchEnrolledByName(term);
+		}else if(type.equalsIgnoreCase("code")) {
+			return studentMapper.searchEnrolledByCode(term);
+		} else {
+			throw new RuntimeException("Unmatched search type");
+		}
 	}
 
 	@GetMapping("/search/byparish/{parishId}")

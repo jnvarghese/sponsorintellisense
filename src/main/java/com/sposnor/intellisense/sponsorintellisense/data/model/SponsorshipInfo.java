@@ -13,6 +13,28 @@ public class SponsorshipInfo {
 	private String spStatus;
 	
 	private Long spId;
+	
+	private String sponsorCode;
+	
+	private String parishName;
+
+	
+	
+	public String getSponsorCode() {
+		return sponsorCode;
+	}
+
+	public void setSponsorCode(String sponsorCode) {
+		this.sponsorCode = sponsorCode;
+	}
+
+	public String getParishName() {
+		return parishName;
+	}
+
+	public void setParishName(String parishName) {
+		this.parishName = parishName;
+	}
 
 	public float getTotalContribution() {
 		return totalContribution;

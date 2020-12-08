@@ -134,10 +134,10 @@ public class ManageProgramController {
 		
 		if(sponser.getNetContribution().equals("0.00")) {
 			map.put("fundUsed", sponser.getContribution());
-			map.put("totalSponsorshipReceived", sponser.getTotal());
+			map.put("totalSponsorshipReceived", sponser.getTotal()); // CONTRIBUTIONAMOUNT + MISCAMOUNT
 		}else {
-			map.put("fundUsed", sponser.getNetContribution());
-			map.put("totalSponsorshipReceived", sponser.getNetTotal());
+			map.put("fundUsed", sponser.getNetTotal()); //NETAMOUNT - MISCAMOUNT
+			map.put("totalSponsorshipReceived", sponser.getNetContribution()); //NETAMOUNT
 		}
 		map.put("totalBalance", sponser.getMiscAmount());
 		map.put("spnStartDate", sponser.getPaymentDate());

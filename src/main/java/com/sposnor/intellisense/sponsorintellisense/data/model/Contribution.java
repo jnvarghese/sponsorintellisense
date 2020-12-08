@@ -2,7 +2,7 @@ package com.sposnor.intellisense.sponsorintellisense.data.model;
 
 public class Contribution {
 
-	private String paymentDate;
+	private String effectiveDate;
 	
 	private String maxOut;
 	
@@ -16,20 +16,25 @@ public class Contribution {
 	
 	private String projectName;
 	
+	private String renewed;
+	
+	private String maxOutDate;
+	
+	
+	public String getMaxOutDate() {
+		return maxOutDate;
+	}
+
+	public void setMaxOutDate(String maxOutDate) {
+		this.maxOutDate = maxOutDate;
+	}
+
 	public int getNoOfKids() {
 		return noOfKids;
 	}
 
 	public void setNoOfKids(int noOfKids) {
 		this.noOfKids = noOfKids;
-	}
-
-	public String getPaymentDate() {
-		return paymentDate;
-	}
-
-	public void setPaymentDate(String paymentDate) {
-		this.paymentDate = paymentDate;
 	}
 
 	public String getMaxOut() {
@@ -71,7 +76,20 @@ public class Contribution {
 	public void setProjectName(String projectName) {
 		this.projectName = projectName;
 	}
-	
-	
-	
+
+	public String getEffectiveDate() {
+		return effectiveDate;
+	}
+
+	public void setEffectiveDate(String effectiveDate) {
+		this.effectiveDate = effectiveDate;
+	}
+
+	public String getRenewed() {
+		return renewed;
+	}
+
+	public void setRenewed(String renewed) {
+		this.renewed = renewed;
+	}
 }
