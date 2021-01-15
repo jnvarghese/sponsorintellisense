@@ -3,7 +3,10 @@ package com.sposnor.intellisense.sponsorintellisense.web.controller;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,6 +15,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,9 +30,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.amazonaws.SdkClientException;
+import com.amazonaws.services.s3.model.PutObjectResult;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.itextpdf.tool.xml.XMLWorker;
 import com.itextpdf.tool.xml.XMLWorkerHelper;
@@ -47,6 +54,8 @@ import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReceipts;
 import com.sposnor.intellisense.sponsorintellisense.mapper.InitMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ReceiptsMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
+import com.sposnor.intellisense.sponsorintellisense.s3.S3Wrapper;
+import com.sposnor.intellisense.sponsorintellisense.util.HeaderFooterPageEvent;
 import com.sposnor.intellisense.sponsorintellisense.util.VelocityTemplateParser;
 
 @RestController
@@ -65,6 +74,14 @@ public class ReceiptsController {
 
 	@Autowired
 	private SponsorMapper sponsorMapper;
+	
+	@Value("${amazon.s3.receipts}")
+	private String receipt_folder;
+	
+	@Autowired
+	S3Wrapper s3Wrapper;
+	
+	 private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
 
 	@GetMapping("/amount/{id}")
 	public Receipts getSponsorReceiptAmount(@PathVariable(value = "id") Long receiptId) {
@@ -155,6 +172,7 @@ public class ReceiptsController {
 			}
 		} else if (null == r.getSponsorId() && r.getReceiptType() == 2) {
 			LOGGER.info("receipt getSponsorId is null and receiptType is 2 and reference id is " + r.getReferenceId());
+			/*
 			Sponsor sponsor = new Sponsor();
 			sponsor.setCreatedBy(userId);
 			sponsor.setParishId(r.getReferenceId());
@@ -169,15 +187,15 @@ public class ReceiptsController {
 			sponsor.setEmailAddress(r.getEmail1());
 			sponsor.setCoSponserName(r.getCoSponsor());
 			sponsor.setSponsorCode(
-					String.valueOf(sponsorMapper.getSequenceByParishId(r.getReferenceId()).getSequence() + 1));
-			if (r.getReferenceId() != 82) {
+					String.valueOf(sponsorMapper.getSequenceByParishId(r.getReferenceId()).getSequence() + 1));*/
+			//if (r.getReferenceId() != 82) {
 				receiptsMapper.insert(r);
-				sponsorMapper.insert(sponsor);
-				receiptsMapper.insertSponsorReceipts(
-						new SponsorReceipts(sponsor.getId(), r.getReceiptId(), r.getAmount(), userId, r.getReceiptType(), r.getNoOfRenewal()));
-			}
-			r.setSponsorId(sponsor.getId());
-			r.setSponsorCode(sponsor.getSponsorCode());
+				//sponsorMapper.insert(sponsor); 1/11/20
+				//receiptsMapper.insertSponsorReceipts( 1/11/20
+					//	new SponsorReceipts(sponsor.getId(), r.getReceiptId(), r.getAmount(), userId, r.getReceiptType(), r.getNoOfRenewal()));
+			//}
+			//r.setSponsorId(sponsor.getId()); 1/11/20
+			//r.setSponsorCode(sponsor.getSponsorCode()); 1/11/20
 		} else {
 			LOGGER.info("ELSE ---and reference id is " + r.getReferenceId());
 			if (null != r.getSponsorId())
@@ -196,7 +214,7 @@ public class ReceiptsController {
 	}
 
 	@RequestMapping(value = "/generatereceipt/{id}", method = RequestMethod.GET, produces = "application/pdf")
-	ResponseEntity<byte[]> generatereceipt(@PathVariable(value = "id") Long receiptId) throws Exception {
+	ResponseEntity<byte[]> generatereceipt(@RequestHeader Long userId, @PathVariable(value = "id") Long receiptId) throws Exception {
 
 		Receipts receipt = receiptsMapper.getReceipt(receiptId);
 
@@ -233,12 +251,12 @@ public class ReceiptsController {
 		byte[] pdfBytes = byteArrayPutStream.toByteArray();
 
 		// step 1
-		Document document = new Document();
+		Document document = new Document(PageSize.A4, 20, 20, 50, 25);
 		// step 2
 
 		PdfWriter writer = PdfWriter.getInstance(document, byteArrayPutStream);
-		// TableHeader event = new TableHeader();
-		// writer.setPageEvent(event);
+		HeaderFooterPageEvent event = new HeaderFooterPageEvent();
+		writer.setPageEvent(event);
 		// step 3
 		document.open();
 		// step 4
@@ -272,6 +290,17 @@ public class ReceiptsController {
 		headers.setContentDispositionFormData(filename, filename);
 		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 		ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfBytes, headers, HttpStatus.OK);
+		InputStream inputStream = new ByteArrayInputStream(byteArrayPutStream.toByteArray(), 0, 1024);
+		try {
+			PutObjectResult result = s3Wrapper.upload(inputStream, 
+					receipt.getReceiptId()+"-"+sdf.format(new Date())+".pdf", userId, receipt_folder);
+			LOGGER.info("Receipt uploaded successfull.");
+		} catch (SdkClientException ex) {
+			ex.printStackTrace();
+			LOGGER.error(" Unable to upload receipt to S3" + ex.getMessage());
+		}
+		
+		
 		return response;
 	}
 

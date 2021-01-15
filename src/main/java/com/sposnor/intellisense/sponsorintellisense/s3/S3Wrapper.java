@@ -98,6 +98,23 @@ public class S3Wrapper {
 		return putObjectResult;
 	}
 	
+	public PutObjectResult upload(InputStream inputStream, String uploadKey, Long uploadedBy, String folder) {
+		
+		ObjectMetadata metadata = new ObjectMetadata();
+		metadata.setContentType("application/pdf");
+        metadata.addUserMetadata("x-amz-meta-title", "uploaded by "+uploadedBy);
+        
+		PutObjectRequest putObjectRequest = new PutObjectRequest(folder, uploadKey, inputStream, metadata);
+
+		putObjectRequest.setCannedAcl(CannedAccessControlList.Private);
+
+		PutObjectResult putObjectResult = amazonS3Client.putObject(putObjectRequest);
+
+		IOUtils.closeQuietly(inputStream);
+
+		return putObjectResult;
+	}
+	
 	public PutObjectResult upload(InputStream inputStream, Long uploadKey, String imageLinkRef, Long project, String uploadedBy) {
 		
 		String bucket = student_profile_picture_bucket+"/"+project;

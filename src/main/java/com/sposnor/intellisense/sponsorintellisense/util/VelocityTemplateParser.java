@@ -112,7 +112,9 @@ public class VelocityTemplateParser {
 		context.put("number", new NumberTool());
 		context.put("dateUtil", new DateTool());
 		context.put("StringUtils", StringUtils.class);
-	    context.put("coordinatorSignature", coordinatorSignature);      
+		if(null != receipt.getCoSponsorName())
+			context.put("coSponsorName", "& "+receipt.getCoSponsorName());
+	    //context.put("coordinatorSignature", coordinatorSignature);      
 	     /* now render the template into a StringWriter */
 		StringWriter writer = new StringWriter();
 		t.merge(context, writer);

@@ -24,6 +24,8 @@ public class Receipts {
 	
 	private String fullName;
 	
+	private String coSponsorName;
+	
 	private String transaction;
 	
 	private double amount;
@@ -80,13 +82,20 @@ public class Receipts {
 	
 	private String subInitiativeName;
 	
-	private String coSponsor;
-	
 	private double sponsorReceiptAmount;
 	
 	private List<Initiative> initiatives;
 	
 	
+	
+	public String getCoSponsorName() {
+		return coSponsorName;
+	}
+
+	public void setCoSponsorName(String coSponsorName) {
+		this.coSponsorName = coSponsorName;
+	}
+
 	public int getNoOfRenewal() {
 		return noOfRenewal;
 	}
@@ -109,14 +118,6 @@ public class Receipts {
 
 	public void setSponsorReceiptAmount(double sponsorReceiptAmount) {
 		this.sponsorReceiptAmount = sponsorReceiptAmount;
-	}
-
-	public String getCoSponsor() {
-		return coSponsor;
-	}
-
-	public void setCoSponsor(String coSponsor) {
-		this.coSponsor = coSponsor;
 	}
 
 	public String getSubInitiativeName() {
