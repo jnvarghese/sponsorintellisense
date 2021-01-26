@@ -1,6 +1,7 @@
 package com.sposnor.intellisense.sponsorintellisense.data.model;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class SponsorReceipts implements Serializable {
 
@@ -39,9 +40,27 @@ public class SponsorReceipts implements Serializable {
 	
 	private int receiptType;
 
+	private Long parishId;
+
+	private List<StudentExtendedMonth> months;
 	
 	
-	
+	public List<StudentExtendedMonth> getMonths() {
+		return months;
+	}
+
+	public void setMonths(List<StudentExtendedMonth> months) {
+		this.months = months;
+	}
+
+	public Long getParishId() {
+		return parishId;
+	}
+
+	public void setParishId(Long parishId) {
+		this.parishId = parishId;
+	}
+
 	public int getNoOfRenewal() {
 		return noOfRenewal;
 	}

@@ -11,6 +11,7 @@ import org.apache.ibatis.annotations.Update;
 
 import com.sposnor.intellisense.sponsorintellisense.data.model.Receipts;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReceipts;
+import com.sposnor.intellisense.sponsorintellisense.data.model.StudentExtendedMonth;
 
 @Mapper
 public interface ReceiptsMapper {
@@ -50,11 +51,11 @@ public interface ReceiptsMapper {
 			+ "WHERE receiptId = #{id}")
 	List<Receipts> list(); // @Deprecated
 	
-	@Select("SELECT r.receiptId, rdate, receiptType,referenceId, r.firstName, r.middleName, r.lastName, r.coSponsorName, r.amount, amountInWords, org.name orgName, p.name parishName, "
+	@Select("SELECT r.receiptId, rdate, noOfRenewal, receiptType,referenceId, r.firstName, r.middleName, r.lastName, r.coSponsorName, r.amount, amountInWords, org.name orgName, p.name parishName, "
 			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName, sr.sponsorId, sum(sr.amount) sponsorReceiptAmount "
 			+ "FROM sponsor_receipts sr right JOIN receipts r ON r.receiptId = sr.receiptId and sr.STATUS<>1 left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
 			+ "initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id  "
-			+ "and r.type=#{type} GROUP BY r.receiptId order by r.receiptId desc;")
+			+ "and noOfRenewal>0 and r.type=#{type} GROUP BY r.receiptId order by r.receiptId desc;")
 	List<Receipts> listByType(@Param("type") int type); 
 	
 	
@@ -65,6 +66,11 @@ public interface ReceiptsMapper {
 			+ " referenceId = #{referenceId}, email1= #{email1}, email2= #{email2},"
 			+ " phone1= #{phone1}, phone2= #{phone2}, type= #{type}, status= #{status}, updatedBy = #{updatedBy} WHERE receiptId=#{receiptId}")	
 	void update(Receipts r);
+	
+	@Update("UPDATE receipts SET referenceId = #{referenceId}, updatedBy = #{updatedBy} WHERE receiptId=#{receiptId}")	
+	void updateReferenceId(@Param("referenceId") Long referenceId,  
+							@Param("receiptId") Long receiptId, 
+							@Param("updatedBy") Long updatedBy);
 
 	@Select("SELECT receiptId, rdate, receiptType,referenceId,transaction, r.firstName, r.middleName, r.lastName,  fullName, amount,initiativeId, "
 			+ "coSponsorName , amountInWords, org.name orgName, p.name parishName, p.city parishCity, r.streetAddress, r.city, r.state, r.zipCode, "
@@ -73,9 +79,14 @@ public interface ReceiptsMapper {
 			+ "users u  WHERE r.status=0 AND r.createdby = u.id  and receiptId = #{receiptId}")
 	Receipts getReceipt(@Param("receiptId") Long rId);
 	
-	@Insert("INSERT INTO sponsor_receipts(sponsorId, receiptId, amount, type, createdBy, noOfRenewal) values (#{sponsorId}, #{receiptId}, #{amount}, #{type}, #{createdBy}, #{noOfRenewal})")
+	@Insert("INSERT INTO sponsor_receipts(sponsorId, receiptId, amount, type, createdBy, noOfRenewal) "
+			+ "values (#{sponsorId}, #{receiptId}, #{amount}, #{type}, #{createdBy}, #{noOfRenewal})")
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id", before = false, resultType= Long.class)
 	void insertSponsorReceipts(SponsorReceipts sr);
+	
+	@Insert("INSERT INTO student_extended_month(receiptId, studentId, month) "
+			+ "values (#{receiptId}, #{studentId}, #{month})")
+	void insertStudentExtendedMonth(StudentExtendedMonth sem);
 	
 	@Select("SELECT sponsorId, receiptId, noOfRenewal from sponsor_receipts where id=#{id} and status <> 1")
 	SponsorReceipts getSponsorReceipt(@Param("id") Long id);

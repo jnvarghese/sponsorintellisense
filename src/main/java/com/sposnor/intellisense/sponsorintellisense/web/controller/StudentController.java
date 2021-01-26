@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -230,15 +231,21 @@ public class StudentController {
 		return ResponseEntity.ok().body(students);
 	}
 
-	@GetMapping("/list/unenrolled/{parishId}/{projectId}")
+	@GetMapping("/list/unenrolled/{parishId}/{projectId}/{gender}")
 	public ResponseEntity<List<Student>> getUnEnrolledStudents(@PathVariable(value = "parishId") Long parishId,
-			@PathVariable(value = "projectId") Long projectId) {
+			@PathVariable(value = "projectId") Long projectId, @PathVariable(required =false) String gender) {
 
 		List<Student> eligibleStudents;
-		
-		List<Student> students = studentMapper.listStudentsByParishAndProject(parishId, projectId);
-		
+		List<Student> students;
+		System.out.println(" -- " + StringUtils.isEmpty(gender));
+		if("null".equalsIgnoreCase(gender))
+			students = studentMapper.listStudentsByParishAndProject(parishId, projectId);
+		else
+			students = studentMapper.listStudentsByParishAndProjectAndGender(parishId, projectId, gender);
+			
 		Long[] ids = students.stream().map(student -> student.getId()).toArray(Long[]::new);
+		
+		System.out.println(" - ids- " + ids);
 		
 		List<Long> activeSponseeIds = sponseeMapper.listOfActiveSponseeByStudentIds(ids).stream()
 										.map(sp -> sp.getStudentId()).collect(Collectors.toList());

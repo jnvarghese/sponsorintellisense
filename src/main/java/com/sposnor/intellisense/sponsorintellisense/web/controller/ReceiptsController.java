@@ -3,7 +3,6 @@ package com.sposnor.intellisense.sponsorintellisense.web.controller;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Date;
@@ -31,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.amazonaws.SdkClientException;
-import com.amazonaws.services.s3.model.PutObjectResult;
 import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Image;
@@ -121,9 +119,20 @@ public class ReceiptsController {
 	@PostMapping("/addSponsorReceipt")
 	public ResponseEntity<SponsorReceipts> addSponsorToReceipt(@RequestHeader Long userId,
 			@Valid @RequestBody SponsorReceipts r) {
-		SponsorReceipts sr = new SponsorReceipts(r.getSponsorId(), r.getReceiptId(), r.getAmount(), userId, "P");
-		receiptsMapper.insertSponsorReceipts(sr);
-		return new ResponseEntity<SponsorReceipts>(sr, HttpStatus.OK);
+		
+		SponsorReceipts toSave = new SponsorReceipts(r.getSponsorId(), r.getReceiptId(), r.getAmount(), userId, 
+				Integer.valueOf(r.getType()), r.getMonths().size());
+		
+		receiptsMapper.insertSponsorReceipts(toSave);
+		
+		r.getMonths().forEach(obj ->{
+			obj.setReceiptId(r.getReceiptId());
+			receiptsMapper.insertStudentExtendedMonth(obj);
+		});
+		
+		receiptsMapper.updateReferenceId(r.getParishId(), r.getReceiptId(), userId);
+		
+		return new ResponseEntity<SponsorReceipts>(toSave, HttpStatus.OK);
 	}
 
 	@PutMapping("/modifySponsorReceipt")
@@ -290,11 +299,10 @@ public class ReceiptsController {
 		headers.setContentDispositionFormData(filename, filename);
 		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
 		ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfBytes, headers, HttpStatus.OK);
-		InputStream inputStream = new ByteArrayInputStream(byteArrayPutStream.toByteArray(), 0, 1024);
+		
 		try {
-			PutObjectResult result = s3Wrapper.upload(inputStream, 
+			s3Wrapper.upload(byteArrayPutStream.toByteArray(), 
 					receipt.getReceiptId()+"-"+sdf.format(new Date())+".pdf", userId, receipt_folder);
-			LOGGER.info("Receipt uploaded successfull.");
 		} catch (SdkClientException ex) {
 			ex.printStackTrace();
 			LOGGER.error(" Unable to upload receipt to S3" + ex.getMessage());

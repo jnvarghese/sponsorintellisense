@@ -55,13 +55,28 @@ public class SponsorController {
 		return sponsorMapper.list();
 	}
 	
-	@GetMapping("/list/{firstName}/{lastName}/{id}")
-	public List<Sponsor> getAllSponsors(@PathVariable(value = "firstName") String firstName, 
+	
+	
+	@GetMapping("/listByDemography/{firstName}/{lastName}/{street}/{city}/{state}/{zipcode}")
+	public List<Sponsor> listByDemography(
+			@PathVariable(value = "firstName") String firstName, 
 			@PathVariable(value = "lastName") String lastName,
-			@PathVariable(value= "id") Long parishId) {
-		return sponsorMapper.list2(firstName, lastName, parishId);
+			@PathVariable(value = "street") String street,
+			@PathVariable(value = "city") String city,
+			@PathVariable(value = "state") String state,
+			@PathVariable(value = "zipcode") String zipcode
+			) {
+		return sponsorMapper.listByDemography(firstName.replace("1", ""), lastName.replace("1", ""), 
+				street.replace("1", ""), city.replace("1", ""), state.replace("1", ""), zipcode.replace("Z", ""));
 	}
 	
+	@GetMapping("/list/{firstName}/{lastName}/{id}")
+	public List<Sponsor> getAllSponsorsByNameAndParishId(@PathVariable(value = "firstName") String firstName, 
+			@PathVariable(value = "lastName") String lastName,
+			@PathVariable(value= "id") Long parishId) {
+		return sponsorMapper.listByMatchingFirstNameAndLastNameAndParishId(firstName, lastName, parishId);
+	}
+
 	@PostMapping("/searchsponsor")
 	public ResponseEntity<List<Sponsor>> search(@RequestHeader Long userId, @RequestBody SponsorSearch search) {	
 	     if("1".equalsIgnoreCase(search.getCity())) {
@@ -131,6 +146,17 @@ public class SponsorController {
 	    }
 	    return ResponseEntity.ok().body(sponsor);
 	}
+	
+	@Deprecated
+	@GetMapping("/findByCode/{sponsorCode}")
+	public ResponseEntity<List<Sponsor>> getSponsorBySponsorCode(@PathVariable(value = "sponsorCode") String sponsorCode) {
+		List<Sponsor> sponsors = sponsorMapper.getSponsorBySponsorCode(sponsorCode);
+	    if(sponsors == null) {
+	        return ResponseEntity.notFound().build();
+	    }
+	    return ResponseEntity.ok().body(sponsors);
+	}
+	
 	
 	@GetMapping("/sequence/{id}")
 	public ResponseEntity<Sequence> getSequenceByParishId(@PathVariable(value = "id") Long parishId) {

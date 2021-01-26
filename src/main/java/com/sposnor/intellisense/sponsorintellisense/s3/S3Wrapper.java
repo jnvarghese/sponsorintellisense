@@ -98,22 +98,27 @@ public class S3Wrapper {
 		return putObjectResult;
 	}
 	
-	public PutObjectResult upload(InputStream inputStream, String uploadKey, Long uploadedBy, String folder) {
+	public void upload(byte[] objectBytes, String uploadKey, Long uploadedBy, String folder) {
+		
 		
 		ObjectMetadata metadata = new ObjectMetadata();
+		metadata.setContentLength(objectBytes.length);
 		metadata.setContentType("application/pdf");
-        metadata.addUserMetadata("x-amz-meta-title", "uploaded by "+uploadedBy);
+		//metadata.setSSEAlgorithm(ObjectMetadata.AES_256_SERVER_SIDE_ENCRYPTION);
+        metadata.addUserMetadata("x-amz-meta-title", "Uploaded by "+uploadedBy);
         
-		PutObjectRequest putObjectRequest = new PutObjectRequest(folder, uploadKey, inputStream, metadata);
+		PutObjectRequest putObjectRequest =
+				new PutObjectRequest(folder, uploadKey, new ByteArrayInputStream(objectBytes), metadata);
 
 		putObjectRequest.setCannedAcl(CannedAccessControlList.Private);
 
 		PutObjectResult putObjectResult = amazonS3Client.putObject(putObjectRequest);
 
-		IOUtils.closeQuietly(inputStream);
-
-		return putObjectResult;
+		LOGGER.info("Object \"" + uploadKey + "\" uploaded with SSE.");
+		//IOUtils.closeQuietly(inputStream);
+		
 	}
+	//https://docs.aws.amazon.com/AmazonS3/latest/dev/SSEUsingJavaSDK.html
 	
 	public PutObjectResult upload(InputStream inputStream, Long uploadKey, String imageLinkRef, Long project, String uploadedBy) {
 		

@@ -27,6 +27,18 @@ public interface SponsorMapper {
 			"FROM SPONSOR S, PARISH P WHERE S.PARISHID =P.ID AND S.SPONSORSTATUS = 0 AND PARISHID= #{id} "
 			+ " AND FIRSTNAME LIKE CONCAT(#{firstName}, '%') AND LASTNAME LIKE CONCAT(#{lastName}, '%')";
 
+	public static final String SELECT_ALL_ACTIVE_SPONSORS_BY_FN_LN = "SELECT S.ID, FIRSTNAME, LASTNAME, MIDDLEINITIAL, STREET,S.CITY, STATE,POSTALCODE, SPONSORCODE,EMAILADDRESS,PHONE1,PHONE2, P.PROMOTEREMAIL promoterEmail " + 
+			"FROM SPONSOR S, PARISH P WHERE S.PARISHID =P.ID AND S.SPONSORSTATUS = 0"
+			+ " AND FIRSTNAME LIKE CONCAT(#{firstName}, '%') AND LASTNAME LIKE CONCAT(#{lastName}, '%')";
+	
+	public static final String SELECT_ALL_ACTIVE_SPONSORS_BY_DEMO = "SELECT S.ID, FIRSTNAME, LASTNAME, MIDDLEINITIAL, "
+			+ "STREET,S.CITY, STATE, POSTALCODE, EMAILADDRESS, PHONE1,PHONE2, "
+			+ "P.PROMOTEREMAIL promoterEmail, P.NAME parishName, P.CITY parishCity, parishId, CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',S.SPONSORCODE) SPONSORCODE " 
+			+ " FROM SPONSOR S, PARISH P,CENTER C,REGION R WHERE S.PARISHID =P.ID AND P.CENTERID = C.ID AND C.REGIONID = R.ID AND S.SPONSORSTATUS = 0"
+			+ " AND FIRSTNAME LIKE CONCAT(#{firstName}, '%') AND LASTNAME LIKE CONCAT(#{lastName}, '%')"
+			+ " AND STREET LIKE CONCAT(#{street}, '%') AND S.CITY LIKE CONCAT(#{city}, '%')"
+			+ " AND S.STATE LIKE CONCAT(#{state}, '%') AND S.postalCode LIKE CONCAT(#{zipcode}, '%')";
+	
 	/*
 	public static final String SELECT_ALL_ACTIVE_SPONSORS_BY_PARISHID = "SELECT S.ID, CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',S.SPONSORCODE) sponsorCode, "
 			+ "FIRSTNAME, LASTNAME, MIDDLEINITIAL, NICKNAME,street, s.city, STATE,postalCode, parishId "
@@ -73,7 +85,20 @@ public interface SponsorMapper {
 	List<Sponsor> list();
 	
 	@Select(SELECT_ALL_ACTIVE_SPONSORS_BY_FN_LN_PARISH_ID)
-	List<Sponsor> list2(@Param("firstName") String firstName, @Param("lastName") String lastName, @Param("id") Long id);
+	List<Sponsor> listByMatchingFirstNameAndLastNameAndParishId(@Param("firstName") String firstName, @Param("lastName") String lastName, @Param("id") Long id);
+	
+	@Select(SELECT_ALL_ACTIVE_SPONSORS_BY_FN_LN)
+	List<Sponsor> listByMatchingFirstNameAndLastName(@Param("firstName") String firstName, @Param("lastName") String lastName);
+	
+	@Select(SELECT_ALL_ACTIVE_SPONSORS_BY_DEMO)
+	List<Sponsor> listByDemography(
+			@Param("firstName") String firstName, 
+			@Param("lastName") String lastName,
+			@Param("street") String street,
+			@Param("city") String city,
+			@Param("state") String state,
+			@Param("zipcode") String zipcode);
+	
 	
 	@Select(SELECT_ALL_ACTIVE_SPONSORS_BY_PARISHID)
 	List<Sponsor> listSponsorsByParishId(@Param("id") Long id);
@@ -95,6 +120,9 @@ public interface SponsorMapper {
 	@Select("SELECT id,firstname, sponsorcode, middleInitial, lastName,street,city,state,postalCode,emailAddress, emailAddress2,phone1,phone2 FROM SPONSOR s WHERE s.parishid=#{parishid} AND s.sponsorCode = #{code}")
 	Sponsor getSponsorByParishIdAndSponsorCode(@Param("parishid") Long parishId, @Param("code") String spondorCode);
 	
+	@Deprecated
+	@Select("SELECT id,firstname, sponsorcode, middleInitial, lastName,street,city,state,postalCode,emailAddress, emailAddress2,phone1,phone2 FROM SPONSOR s WHERE s.sponsorCode = #{code}")
+	List<Sponsor> getSponsorBySponsorCode(@Param("code") String spondorCode);
 	
 	@Select("SELECT SUM(SR.AMOUNT) AMOUNT, SR.SPONSORID ID FROM SPONSOR_RECEIPTS SR, RECEIPTS R "
 			+ "WHERE SPONSORID IN (SELECT ID FROM SPONSOR WHERE PARISHID =#{parishid}) "
