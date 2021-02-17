@@ -86,8 +86,27 @@ public class Receipts {
 	
 	private List<Initiative> initiatives;
 	
+	private int uploaded;
 	
+	private String remoteFileName;
+
 	
+	public String getRemoteFileName() {
+		return remoteFileName;
+	}
+
+	public void setRemoteFileName(String remoteFileName) {
+		this.remoteFileName = remoteFileName;
+	}
+
+	public int getUploaded() {
+		return uploaded;
+	}
+
+	public void setUploaded(int uploaded) {
+		this.uploaded = uploaded;
+	}
+
 	public String getCoSponsorName() {
 		return coSponsorName;
 	}

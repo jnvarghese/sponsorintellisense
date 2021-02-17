@@ -104,9 +104,20 @@ public class ReceiptsController {
 		return null;
 	}
 
-	@GetMapping("/find/{id}")
+	/*@GetMapping("/find/{id}")
 	public Receipts listById(@PathVariable(value = "id") Long receiptId) {
 		return receiptsMapper.findById(receiptId);
+	}*/
+	
+	@GetMapping("/receipts/{id}")
+	public List<Receipts> getReceiptsById(@PathVariable(value = "id") Long receiptId) {
+		return receiptsMapper.receiptsById(receiptId);
+	}
+	
+	@GetMapping("/receipts/fn/{firstname}/ln/{lastname}")
+	public List<Receipts> getReceiptsById(@PathVariable(value = "firstname") String firstName, 
+				@PathVariable(value = "lastname") String lastName) {
+		return receiptsMapper.receiptsByMatchingFnAndLn(firstName.replace("0", ""), lastName.replace("0", ""));
 	}
 
 	@GetMapping("/listbyreceiptid/{id}")
@@ -221,9 +232,29 @@ public class ReceiptsController {
 		r.setUpdatedBy(userId);
 		receiptsMapper.update(r);
 	}
+	
+	@RequestMapping(value = "/reprintreceipt/{id}/filename/{filename}", method = RequestMethod.GET, produces = "application/pdf")
+	ResponseEntity<byte[]> generateReceiptS3(@RequestHeader Long userId, 
+			@PathVariable(value = "id") Long receiptId,
+			@PathVariable(value = "filename") String objectKey
+			) throws Exception {
+		
+		byte[] pdfBytes = s3Wrapper.downloadReceipt(objectKey);
+		
+		HttpHeaders headers = new HttpHeaders();
+		headers.setContentType(MediaType.parseMediaType("application/pdf"));
+		String filename = "output.pdf";
+		headers.setContentDispositionFormData(filename, filename);
+		headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+		ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfBytes, headers, HttpStatus.OK);
+		
+		return response;
+	}
 
-	@RequestMapping(value = "/generatereceipt/{id}", method = RequestMethod.GET, produces = "application/pdf")
-	ResponseEntity<byte[]> generatereceipt(@RequestHeader Long userId, @PathVariable(value = "id") Long receiptId) throws Exception {
+	@RequestMapping(value = "/createreceipt/{id}", method = RequestMethod.GET, produces = "application/pdf")
+	ResponseEntity<byte[]> generateReceipt(@RequestHeader Long userId, 
+			@PathVariable(value = "id") Long receiptId
+			) throws Exception {
 
 		Receipts receipt = receiptsMapper.getReceipt(receiptId);
 
@@ -301,8 +332,10 @@ public class ReceiptsController {
 		ResponseEntity<byte[]> response = new ResponseEntity<byte[]>(pdfBytes, headers, HttpStatus.OK);
 		
 		try {
+			String fileName = receipt.getReceiptId()+"-"+sdf.format(new Date())+".pdf";
 			s3Wrapper.upload(byteArrayPutStream.toByteArray(), 
-					receipt.getReceiptId()+"-"+sdf.format(new Date())+".pdf", userId, receipt_folder);
+					fileName, userId, receipt_folder);
+			receiptsMapper.updateReceiptUploadStatus(receiptId, fileName);
 		} catch (SdkClientException ex) {
 			ex.printStackTrace();
 			LOGGER.error(" Unable to upload receipt to S3" + ex.getMessage());

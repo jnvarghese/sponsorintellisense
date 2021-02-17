@@ -26,12 +26,18 @@ public interface ReceiptsMapper {
 			before = false, resultType= Long.class)
 	void insert(Receipts receipt);
 	
-	@Select("SELECT receiptId, rdate, r.firstName,  r.middleName,  r.lastName, fullName, coSponsorName, transaction, amount, amountInWords, initiativeId, "
-			+ "streetAddress, r.city, state, zipCode, centerId, receiptType, referenceId, email1, email2, phone1, phone2, r.type, "
-			+ "r.status, r.createdby  FROM receipts r left join organization org on org.id = referenceId  left join parish p "
-			+ "on p.id=referenceId, initiative i, users u WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id and "
-			+ "receiptId = #{id}")
-	Receipts findById(@Param("id") Long id);  // Deprecated
+	@Select("SELECT r.receiptId, rdate, receiptType,referenceId, r.firstName, r.middleName, r.lastName, coSponsorName, r.amount, amountInWords, org.name orgName, p.name parishName, " + 
+			" i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName, sr.sponsorId, sum(sr.amount) sponsorReceiptAmount, r.uploaded, remoteFileName " + 
+			" FROM sponsor_receipts sr right JOIN receipts r ON r.receiptId = sr.receiptId and sr.STATUS<>1 left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, " + 
+			" initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id and r.receiptId = #{id}")
+	List<Receipts> receiptsById(@Param("id") Long id);  
+	
+	@Select("SELECT r.receiptId, rdate, receiptType,referenceId, r.firstName, r.middleName, r.lastName, coSponsorName, r.amount, amountInWords, org.name orgName, p.name parishName, " + 
+			" i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName, sr.sponsorId, sum(sr.amount) sponsorReceiptAmount, r.uploaded, remoteFileName " + 
+			" FROM sponsor_receipts sr right JOIN receipts r ON r.receiptId = sr.receiptId and sr.STATUS<>1 left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, " + 
+			" initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id "
+			+ "AND r.FIRSTNAME LIKE CONCAT(#{firstName}, '%') AND r.LASTNAME LIKE CONCAT(#{lastName}, '%') GROUP BY r.receiptId order by firstname, lastname;")
+	List<Receipts> receiptsByMatchingFnAndLn(@Param("firstName") String firstName, @Param("lastName") String lastName);  
 	
 	/*@Select("SELECT receiptId, rdate, firstName, middleName, lastName, fullName, transaction, amount,initiativeId, streetAddress, city, "
 			+ "state, zipCode, receiptType, referenceId, email1, email2, phone1, phone2, type, status, createdby FROM receipts "		
@@ -39,7 +45,7 @@ public interface ReceiptsMapper {
 	List<Receipts> listByParishId(@Param("parishId") Long parishId);*/
 	
 	@Select("SELECT r.receiptId, rdate, receiptType,referenceId, r.firstName, r.middleName, r.lastName, coSponsorName, r.amount, amountInWords, org.name orgName, p.name parishName, "
-			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName, sr.sponsorId, sum(sr.amount) sponsorReceiptAmount "
+			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName, sr.sponsorId, sum(sr.amount) sponsorReceiptAmount, r.uploaded, remoteFileName "
 			+ "FROM sponsor_receipts sr right JOIN receipts r ON r.receiptId = sr.receiptId and sr.STATUS<>1 left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
 			+ "initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id  "
 			+ "and date_format(str_to_date(rdate, '%m/%d/%Y'), '%Y-%m-%d') >= CURDATE() - INTERVAL #{range} DAY GROUP BY r.receiptId order by r.receiptId desc;")
@@ -47,12 +53,12 @@ public interface ReceiptsMapper {
 	
 	
 	@Select("SELECT receiptId, rdate, firstName, middleName, lastName, fullName, coSponsorName, transaction, amount, amountInWords, initiativeId, subInitiativeId, streetAddress, city, "
-			+ "state, zipCode, receiptType, referenceId, email1, email2, phone1, phone2, type, status, createdby FROM receipts "		
+			+ "state, zipCode, receiptType, referenceId, email1, email2, phone1, phone2, type, status, createdby, uploaded, remoteFileName FROM receipts "		
 			+ "WHERE receiptId = #{id}")
 	List<Receipts> list(); // @Deprecated
 	
 	@Select("SELECT r.receiptId, rdate, noOfRenewal, receiptType,referenceId, r.firstName, r.middleName, r.lastName, r.coSponsorName, r.amount, amountInWords, org.name orgName, p.name parishName, "
-			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName, sr.sponsorId, sum(sr.amount) sponsorReceiptAmount "
+			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName, sr.sponsorId, sum(sr.amount) sponsorReceiptAmount, r.uploaded, remoteFileName "
 			+ "FROM sponsor_receipts sr right JOIN receipts r ON r.receiptId = sr.receiptId and sr.STATUS<>1 left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
 			+ "initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id  "
 			+ "and noOfRenewal>0 and r.type=#{type} GROUP BY r.receiptId order by r.receiptId desc;")
@@ -74,7 +80,7 @@ public interface ReceiptsMapper {
 
 	@Select("SELECT receiptId, rdate, receiptType,referenceId,transaction, r.firstName, r.middleName, r.lastName,  fullName, amount,initiativeId, "
 			+ "coSponsorName , amountInWords, org.name orgName, p.name parishName, p.city parishCity, r.streetAddress, r.city, r.state, r.zipCode, "
-			+ "email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName "
+			+ "email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName, r.uploaded, remoteFileName "
 			+ "FROM receipts r left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
 			+ "users u  WHERE r.status=0 AND r.createdby = u.id  and receiptId = #{receiptId}")
 	Receipts getReceipt(@Param("receiptId") Long rId);
@@ -119,4 +125,8 @@ public interface ReceiptsMapper {
 	@Select("SELECT sr.sponsorId, r.receiptId, rdate, TRANSACTION, receiptType, sr.amount, sr.type FROM sponsor s, sponsor_receipts sr, receipts r "
 			+ "WHERE sponsorid= s.id AND sr.receiptId = r.receiptId and s.parishId = #{id}")
 	List<SponsorReceipts> getReceiptDetails(@Param("id") Long parishId);
+	
+	
+	@Update("UPDATE RECEIPTS SET uploaded= 1, remoteFileName= #{fileName} WHERE receiptId=#{id}")	
+	void updateReceiptUploadStatus(@Param("id") Long receiptId, @Param("fileName") String fileName);
 }

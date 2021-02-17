@@ -42,6 +42,10 @@ public class S3Wrapper {
 	@Value("${amazon.s3.student-profile-picture}")
 	private String student_profile_picture_bucket;
 	
+	@Value("${amazon.s3.receipts}")
+	private String receipt_bucket;
+	
+	
 	@Value("${amazon.s3.default-bucket}")
 	private String bucket;
 	
@@ -76,6 +80,21 @@ public class S3Wrapper {
 		LOGGER.debug("Download profile picture for project,  " +project+ " and file name "+sb.toString());
 		
 		GetObjectRequest getObjectRequest = new GetObjectRequest(student_profile_picture_bucket+"/"+project, sb.toString());
+
+		S3Object s3Object = amazonS3Client.getObject(getObjectRequest);
+
+		S3ObjectInputStream objectInputStream = s3Object.getObjectContent();
+
+		byte[] bytes = IOUtils.toByteArray(objectInputStream);
+
+		return bytes;
+	}
+	
+	public byte[] downloadReceipt(String key) throws IOException {
+		
+		LOGGER.debug("Downloading receipt, file name "+key);
+		
+		GetObjectRequest getObjectRequest = new GetObjectRequest(receipt_bucket, key);
 
 		S3Object s3Object = amazonS3Client.getObject(getObjectRequest);
 
