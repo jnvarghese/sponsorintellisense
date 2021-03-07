@@ -79,7 +79,7 @@ public class ReceiptsController {
 	@Autowired
 	S3Wrapper s3Wrapper;
 	
-	 private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss");
+	 private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
 	@GetMapping("/amount/{id}")
 	public Receipts getSponsorReceiptAmount(@PathVariable(value = "id") Long receiptId) {
@@ -239,7 +239,7 @@ public class ReceiptsController {
 			@PathVariable(value = "filename") String objectKey
 			) throws Exception {
 		
-		byte[] pdfBytes = s3Wrapper.downloadReceipt(objectKey);
+		byte[] pdfBytes = s3Wrapper.downloadReceipt(objectKey+".pdf");
 		
 		HttpHeaders headers = new HttpHeaders();
 		headers.setContentType(MediaType.parseMediaType("application/pdf"));

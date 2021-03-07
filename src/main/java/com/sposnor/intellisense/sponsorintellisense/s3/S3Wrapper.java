@@ -92,7 +92,7 @@ public class S3Wrapper {
 	
 	public byte[] downloadReceipt(String key) throws IOException {
 		
-		LOGGER.debug("Downloading receipt, file name "+key);
+		LOGGER.info("Downloading receipt, file name "+key+ " from bucket, "+receipt_bucket);
 		
 		GetObjectRequest getObjectRequest = new GetObjectRequest(receipt_bucket, key);
 

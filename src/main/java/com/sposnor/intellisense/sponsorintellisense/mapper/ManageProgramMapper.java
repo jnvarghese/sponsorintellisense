@@ -33,10 +33,10 @@ public interface ManageProgramMapper {
 	List<Contribution> getSponsorshipContribution(@Param("studentId") Long studentId, @Param("sponsorId") Long sponsorId);	
 	
 	
-	@Select("SELECT EN.ID enrollmentId, sp.id sponsorId,  CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',SP.SPONSORCODE) uniqueId, netAmount NETCONTRIBUTION, renewed,"
+	@Select("SELECT EN.ID enrollmentId, sp.id sponsorId,  CONCAT(R.CODE,'-',C.CODE,'-',P.CODE,'-',SP.SPONSORCODE) uniqueId, netAmount CONTRIBUTION, renewed,"
 			+ " CASE hasAnyCoSponser WHEN '1' THEN CONCAT(SP.FIRSTNAME,' ','&',' ',coSponserName ) ELSE CONCAT(SP.FIRSTNAME,' ',COALESCE(MIDDLEINITIAL, ''),' ',SP.LASTNAME ) END sponsorName, "
 			+ " NICKNAME sponsorNickName, P.NAME parishName, DATE_FORMAT(paymentDate, \"%M %D %Y\") paymentDate,"
-			+ " DATE_FORMAT(effectiveDate, \"%M %D %Y\") effectiveDate, (CONTRIBUTIONAMOUNT + MISCAMOUNT) CONTRIBUTION, "
+			+ " DATE_FORMAT(effectiveDate, \"%M %D %Y\") effectiveDate, "
 			+ " DATE_FORMAT(EN.createdDate, \"%M %D %Y\") createdDate, "
 			+ " DATE_FORMAT(EN.updatedDate, \"%M %D %Y\") updatedDate FROM SPONSOR SP, PARISH P, ENROLLMENT EN,CENTER C,REGION R WHERE P.ID = SP.PARISHID "
 			+ " AND P.CENTERID = C.ID AND C.REGIONID = R.ID "
