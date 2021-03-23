@@ -6,7 +6,17 @@ public class GraphData {
 	
 	private String yaxis;
 	
+	private String yaxis2;
+	
 	private String xaxis2;
+	
+	public String getYaxis2() {
+		return yaxis2;
+	}
+
+	public void setYaxis2(String yaxis2) {
+		this.yaxis2 = yaxis2;
+	}
 
 	public String getXaxis() {
 		return xaxis;

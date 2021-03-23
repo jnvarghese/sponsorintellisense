@@ -114,7 +114,7 @@
                                         
                                             #if( $rType == 0 )
                                             <span style="font-weight: bold; font-size:13px">Parish:</span> <span
-                                                style="font-size:13px">$from $rType</span>
+                                                style="font-size:13px">$from</span>
                                             #elseif( $rType == 1 )
                                             <span style="font-weight: bold;font-size:13px">Organization:</span> <span
                                                 style="font-size:13px">$from</span>
