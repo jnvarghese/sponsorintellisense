@@ -59,6 +59,8 @@ public class VelocityRenewalGeneratorRunner {
 		// step 2
 
 		PdfWriter writer = PdfWriter.getInstance(document, byteArrayPutStream);
+		HeaderFooterPageEvent event = new HeaderFooterPageEvent();
+		writer.setPageEvent(event);
 		// TableHeader event = new TableHeader();
 		// writer.setPageEvent(event);
 		// step 3

@@ -16,7 +16,7 @@ public class HeaderFooterPageEvent extends PdfPageEventHelper {
     } */
 
     public void onEndPage(PdfWriter writer, Document document) {
-        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("Teksmart Solution Inc. ®"), 440, 10, 0);
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("Teksmart Solutions Inc. ®"), 440, 10, 0);
         ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("Page " + document.getPageNumber()),120, 10, 0);
     }
 

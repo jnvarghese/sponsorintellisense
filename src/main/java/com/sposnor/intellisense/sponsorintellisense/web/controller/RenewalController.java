@@ -36,6 +36,7 @@ import com.itextpdf.tool.xml.pipeline.html.HtmlPipelineContext;
 import com.sposnor.intellisense.sponsorintellisense.data.model.Receipts;
 import com.sposnor.intellisense.sponsorintellisense.data.model.SponsorReceipts;
 import com.sposnor.intellisense.sponsorintellisense.mapper.ReceiptsMapper;
+import com.sposnor.intellisense.sponsorintellisense.util.HeaderFooterPageEvent;
 import com.sposnor.intellisense.sponsorintellisense.util.VelocityTemplateParser;
 
 @RestController
@@ -72,6 +73,8 @@ public class RenewalController {
 		// step 2
 
 		PdfWriter writer = PdfWriter.getInstance(document, byteArrayPutStream);
+		HeaderFooterPageEvent event = new HeaderFooterPageEvent();
+		// writer.setPageEvent(event);
 		// TableHeader event = new TableHeader();
 		// writer.setPageEvent(event);
 		// step 3

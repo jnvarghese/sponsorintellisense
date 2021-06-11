@@ -64,6 +64,7 @@ import com.sposnor.intellisense.sponsorintellisense.mapper.ReceiptsMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.StudentMapper;
 import com.sposnor.intellisense.sponsorintellisense.s3.S3Wrapper;
+import com.sposnor.intellisense.sponsorintellisense.util.HeaderFooterPageEvent;
 import com.sposnor.intellisense.sponsorintellisense.util.VelocityTemplateParser;
 //import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 @RestController
@@ -172,6 +173,8 @@ public class ManageProgramController {
 		// step 2
 
 		PdfWriter writer = PdfWriter.getInstance(document, byteArrayPutStream);
+		HeaderFooterPageEvent event = new HeaderFooterPageEvent();
+		//writer.setPageEvent(event);
 		// TableHeader event = new TableHeader();
 		// writer.setPageEvent(event);
 		// step 3
@@ -247,6 +250,8 @@ public class ManageProgramController {
 		// step 2
 
 		PdfWriter writer = PdfWriter.getInstance(document, byteArrayPutStream);
+		HeaderFooterPageEvent event = new HeaderFooterPageEvent();
+		// writer.setPageEvent(event);
 		// TableHeader event = new TableHeader();
 		// writer.setPageEvent(event);
 		// step 3

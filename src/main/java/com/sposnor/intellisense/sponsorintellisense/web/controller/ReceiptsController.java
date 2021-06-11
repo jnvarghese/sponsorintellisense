@@ -182,7 +182,7 @@ public class ReceiptsController {
 	@PostMapping("/add")
 	public ResponseEntity<Receipts> createReceipts(@RequestHeader Long userId, @Valid @RequestBody Receipts r) {
 		r.setCreatedby(userId);
-		if (null != r.getSponsorId()) {
+		if (null != r.getSponsorId()) {  //FIX-ME not used any more
 			LOGGER.info("receipt getSponsorId is not null and reference id is " + r.getReferenceId());
 			this.getSponsorAddedToReceipt(r);
 			if (r.getReferenceId() != 82) {
@@ -190,7 +190,7 @@ public class ReceiptsController {
 				receiptsMapper.insertSponsorReceipts(
 						new SponsorReceipts(r.getSponsorId(), r.getReceiptId(), r.getAmount(), userId, r.getReceiptType(), r.getNoOfRenewal()));
 			}
-		} else if (null == r.getSponsorId() && r.getReceiptType() == 2) {
+		} else if (null == r.getSponsorId() && r.getReceiptType() == 2) { // Individual Receipts
 			LOGGER.info("receipt getSponsorId is null and receiptType is 2 and reference id is " + r.getReferenceId());
 			/*
 			Sponsor sponsor = new Sponsor();
@@ -209,6 +209,8 @@ public class ReceiptsController {
 			sponsor.setSponsorCode(
 					String.valueOf(sponsorMapper.getSequenceByParishId(r.getReferenceId()).getSequence() + 1));*/
 			//if (r.getReferenceId() != 82) {
+			r.setCreatedby(userId);
+			System.out.println(r);
 				receiptsMapper.insert(r);
 				//sponsorMapper.insert(sponsor); 1/11/20
 				//receiptsMapper.insertSponsorReceipts( 1/11/20

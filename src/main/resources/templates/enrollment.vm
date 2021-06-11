@@ -228,7 +228,7 @@
               <span class="tdSpanStyle">CLASS/GRADE</span>
             </td>
             <td class="tdSpanStyle">
-              <span>$!sponsee.grade</span>
+              <span>Active</span>
             </td>
             <td class="thStyle">
               <span class="tdSpanStyle">MEDIUM OF STUDY</span>

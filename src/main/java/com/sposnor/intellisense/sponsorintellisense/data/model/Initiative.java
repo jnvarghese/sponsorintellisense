@@ -72,5 +72,12 @@ public class Initiative {
 	public void setParentId(Long parentId) {
 		this.parentId = parentId;
 	}
+
+	@Override
+	public String toString() {
+		return "Initiative [initiativeId=" + initiativeId + ", id=" + id + ", name=" + name + ", code=" + code
+				+ ", parentId=" + parentId + ", initiativeName=" + initiativeName + ", amount=" + amount + "]";
+	}
+	
 	
 }

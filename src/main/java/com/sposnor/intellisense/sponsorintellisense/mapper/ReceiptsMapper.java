@@ -45,7 +45,7 @@ public interface ReceiptsMapper {
 	List<Receipts> listByParishId(@Param("parishId") Long parishId);*/
 	
 	@Select("SELECT r.receiptId, rdate, receiptType,referenceId, r.firstName, r.middleName, r.lastName, coSponsorName, r.amount, amountInWords, org.name orgName, p.name parishName, "
-			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName, sr.sponsorId, sum(sr.amount) sponsorReceiptAmount, r.uploaded, remoteFileName "
+			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName, streetAddress, r.city, state, sr.sponsorId, sum(sr.amount) sponsorReceiptAmount, r.uploaded, remoteFileName "
 			+ "FROM sponsor_receipts sr right JOIN receipts r ON r.receiptId = sr.receiptId and sr.STATUS<>1 left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
 			+ "initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id  "
 			+ "and date_format(str_to_date(rdate, '%m/%d/%Y'), '%Y-%m-%d') >= CURDATE() - INTERVAL #{range} DAY GROUP BY r.receiptId order by r.receiptId desc;")

@@ -46,6 +46,7 @@ import com.sposnor.intellisense.sponsorintellisense.mapper.EnrollmentMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.SponsorMapper;
 import com.sposnor.intellisense.sponsorintellisense.mapper.StudentMapper;
 import com.sposnor.intellisense.sponsorintellisense.s3.S3Wrapper;
+import com.sposnor.intellisense.sponsorintellisense.util.HeaderFooterPageEvent;
 import com.sposnor.intellisense.sponsorintellisense.util.VelocityTemplateParser;
 
 
@@ -109,6 +110,8 @@ public class SubstitutionController {
 		// step 2
 
 		PdfWriter writer = PdfWriter.getInstance(document, byteArrayPutStream);
+		HeaderFooterPageEvent event = new HeaderFooterPageEvent();
+		// writer.setPageEvent(event);
 		// TableHeader event = new TableHeader();
 		// writer.setPageEvent(event);
 		// step 3
