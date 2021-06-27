@@ -89,8 +89,20 @@ public class Receipts {
 	private int uploaded;
 	
 	private String remoteFileName;
+	
+	private String receiptAddress;
+	
+	
 
 	
+	public String getReceiptAddress() {
+		return receiptAddress;
+	}
+
+	public void setReceiptAddress(String receiptAddress) {
+		this.receiptAddress = receiptAddress;
+	}
+
 	public String getRemoteFileName() {
 		return remoteFileName;
 	}

@@ -44,7 +44,8 @@ public interface ReceiptsMapper {
 			+ "WHERE receiptId = #{receiptId}")
 	List<Receipts> listByParishId(@Param("parishId") Long parishId);*/
 	
-	@Select("SELECT r.receiptId, rdate, receiptType,referenceId, r.firstName, r.middleName, r.lastName, coSponsorName, r.amount, amountInWords, org.name orgName, p.name parishName, "
+	@Select("SELECT r.receiptId, rdate, receiptType,referenceId, r.firstName, r.middleName, r.lastName, coSponsorName, r.amount,"
+			+ " CONCAT(r.streetAddress, ' ,', r.city, ' ,', r.state) receiptAddress, amountInWords, org.name orgName, p.name parishName, "
 			+ "i.name initiativeName, email1, phone1, r.type, concat(u.firstname, ' ', u.lastname) createdbyName, streetAddress, r.city, state, sr.sponsorId, sum(sr.amount) sponsorReceiptAmount, r.uploaded, remoteFileName "
 			+ "FROM sponsor_receipts sr right JOIN receipts r ON r.receiptId = sr.receiptId and sr.STATUS<>1 left join organization org on org.id = referenceId  left join parish p on p.id=referenceId, "
 			+ "initiative i, users u  WHERE r.status=0 and initiativeId = i.id and r.createdby = u.id  "
@@ -77,6 +78,12 @@ public interface ReceiptsMapper {
 	void updateReferenceId(@Param("referenceId") Long referenceId,  
 							@Param("receiptId") Long receiptId, 
 							@Param("updatedBy") Long updatedBy);
+	
+	@Update("UPDATE receipts SET referenceId = #{referenceId}, updatedBy = #{updatedBy}, type = #{donationType} WHERE receiptId=#{receiptId}")	
+	void updateReferenceIdAndDonationType(@Param("referenceId") Long referenceId,  
+							@Param("receiptId") Long receiptId, 
+							@Param("updatedBy") Long updatedBy,
+							@Param("donationType") int donationType);
 
 	@Select("SELECT receiptId, rdate, receiptType,referenceId,transaction, r.firstName, r.middleName, r.lastName,  fullName, amount,initiativeId, "
 			+ "coSponsorName , amountInWords, org.name orgName, p.name parishName, p.city parishCity, r.streetAddress, r.city, r.state, r.zipCode, "

@@ -141,7 +141,11 @@ public class ReceiptsController {
 			receiptsMapper.insertStudentExtendedMonth(obj);
 		});
 		
-		receiptsMapper.updateReferenceId(r.getParishId(), r.getReceiptId(), userId);
+		if(r.getMonths().size()>0) {
+			receiptsMapper.updateReferenceIdAndDonationType(r.getParishId(), r.getReceiptId(), userId, 2);
+		}else {
+			receiptsMapper.updateReferenceId(r.getParishId(), r.getReceiptId(), userId);	
+		}
 		
 		return new ResponseEntity<SponsorReceipts>(toSave, HttpStatus.OK);
 	}
