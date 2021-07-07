@@ -53,7 +53,7 @@ public interface SponsorMapper {
 			+ "NICKNAME,STREET, S.CITY, STATE,POSTALCODE, PARISHID "
 			+ "FROM SPONSOR S LEFT JOIN ENROLLMENT EN ON  EN.SPONSORID= S.ID AND EN.STATUS =0 LEFT JOIN SPONSEE SE ON EN.ID=SE.ENROLLMENTID, "
 			+ "PARISH P, CENTER C,REGION R WHERE S.PARISHID = P.ID AND P.CENTERID = C.ID "
-			+ "AND C.REGIONID = R.ID AND S.PARISHID = #{id} AND S.SPONSORSTATUS = 0 GROUP BY ENTID ORDER BY SPONSORCODE, EN.ID";
+			+ "AND C.REGIONID = R.ID AND S.PARISHID = #{id} AND S.SPONSORSTATUS = 0 AND SE.STATUS=0 GROUP BY ENTID ORDER BY SPONSORCODE, EN.ID";
 	
 	public static final String INSERT_SPONSOR = "INSERT INTO SPONSOR(parishId, firstName, lastName, middleInitial, nickName, dayOfBirth, "
 			+ "monthOfBirth, sponsorStatus, emailAddress, appartmentNumber, street, city, state, postalCode, hasAnyCoSponser, "

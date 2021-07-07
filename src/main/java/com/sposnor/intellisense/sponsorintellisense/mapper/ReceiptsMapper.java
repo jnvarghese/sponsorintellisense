@@ -97,6 +97,10 @@ public interface ReceiptsMapper {
 	@SelectKey(statement="SELECT LAST_INSERT_ID()", keyProperty= "id", before = false, resultType= Long.class)
 	void insertSponsorReceipts(SponsorReceipts sr);
 	
+	@Update("update sponsor_receipts set (sponsorId, receiptId, amount, type, createdBy, noOfRenewal) "
+			+ "values (#{sponsorId}, #{receiptId}, #{amount}, #{type}, #{createdBy}, #{noOfRenewal})")
+	void updateSponsorReceipts(SponsorReceipts sr);
+	
 	@Insert("INSERT INTO student_extended_month(receiptId, studentId, month) "
 			+ "values (#{receiptId}, #{studentId}, #{month})")
 	void insertStudentExtendedMonth(StudentExtendedMonth sem);
@@ -106,6 +110,9 @@ public interface ReceiptsMapper {
 	
 	@Select("SELECT sponsorId, receiptId, noOfRenewal from sponsor_receipts where receiptId=#{id} and status <> 1")
 	SponsorReceipts getSponsorReceiptByReceiptId(@Param("id") Long id);
+	
+	@Select("SELECT sponsorId, receiptId, noOfRenewal from sponsor_receipts where receiptId=#{id} and sponsorId= #{sponsorId} and status <> 1")
+	SponsorReceipts getSponsorReceiptByReceiptIdAndSponsorId(@Param("id") Long id, @Param("sponsorId") Long sponsorId);
 	
 	@Select("SELECT id, sponsorId, receiptId, sum(amount) from sponsor_receipts where receiptId=#{receiptId} and status <> 1 GROUP BY sponsorId")
 	List<SponsorReceipts> listByReceiptId(@Param("receiptId") Long receiptId);

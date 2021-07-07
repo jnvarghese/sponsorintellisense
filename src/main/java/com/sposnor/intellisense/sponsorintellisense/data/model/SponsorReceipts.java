@@ -220,11 +220,14 @@ public class SponsorReceipts implements Serializable {
 
 	@Override
 	public String toString() {
-		return "SponsorReceipts [id=" + id + ", sponsorId=" + sponsorId + ", receiptId=" + receiptId + ", amount="
-				+ amount + ", status=" + status + ", createdBy=" + createdBy + ", updatedBy=" + updatedBy
-				+ ", receiptAmount=" + receiptAmount + ", sponsorReceiptAmount=" + sponsorReceiptAmount + ", type="
-				+ type + ", rdate=" + rdate + ", transaction=" + transaction + ", receiptType=" + receiptType + "]";
+		return "SponsorReceipts [id=" + id + ", sponsorId=" + sponsorId + ", receiptId=" + receiptId + ", noOfRenewal="
+				+ noOfRenewal + ", amount=" + amount + ", status=" + status + ", createdBy=" + createdBy
+				+ ", updatedBy=" + updatedBy + ", receiptAmount=" + receiptAmount + ", sponsorReceiptAmount="
+				+ sponsorReceiptAmount + ", type=" + type + ", rdate=" + rdate + ", transaction=" + transaction
+				+ ", receiptType=" + receiptType + ", parishId=" + parishId + ", months=" + months + "]";
 	}
+
+	
 
 	 
 

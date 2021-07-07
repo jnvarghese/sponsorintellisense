@@ -130,21 +130,33 @@ public class ReceiptsController {
 	@PostMapping("/addSponsorReceipt")
 	public ResponseEntity<SponsorReceipts> addSponsorToReceipt(@RequestHeader Long userId,
 			@Valid @RequestBody SponsorReceipts r) {
-		
 		SponsorReceipts toSave = new SponsorReceipts(r.getSponsorId(), r.getReceiptId(), r.getAmount(), userId, 
-				Integer.valueOf(r.getType()), r.getMonths().size());
+				Integer.valueOf(r.getType()), (r.getMonths() != null) ? r.getMonths().size() : 0);
 		
-		receiptsMapper.insertSponsorReceipts(toSave);
-		
-		r.getMonths().forEach(obj ->{
-			obj.setReceiptId(r.getReceiptId());
-			receiptsMapper.insertStudentExtendedMonth(obj);
-		});
-		
-		if(r.getMonths().size()>0) {
-			receiptsMapper.updateReferenceIdAndDonationType(r.getParishId(), r.getReceiptId(), userId, 2);
+		SponsorReceipts fromDb = receiptsMapper.getSponsorReceiptByReceiptIdAndSponsorId(r.getReceiptId(), r.getSponsorId()); 
+		if(fromDb == null) {
+			receiptsMapper.insertSponsorReceipts(toSave);
 		}else {
-			receiptsMapper.updateReferenceId(r.getParishId(), r.getReceiptId(), userId);	
+			fromDb.setAmount(r.getAmount());
+			if(r.getMonths() != null && r.getMonths().size()>0) {
+				fromDb.setNoOfRenewal(r.getMonths().size());
+			}
+			receiptsMapper.updateSponsorReceipts(fromDb);
+		}
+		
+		if(r.getType().equals("2")  && r.getMonths() != null && r.getMonths().size()>0) {
+				receiptsMapper.updateReferenceIdAndDonationType(r.getParishId(), r.getReceiptId(), userId, 2);
+				//0 for donation 1 for sponsor 2 for renewal
+		}
+		/*else {
+				receiptsMapper.updateReferenceId(r.getParishId(), r.getReceiptId(), userId);	
+		}*/
+		
+		if(r.getMonths() != null) {
+			r.getMonths().forEach(obj ->{
+				obj.setReceiptId(r.getReceiptId());
+				receiptsMapper.insertStudentExtendedMonth(obj);
+			});
 		}
 		
 		return new ResponseEntity<SponsorReceipts>(toSave, HttpStatus.OK);
