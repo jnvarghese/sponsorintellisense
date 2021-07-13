@@ -96,6 +96,40 @@ public class SponsorController {
 		return sponsorMapper.getSponsorReceiptsByParish(receiptId);
 	}
 	
+	@GetMapping("/activelist/{id}")
+	public List<Sponsor> getAllActiveSponsorsByParishId(@PathVariable(value = "id") Long parishId) {
+		List<Sponsor> sponsors = sponsorMapper.listByParishId(parishId);
+		return sponsors;
+	}
+	/*
+	@GetMapping("/list/activesponsors/enrollments/parish/{id}")
+	public List<Sponsor> getAllActiveAndEnrolledSponsorsByParishId(@PathVariable(value = "id") Long parishId) {
+		
+		List<Sponsor> allActiveSponsonrs = sponsorMapper.listByParishId(parishId);
+		List<Sponsor> sponsors = sponsorMapper.listSponsorsByParishId(parishId);
+		List<Sponsor> amountsums = sponsorMapper.getSumOfSponsorAmountByParish(parishId);
+
+		//if(null != amountsums) {
+			// pair each id with its marks
+			Map<Long, Double> amountsumsMap = amountsums.stream().filter(x -> x!=null).collect(Collectors.toMap(Sponsor::getId, Sponsor::getAmount));
+			// go through list of `ObjectOne`s and lookup marks in the index
+			sponsors.forEach(o1 -> {
+				o1.setAmount(amountsumsMap.containsKey(o1.getId()) ? amountsumsMap.get(o1.getId()) : 0.00);
+				}
+			);
+		//}
+
+	        
+	        List<Sponsor> listTwoCopy = new ArrayList<>(allActiveSponsonrs);
+	        listTwoCopy.removeAll(sponsors);
+	        sponsors.addAll(listTwoCopy);
+	         
+	        System.out.println(sponsors.size());
+	        
+		return sponsors;
+	}
+	*/
+	
 	@GetMapping("/listbyparish/{id}")
 	public List<Sponsor> getAllSponsorsByParishId(@PathVariable(value = "id") Long parishId) {
 		
